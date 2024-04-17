@@ -1,11 +1,30 @@
+import { getData } from "@/api/notion";
 import MemoView from "@/components/MemoView";
+import RightSide from "@/components/RightSide";
+import { generateMemoData } from "@/fakerData";
+import { useMemo } from "react";
 
-export default function Home() {
+
+
+export default async function Home() {
+  const data = useMemo(() => {
+    return generateMemoData(5)
+  }, [])
+  const notionData = await getData()
+  console.log(notionData)
   return (
-    <main className="w-full h-auto flex-grow shrink flex flex-col justify-start items-center">
-      <section className="@container w-full max-w-5xl min-h-[100svh] flex flex-col justify-start items-center sm:pt-3 md:pt-6 pb-8">
-        <MemoView />
-      </section>
-    </main>
+    <>
+      <main className="  flex-grow shrink flex flex-col justify-start items-center overflow-hidden h-full 
+      ">
+        <section className="overflow-y-auto mr-40 pr-10" >
+          {
+            data.map((memo, index) => (
+              <MemoView key={index} {...memo} />
+            ))
+          }
+        </section>
+      </main>
+      <RightSide />
+    </>
   );
 }

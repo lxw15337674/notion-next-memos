@@ -1,23 +1,29 @@
 import React from 'react';
 
 interface MemoViewProps {
-  // Define your component props here
+  content: string;
+  labels: string[];
+  time: string;
 }
 
-const MemoView: React.FC<MemoViewProps> = () => {
-
+const MemoView: React.FC<MemoViewProps> = (props) => {
+  const { content, labels=[] ,time} = props;
   return (
-    <div className="mx-8 rounded overflow-hidden shadow-lg bg-zinc-800">
-        <div className="px-6 py-4">
-          <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
-          <p className="text-gray-700 text-base">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+    <div className="my-6 px-4  py-4 rounded overflow-hidden shadow-lg bg-zinc-800 w-full">
+      <div className='flex justify-between items-center text-xs '>
+        {time}
+      </div>
+        <div className="py-4">
+          <p className="text-gray-300 text-sm">
+            {content}
           </p>
         </div>
-        <div className="px-6 pt-4 pb-2">
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#photography</span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#travel</span>
-          <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">#winter</span>
+        <div className=" ">
+          {labels.map((label) => (
+            <span key={label} className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+              #{label}
+            </span>
+          ))}
         </div>
     </div>
   );
