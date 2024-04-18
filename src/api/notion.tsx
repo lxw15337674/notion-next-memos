@@ -1,4 +1,5 @@
 import { Client } from "@notionhq/client"
+import { DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 
 // Initializing a client
 const notion = new Client({
@@ -8,9 +9,15 @@ const notion = new Client({
 
 const getData = async () => {
     const listUsersResponse = await notion.databases.query({
-        database_id: "b3ac419be6f545f8b23aa11bb4ad3a8d",
+        database_id: "c7b7f98dfe8e43a6bc7454c9e17e03b7",
+        sorts: [
+            {
+                timestamp: "created_time" ,
+                direction: "ascending"
+            }
+        ]
     })
-    return listUsersResponse
+    return listUsersResponse.results as DatabaseObjectResponse[]
 }
 
 export {

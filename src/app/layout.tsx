@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import LeftSide from "@/components/LeftSide";
+import { CssVarsProvider, getInitColorSchemeScript } from "@mui/joy";
 
 
 export const metadata: Metadata = {
@@ -15,15 +16,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <div >
-          <LeftSide />
-          <div className="flex-1 ml-40 pl-6">
-            {children}
+    <CssVarsProvider
+      defaultMode="dark"
+    >
+      <html lang="en">
+        <body>
+          <div >
+            <LeftSide />
+            <div className="flex-1 ml-40 pl-6">
+              {children}
+            </div>
           </div>
-        </div>
-      </body>
-    </html>
+        </body>
+      </html>
+    </CssVarsProvider>
   );
 }
