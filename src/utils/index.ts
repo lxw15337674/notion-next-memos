@@ -1,18 +1,46 @@
-export function separateTextAndTags(text: string): string[] {
-    // Split the text based on spaces or tags (# followed by alphanumeric characters)
-    const parts = text.split(/(\s+)|((?<!\S)#[a-zA-Z0-9]+)/g);
+export function separateTextAndLabels(text: string): string[] {
+    const res: string[] = [];
+    let pre = '';
+    let flag = false;
 
-    // Filter out empty strings (which might occur due to leading/trailing spaces)
-    return parts.filter(part => part);
+    for (let char of text) {
+        if (char === '#') {
+            if (pre !== '') {
+                res.push(pre);
+            }
+            flag = true;
+            pre = '#';
+        } else if (char === ' ') {
+            res.push(pre);
+            flag = false;
+            pre = ' '; // 保留空格
+        } else {
+            pre += char;
+        }
+    }
+
+    if (pre !== '') {
+        res.push(pre);
+    }
+
+    // 不进行过滤，保留空格
+    return res;
 }
-
 // Example usage
 // const text = "1#123 123";
-// const separatedParts = separateTextAndTags(text);
+// const separatedParts = separateTextAndLabels(text);
 // console.log(separatedParts); // Output: ["1", "#123", "123"]
 
 
-export function convertGMTDateToLocal(gmtDateString:string) {
+export function extractLabels(text: string): string[] {
+    // 使用正则表达式匹配标签（#开头，后跟字母数字字符）
+    const labelRegex = /#[a-zA-Z0-9\u4e00-\u9fa5]+/g;
+    const labels = text.match(labelRegex)?.map(label => label.slice(1))
+
+    // 如果找到标签，则返回标签数组，否则返回空数组
+    return labels ? labels : [];
+}
+export function convertGMTDateToLocal(gmtDateString: string) {
     // Parse the GMT date string
     const gmtDate = new Date(gmtDateString);
 

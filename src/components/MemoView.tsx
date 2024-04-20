@@ -1,4 +1,4 @@
-import { convertGMTDateToLocal, separateTextAndTags } from '@/utils';
+import { convertGMTDateToLocal, separateTextAndLabels } from '@/utils';
 import { TitlePropertyItemObjectResponse, MultiSelectPropertyItemObjectResponse, DatabaseObjectResponse, RichTextItemResponse, RichTextPropertyItemObjectResponse, PropertyItemObjectResponse, TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 import React, { useMemo } from 'react';
 
@@ -8,8 +8,8 @@ const renderContent = (content: RichTextItemResponse) => {
     if (content.href) {
       return <a href={content.href} className="text-blue-500">{content.text.content}</a>
     }
-    const text = separateTextAndTags(content.text.content)
-    return <p>
+    const text = separateTextAndLabels(content.text.content)
+    return <p key={content.text.content}>
       {text.map((item, index) => {
         if (item.startsWith('#')) {
           return <span key={index} className="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{item}</span>

@@ -1,17 +1,19 @@
-import useTagStore from "@/store/tag";
 import { useEffect, useRef, useState } from "react";
+import useTagStore from "@/store/tag";
+import OverflowTip from "../OverflowTip";
+import classNames from "classnames";
+import useEditorStore from "@/store/editor";
+import getCaretCoordinates from "textarea-caret";
 
-interface Props{
-  
-}
 
 type Position = { left: number; top: number; height: number };
 
-const TagSuggestions = ({ editorRef, editorActions }: Props) => {
+const TagSuggestions = () => {
+  const { editorRef, insertText } = useEditorStore()
   const [position, setPosition] = useState<Position | null>(null);
   const tagStore = useTagStore();
-  const tagsRef = useRef(Array.from(tagStore.getState().tags));
-  tagsRef.current = Array.from(tagStore.getState().tags);
+  const tagsRef = useRef(Array.from(tagStore.tags));
+  tagsRef.current = Array.from(tagStore.tags);
 
   const [selected, select] = useState(0);
   const selectedRef = useRef(selected);
@@ -31,18 +33,14 @@ const TagSuggestions = ({ editorRef, editorActions }: Props) => {
   const suggestionsRef = useRef<string[]>([]);
   suggestionsRef.current = (() => {
     const search = getCurrentWord()[0].slice(1).toLowerCase();
-    const fuse = new Fuse(tagsRef.current);
-    return fuse.search(search).map((result) => result.item);
+    return tagsRef.current.filter((tag) => tag.name.toLowerCase().includes(search)).map((tag) => tag.name);
   })();
 
   const isVisibleRef = useRef(false);
   isVisibleRef.current = !!(position && suggestionsRef.current.length > 0);
 
   const autocomplete = (tag: string) => {
-    if (!editorActions || !("current" in editorActions) || !editorActions.current) return;
-    const [word, index] = getCurrentWord();
-    editorActions.current.removeText(index, word.length);
-    editorActions.current.insertText(`#${tag}`);
+    insertText(tag, 1);
     hide();
   };
 
@@ -71,14 +69,12 @@ const TagSuggestions = ({ editorRef, editorActions }: Props) => {
   const handleInput = () => {
     const editor = editorRef.current;
     if (!editor) return;
-
     select(0);
     const [word, index] = getCurrentWord();
     const currentChar = editor.value[editor.selectionEnd];
     const isActive = word.startsWith("#") && currentChar !== "#";
-
     const caretCordinates = getCaretCoordinates(editor, index);
-    caretCordinates.top -= editor.scrollTop;
+    // caretCordinates.top -= editor.scrollTop 
     isActive ? setPosition(caretCordinates) : hide();
   };
 
@@ -109,7 +105,7 @@ const TagSuggestions = ({ editorRef, editorActions }: Props) => {
             i === selected ? "bg-zinc-300 dark:bg-zinc-600" : "",
           )}
         >
-          <OverflowTip>#{tag}</OverflowTip>
+          <OverflowTip>{tag}</OverflowTip>
         </div>
       ))}
     </div>
