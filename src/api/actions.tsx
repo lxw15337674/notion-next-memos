@@ -4,7 +4,7 @@ import { CreatePageParameters, DatabaseObjectResponse } from "@notionhq/client/b
 import { convertTextToProperties } from "@/utils/converter"
 import { Tag } from "@/type"
 
-const NOTION_DATABASE_ID = "c7b7f98dfe8e43a6bc7454c9e17e03b7"
+const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID!
 const ClientNotion = new Client({
     auth: process.env.NOTION_TOKEN,
 })
@@ -100,5 +100,5 @@ export async function getAllLabels() {
     const listUsersResponse = await ClientNotion.databases.retrieve({
         database_id: NOTION_DATABASE_ID,
     })
-    return listUsersResponse.properties.labels.multi_select.options as Tag[]
+    return (listUsersResponse.properties.labels as any).multi_select .options as Tag[]
 }
