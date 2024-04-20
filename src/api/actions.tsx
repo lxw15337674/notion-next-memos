@@ -19,7 +19,7 @@ export const getDBData = async () => {
                 direction: "descending"
             }
         ],
-        // page_size: 100
+        page_size: 20
     })
     return listUsersResponse.results as DatabaseObjectResponse[]
 }

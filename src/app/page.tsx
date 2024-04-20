@@ -5,11 +5,12 @@ import RightSide from "@/components/HomeSideBar";
 import useMemoStore from "@/store/memo";
 import useTagStore from "@/store/tag";
 import { useMount } from 'ahooks'
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 
 export default function Home() {
   const { memos, fetchMemos } = useMemoStore()
-  const { tags, fetchTags } = useTagStore()
+  const {  fetchTags } = useTagStore()
   useMount(() => {
     fetchMemos()
     fetchTags()
@@ -23,11 +24,18 @@ export default function Home() {
             <Editor />
           </div>
           <section className="overflow-y-auto " >
+            <InfiniteScroll
+              dataLength={memos.length}
+              next={fetchMemos}
+              hasMore={false}
+              loader={<h4>Loading...</h4>}
+            >
             {
-              memos.slice(0,10).map((memo, index) => (
+              memos.map((memo, index) => (
                 <MemoView key={index} {...memo} />
               ))
             }
+            </InfiniteScroll>
           </section>
         </div>
       </main>
