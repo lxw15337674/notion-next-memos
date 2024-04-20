@@ -40,7 +40,7 @@ export function extractLabels(text: string): string[] {
     // 如果找到标签，则返回标签数组，否则返回空数组
     return labels ? labels : [];
 }
-export function convertGMTDateToLocal(gmtDateString: string) {
+export function convertGMTDateToLocal(gmtDateString: number) {
     // Parse the GMT date string
     const gmtDate = new Date(gmtDateString);
 

@@ -3,12 +3,16 @@ import { Client } from "@notionhq/client"
 import { CreatePageParameters, DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { convertTextToProperties } from "@/utils/converter"
 import { Tag } from "@/type"
+import { NotionAPI } from 'notion-client'
 
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID!
 const ClientNotion = new Client({
     auth: process.env.NOTION_TOKEN,
 })
-
+const api =  new NotionAPI({
+    activeUser: process.env.NOTION_ACTIVE_USER,
+    authToken: process.env.NOTION_TOKEN_V2
+})
 
 export const getDBData = async () => {
     const listUsersResponse = await ClientNotion.databases.query({
@@ -100,5 +104,12 @@ export async function getAllLabels() {
     const listUsersResponse = await ClientNotion.databases.retrieve({
         database_id: NOTION_DATABASE_ID,
     })
-    return (listUsersResponse.properties.labels as any).multi_select .options as Tag[]
+    return (listUsersResponse.properties.labels as any).multi_select.options as Tag[]
+}
+
+
+
+export async function getDBMeta() {
+    const recordMap =await api.getPage(NOTION_DATABASE_ID)
+    return recordMap
 }

@@ -2,12 +2,13 @@ import useTagStore from "@/store/tag";
 import { Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy";
 import Icon from "../../Icon";
 import { Tag } from "@/type";
+import { SelectOption } from "notion-types";
 
 interface Props {
-    tag: Tag
+    tag: SelectOption
 }
 
-export const TagItemContainer = ({tag}:Props) => {
+export const TagItemContainer = ({ tag }: Props) => {
     // const isActive = tagQuery === tag.text;
     // const hasSubTags = tag.subTags.length > 0;
 
@@ -52,7 +53,7 @@ export const TagItemContainer = ({tag}:Props) => {
                         </Menu>
                     </Dropdown>
                     <span className="truncate cursor-pointer hover:opacity-80" onClick={handleTagClick}>
-                        {tag.name}
+                        {tag.value}
                     </span>
                 </div>
             </div>

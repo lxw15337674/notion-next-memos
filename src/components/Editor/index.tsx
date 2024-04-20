@@ -11,12 +11,12 @@ import TagSuggestions from './TagSuggestions';
 
 const Editor = () => {
     const { editorRef } = useEditorStore()
-    const { fetchMemos } = useMemoStore()
+    const { fetchRecordMap } = useMemoStore()
     const onSave = async () => {
         const content = editorRef.current?.value ?? ''
         if (content.trim().length === 0) return
         await createPageInDatabase(content)
-        await fetchMemos()
+        await fetchRecordMap()
         editorRef.current!.value = ''
     }
     return (

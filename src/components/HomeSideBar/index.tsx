@@ -8,24 +8,7 @@ import { DayMemosItem } from '@/api/type';
 
 
 const RightSide: React.FC = () => {
-    const {tags}=useTagStore()
-    const {memos} = useMemoStore()
-    // 按create_time聚合，以天为单位
-    const memosByDay = useMemo(() => memos.reduce<DayMemosItem[]>((acc, memo) => {
-        const day = new Date(memo.created_time).toLocaleDateString()
-        const index = acc.findIndex((item) => item.date === day)
-        if (index !== -1) {
-            acc[index].memos.push(memo.id)
-        } else {
-            acc.push({
-                date: day,
-                memos: [memo.id]
-            })
-        }
-        return acc
-    },[]),[
-        memos
-    ])
+    const { memos, memosByDay,allTags } = useMemoStore()
     return (
         <div className='
         group flex flex-col justify-start items-start select-none border-r  dark:bg-opacity-40 transition-all hover:shadow-xl z-2  px-4 mt-8
@@ -39,7 +22,7 @@ const RightSide: React.FC = () => {
                         <Icon.CalendarDays className="w-4 h-auto mr-1" />
                         <span className="block text-base sm:text-sm">天</span>
                     </div>
-                    <span className="font-mono">{memosByDay.length}</span>
+                    <span className="font-mono">{memosByDay?.length}</span>
                 </div>
                 <div className="w-full flex justify-between items-center">
                     <div className="w-full flex justify-start items-center">
@@ -53,7 +36,7 @@ const RightSide: React.FC = () => {
                         <Icon.Hash className="w-4 h-auto mr-1" />
                         <span className="block text-base sm:text-sm">标签</span>
                     </div>
-                    <span className="font-mono">{tags.length}</span>
+                    <span className="font-mono">{allTags.length}</span>
                 </div>
             </div>
             <TagsSection/>

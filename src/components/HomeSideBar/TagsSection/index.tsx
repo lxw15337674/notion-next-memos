@@ -2,11 +2,12 @@ import useTagStore from "@/store/tag";
 import { Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy";
 import Icon from "../../Icon";
 import TagItemContainer from "./TagItemContainer";
+import useMemoStore from "@/store/memo";
 
 
 const TagsSection = () => {
-    const { tags } = useTagStore();
-    if (!tags.length) {
+    const { memos, memosByDay,allTags } = useMemoStore()
+    if (!allTags.length) {
         return null;
     }
 
@@ -18,7 +19,7 @@ const TagsSection = () => {
                 </span>
             </div>
             <div className="flex flex-col justify-start items-start relative w-full h-auto flex-nowrap gap-2 mt-1">
-                {tags.map((t) => (
+                {allTags.map((t) => (
                     <TagItemContainer key={t.id} tag={t} />
                 ))}
             </div>

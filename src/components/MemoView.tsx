@@ -1,5 +1,7 @@
+import useMemoStore from '@/store/memo';
 import { convertGMTDateToLocal, separateTextAndLabels } from '@/utils';
-import { TitlePropertyItemObjectResponse, MultiSelectPropertyItemObjectResponse, DatabaseObjectResponse, RichTextItemResponse, RichTextPropertyItemObjectResponse, PropertyItemObjectResponse, TextRichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import { MultiSelectPropertyItemObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
+import { Block } from 'notion-types';
 import React, { useMemo } from 'react';
 
 
@@ -22,18 +24,19 @@ const renderContent = (content: RichTextItemResponse) => {
 }
 
 
-const MemoView: React.FC<DatabaseObjectResponse> = (props) => {
+const MemoView: React.FC<Block> = (props) => {
+  const { contentSchema } = useMemoStore()
+  // todo
   const text = useMemo(() => {
-    const contentProp = props.properties.content as any
-    return contentProp.rich_text?.map((item: RichTextItemResponse) => renderContent(item));
+    return  props.properties[contentSchema?.id!]?.map((item: RichTextItemResponse) => renderContent(item));
   }, [props.properties]);
   const labelList = useMemo(() => {
     const labels = props.properties?.labels as unknown as MultiSelectPropertyItemObjectResponse;
     return labels?.multi_select.map((item) => item.name);
   }, [props.properties]);
   const time = useMemo(() => {
-    return convertGMTDateToLocal(props.last_edited_time);
-  }, [props.last_edited_time]);
+    return convertGMTDateToLocal(props.created_time)
+  }, [props.created_time]);
   return (
     <div className="mb-6 px-4  py-4 rounded overflow-hidden shadow-lg bg-zinc-800 w-full">
       <div className='flex justify-between items-center text-xs '>
