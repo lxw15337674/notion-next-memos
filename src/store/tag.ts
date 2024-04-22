@@ -1,8 +1,7 @@
 import { getAllLabels } from '@/api/actions';
 import { Tag } from '@/type';
-import { faker } from '@faker-js/faker';
 import { create } from "zustand";
-import { combine, devtools } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 
 
 

@@ -7,12 +7,18 @@ import useTagStore from "@/store/tag";
 import { useMount } from 'ahooks'
 import InfiniteScroll from 'react-infinite-scroll-component';
 
+const style = {
+  height: 100,
+  border: "1px solid green",
+  margin: 6,
+  padding: 8
+};
 
 export default function Home() {
-  const { memos, fetchMemos } = useMemoStore()
-  const {  fetchTags } = useTagStore()
+  const { memos, fetchInitData, fetchPagedData, databases } = useMemoStore()
+  const { fetchTags } = useTagStore()
   useMount(() => {
-    fetchMemos()
+    fetchInitData()
     fetchTags()
   })
   return (
@@ -25,16 +31,21 @@ export default function Home() {
           </div>
           <section className="overflow-y-auto " >
             <InfiniteScroll
-              dataLength={memos.length}
-              next={fetchMemos}
-              hasMore={false}
+              dataLength={memos?.length}
+              next={fetchPagedData}
+              hasMore={databases.has_more}
               loader={<h4>Loading...</h4>}
+              endMessage={
+                <p style={{ textAlign: "center" }}>
+                  <b>已全部加载 {memos.length} 条笔记</b>
+                </p>
+              }
             >
-            {
-              memos.map((memo, index) => (
-                <MemoView key={index} {...memo} />
-              ))
-            }
+              {
+                memos.map((memo, index) => (
+                  <MemoView key={index} {...memo} />
+                ))
+              }
             </InfiniteScroll>
           </section>
         </div>

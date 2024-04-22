@@ -10,19 +10,27 @@ const ClientNotion = new Client({
 })
 
 
-export const getDBData = async () => {
+export const getDBData = async (config: {
+    startCursor?: string;
+    pageSize?: number;
+}) => {
+    const {
+        startCursor=undefined,
+        pageSize=20
+    } = config
     const listUsersResponse = await ClientNotion.databases.query({
         database_id: NOTION_DATABASE_ID,
         sorts: [
             {
                 timestamp: "created_time",
-                direction: "descending"
-            }
+                direction: "descending",
+            },
         ],
-        page_size: 20
-    })
-    return listUsersResponse.results as DatabaseObjectResponse[]
-}
+        page_size: pageSize,
+        start_cursor: startCursor,
+    });
+    return listUsersResponse;
+};
 
 // export const getDBDataCount = async () => {
 //     const listUsersResponse = await ClientNotion.databases.query({
@@ -100,5 +108,5 @@ export async function getAllLabels() {
     const listUsersResponse = await ClientNotion.databases.retrieve({
         database_id: NOTION_DATABASE_ID,
     })
-    return (listUsersResponse.properties.labels as any).multi_select .options as Tag[]
+    return (listUsersResponse.properties.labels as any).multi_select.options as Tag[]
 }

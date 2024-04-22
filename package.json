@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,19 +12,18 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/joy": "5.0.0-beta.32",
-    "@notionhq/client": "^2.2.15",
+    "@notionhq/client": "^2 .2.15",
     "ahooks": "^3.7.11",
     "classnames": "^2.5.1",
     "lucide-react": "^0.371.0",
-    "next": "14.2.1",
+    "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-mentions": "^4.4.10",
     "react-use": "^17.5.0",
-    "swr": "^2.2.5",
     "textarea-caret": "^3.1.0",
-    "zustand": "^4.5.2"
+    "zustand": "^4.5.2",
+    "zustand-middleware-computed": "^1.2.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",

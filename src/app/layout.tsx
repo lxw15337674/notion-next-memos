@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import LeftSide from "@/components/LeftSide";
 import { CssVarsProvider, getInitColorSchemeScript } from "@mui/joy";
-import useMemoStore from "@/store/memo";
-import useTagStore from "@/store/tag";
 
 
 export const metadata: Metadata = {
