@@ -1,12 +1,12 @@
 import { getAllLabels } from '@/api/actions';
-import { Tag } from '@/type';
+import { TagType } from '@/type';
 import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 
 
 interface TagStore {
-    tags: Tag[]
+    tags: TagType[]
     fetchTags: () => Promise<void>;
     upsertTag: (tagName: string) => Promise<void>;
     batchUpsertTag: (tagNames: string[]) => Promise<void>;
