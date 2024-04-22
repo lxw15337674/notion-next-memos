@@ -48,7 +48,7 @@ const useFilterStore = create(persist( computed<MemoStore, ComputedState>(
     }
 }),{
     name: 'filter',
-    storage: createJSONStorage(() => sessionStorage),
+    storage: createJSONStorage(() => localStorage),
 }
 )
 );
