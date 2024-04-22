@@ -5,8 +5,15 @@ import computed from 'zustand-middleware-computed';
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import useFilterStore from './filter';
 
+interface MemoStore {
+    memos: DatabaseObjectResponse[]
+    databases: QueryDatabaseResponse,
+    addRecord: (page: DatabaseObjectResponse) => void;
+    fetchInitData: () => void;
+    fetchPagedData: () => void;
+}
 const useMemoStore = create(devtools(
-    persist(
+    persist<MemoStore>(
         (set, get) => ({
             memos: [],
             databases: {
@@ -20,7 +27,7 @@ const useMemoStore = create(devtools(
                 request_id: "",
             },
             // 插入第一行数据
-            addRecord: async (page: DatabaseObjectResponse) => {
+            addRecord: async (page) => {
                 set({
                     memos: [page, ...get().memos]
                 });
@@ -45,7 +52,7 @@ const useMemoStore = create(devtools(
             }
         }), {
         name: 'memos-storage',
-        storage: createJSONStorage(() => sessionStorage), 
+        storage: createJSONStorage(() => sessionStorage),
     })
     , {
         name: 'memo'
