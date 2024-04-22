@@ -12,9 +12,9 @@ interface Props {
 const MemoFilter = (props: Props) => {
   const { filter, removeFilter } = useFilterStore()
   const { fetchInitData } = useMemoStore()
-  useUpdateEffect(()=>{
+  useUpdateEffect(() => {
     fetchInitData()
-  },[filter])
+  }, [filter])
   if (!filter.length) {
     return null;
   }

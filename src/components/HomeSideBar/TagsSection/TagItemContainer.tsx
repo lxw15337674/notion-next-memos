@@ -52,7 +52,9 @@ export const TagItemContainer = ({ tag }: Props) => {
                             </MenuItem> */}
                         </Menu>
                     </Dropdown>
-                    <Tag className="truncate cursor-pointer hover:opacity-80" text={tag.name} />
+                    <Tag className="truncate  " text={tag.name} >
+                        {tag.name}
+                    </Tag>
                 </div>
             </div>
         </>

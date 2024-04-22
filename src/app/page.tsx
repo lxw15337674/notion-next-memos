@@ -7,14 +7,7 @@ import useTagStore from "@/store/tag";
 import { useMount } from 'ahooks'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import MemoFilter from "@/components/MemoFilter";
-import { useEffect } from "react";
 
-const style = {
-  height: 100,
-  border: "1px solid green",
-  margin: 6,
-  padding: 8
-};
 
 export default function Home() {
   const { memos, fetchInitData, fetchPagedData, databases } = useMemoStore()

@@ -1,29 +1,42 @@
-export function separateTextAndLabels(text: string): string[] {
-    const res: string[] = [];
+interface Content {
+    text: string;
+    type: 'text' | 'tag'
+}
+export function parseContent(text: string): Content[] {
+    const res: Content[] = [];
     let pre = '';
     let flag = false;
-
     for (let char of text) {
         if (char === '#') {
-            if (pre !== '') {
-                res.push(pre);
+            if (pre.length) {
+                res.push({
+                    text: pre,
+                    type: flag ? 'tag' : 'text'
+                })
             }
+            pre = ''
             flag = true;
-            pre = '#';
-        } else if (char === ' ') {
-            res.push(pre);
-            flag = false;
-            pre = ' '; // 保留空格
-        } else {
-            pre += char;
         }
+        if (char === ' ' && flag) {
+            flag = false
+            if (pre !== '#') {
+                res.push({
+                    text: pre,
+                    type: 'tag'
+                });
+                pre = '';
+            }
+        }
+        pre += char
     }
 
     if (pre !== '') {
-        res.push(pre);
+        res.push({
+            text: pre,
+            type: flag ? 'tag' : 'text'
+        });
     }
 
-    // 不进行过滤，保留空格
     return res;
 }
 // Example usage
