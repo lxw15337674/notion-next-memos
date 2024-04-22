@@ -1,8 +1,9 @@
 'use server'
 import { Client } from "@notionhq/client"
-import { CreatePageParameters, DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints"
+import { CreatePageParameters, CreatePageResponse, DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { convertTextToProperties } from "@/utils/converter"
 import { TagType } from "@/type"
+import useMemoStore from "@/store/memo"
 
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID!
 const ClientNotion = new Client({
@@ -16,8 +17,8 @@ export const getDBData = async (config: {
     filter?: any
 }) => {
     const {
-        startCursor=undefined,
-        pageSize=20,
+        startCursor = undefined,
+        pageSize = 20,
         filter
     } = config
     const listUsersResponse = await ClientNotion.databases.query({
@@ -39,7 +40,7 @@ export const getDBData = async (config: {
 //     const listUsersResponse = await ClientNotion.databases.query({
 //         database_id: NOTION_DATABASE_ID,
 //         filter: {
-//             property: "labels",
+//             property: "tags",
 //             multi_select: {
 //                 contains: "count"
 //             }
@@ -51,17 +52,15 @@ export const getDBData = async (config: {
 
 // 添加新页面到数据库
 export async function createPageInDatabase(content: string) {
-    try {
-        // 定义新页面的属性
-        const newPageData: CreatePageParameters = {
-            parent: { database_id: NOTION_DATABASE_ID },
-            properties: convertTextToProperties(content) as Record<string, any>
-        };
-        // 创建新页面
-        await ClientNotion.pages.create(newPageData);
-    } catch (error) {
-        console.error("Error creating page:", error);
-    }
+    // 定义新页面的属性
+    const newPageData: CreatePageParameters = {
+        parent: { database_id: NOTION_DATABASE_ID },
+        properties: convertTextToProperties(content) as Record<string, any>
+    };
+    // 创建新页面
+    const data = await ClientNotion.pages.create(newPageData);
+    useMemoStore.getState().addRecord(data as any)
+    
 }
 
 // 删除特定页面
@@ -71,9 +70,9 @@ async function archivePage(pageId: string) {
             page_id: pageId,
             archived: true,
         });
-        console.log(`页面 ${pageId} 已成功存档。`);
+        
     } catch (error) {
-        console.error("存档页面时出错：", error);
+        
     }
 }
 
@@ -98,9 +97,9 @@ async function archivePage(pageId: string) {
 //                 },
 //             },
 //         });
-//         console.log(`Page with ID ${pageId} updated.`);
+//         
 //     } catch (error) {
-//         console.error("Error updating page:", error);
+//         
 //     }
 // }
 
@@ -109,5 +108,5 @@ export async function getAllLabels() {
     const listUsersResponse = await ClientNotion.databases.retrieve({
         database_id: NOTION_DATABASE_ID,
     })
-    return (listUsersResponse.properties.labels as any).multi_select.options as TagType[]
+    return (listUsersResponse.properties.tags as any)?.multi_select?.options as TagType[]
 }

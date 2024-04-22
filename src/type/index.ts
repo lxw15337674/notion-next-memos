@@ -7,7 +7,7 @@ export interface Properties{
             };
         }[];
     };
-    labels:{
+    tags:{
         multi_select: {
             name: string;
         }[];

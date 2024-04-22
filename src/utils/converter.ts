@@ -1,5 +1,5 @@
 import { CreatePageParameters } from "@notionhq/client/build/src/api-endpoints";
-import { extractLabels } from ".";
+import { extractTags } from ".";
 import { Properties } from "@/type";
 
 
@@ -17,16 +17,16 @@ export function convertTextToProperties(content: string): Properties {
     }));
 
     // 提取标签
-    const labels =  extractLabels(content)
+    const tags = extractTags(content)
 
     // 返回Notion Page Properties格式的对象
     return {
         content: {
             rich_text: richTextArray,
         },
-        labels: {
-            multi_select: labels.map((label) => ({
-                name: label,
+        tags: {
+            multi_select: tags.map((tag) => ({
+                name: tag,
             })),
         },
     } 

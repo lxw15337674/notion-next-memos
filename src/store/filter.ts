@@ -2,7 +2,7 @@ import { getDBData } from '@/api/actions';
 import { DatabaseObjectResponse, QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
 import { create } from "zustand";
 import computed from 'zustand-middleware-computed';
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 
 interface MemoStore {
     // 后期可以做多重搜索
@@ -16,7 +16,7 @@ interface ComputedState {
 }
 
 
-const useFilterStore = create(computed<MemoStore, ComputedState>(
+const useFilterStore = create(persist( computed<MemoStore, ComputedState>(
     (set, get) => ({
         filter: [],
         setFilter: (filter) => {
@@ -29,15 +29,15 @@ const useFilterStore = create(computed<MemoStore, ComputedState>(
         },
     }), {
     filterParams: (state) => {
-        if(
+        if (
             state.filter.length === 0
-        ){
+        ) {
             return undefined
         }
         return {
             "and": state.filter.map((item) => {
                 return {
-                    property: "labels",
+                    property: "tags",
                     multi_select: {
                         contains: item
                     }
@@ -46,7 +46,11 @@ const useFilterStore = create(computed<MemoStore, ComputedState>(
             )
         }
     }
-})
+}),{
+    name: 'filter',
+    storage: createJSONStorage(() => sessionStorage),
+}
+)
 );
 
 export default useFilterStore

@@ -7,9 +7,9 @@ import Tag from './Tag';
 
 const MemoView: React.FC<DatabaseObjectResponse> = ({ properties, last_edited_time }) => {
   const labelList = useMemo(() => {
-    const labels = properties?.labels as unknown as MultiSelectPropertyItemObjectResponse;
-    return labels?.multi_select?.map((item) => item.name);
-  }, [properties.labels]);
+    const tags = properties?.tags as unknown as MultiSelectPropertyItemObjectResponse;
+    return tags?.multi_select?.map((item) => item.name);
+  }, [properties.tags]);
 
   const time = useMemo(() => {
     return convertGMTDateToLocal(last_edited_time);

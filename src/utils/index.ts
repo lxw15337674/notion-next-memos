@@ -45,13 +45,13 @@ export function parseContent(text: string): Content[] {
 // console.log(separatedParts); // Output: ["1", "#123", "123"]
 
 
-export function extractLabels(text: string): string[] {
+export function extractTags(text: string): string[] {
     // 使用正则表达式匹配标签（#开头，后跟字母数字字符）
     const labelRegex = /#[a-zA-Z0-9\u4e00-\u9fa5]+/g;
-    const labels = text.match(labelRegex)?.map(label => label.slice(1))
+    const tags = text.match(labelRegex)?.map(label => label.slice(1))
 
     // 如果找到标签，则返回标签数组，否则返回空数组
-    return labels ? labels : [];
+    return tags ? tags : [];
 }
 export function convertGMTDateToLocal(gmtDateString: string) {
     // Parse the GMT date string

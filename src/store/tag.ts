@@ -28,6 +28,9 @@ const useTagStore = create<TagStore>()(
             deleteTag: async (tagName: string) => {
             },
         }),
+        {
+            name: 'tag'
+        }
     ),
 )
 

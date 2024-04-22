@@ -13,12 +13,10 @@ import Button from '@mui/joy/Button';
 
 const Editor = () => {
     const { editorRef, insertText } = useEditorStore()
-    const { fetchFirstData } = useMemoStore()
     const onSave = async () => {
         const content = editorRef.current?.value ?? ''
         if (content.trim().length === 0) return
         await createPageInDatabase(content)
-        await fetchFirstData()
         editorRef.current!.value = ''
     }
     return (
