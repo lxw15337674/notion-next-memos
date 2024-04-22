@@ -3,6 +3,7 @@ import { DatabaseObjectResponse, QueryDatabaseResponse } from '@notionhq/client/
 import { create } from "zustand";
 import computed from 'zustand-middleware-computed';
 import { devtools } from "zustand/middleware";
+import useFilterStore from './filter';
 
 interface MemoStore {
     memos: DatabaseObjectResponse[]
@@ -22,8 +23,8 @@ const useMemoStore = create(computed<MemoStore, ComputedState>(
         databases: {
             object: "list",
             results: [],
-            next_cursor: "",
-            has_more: false,
+            next_cursor: null,
+            has_more: true,
             type: "page_or_database",
             page_or_database: {
             },
@@ -31,15 +32,17 @@ const useMemoStore = create(computed<MemoStore, ComputedState>(
         },
         // 获取最新的第一个数据,并插入
         fetchFirstData: async () => {
-            const databases = await getDBData({pageSize:1});
+            const databases = await getDBData({ pageSize: 1 });
             set({
                 databases,
                 memos: [...databases.results as DatabaseObjectResponse[], ...get().memos]
             });
         },
-        // 获取第一页数据
+        // 获取初始化数据
         fetchInitData: async () => {
-            const databases = await getDBData({});
+            const databases = await getDBData({
+                filter: useFilterStore.getState().filterParams
+            });
             set({
                 databases,
                 memos: databases.results as DatabaseObjectResponse[]
@@ -47,7 +50,7 @@ const useMemoStore = create(computed<MemoStore, ComputedState>(
         },
         fetchPagedData: async () => {
             const startCursor = get().databases.next_cursor ?? undefined;
-            const databases = await getDBData({ startCursor });
+            const databases = await getDBData({ startCursor, filter: useFilterStore.getState().filterParams });
             console.log(databases.results);
             set({
                 databases,

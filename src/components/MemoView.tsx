@@ -1,6 +1,7 @@
 import { convertGMTDateToLocal, separateTextAndLabels } from '@/utils';
 import { MultiSelectPropertyItemObjectResponse, DatabaseObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 import React, { useMemo } from 'react';
+import Tag from './Tag';
 
 const renderContent = (content: RichTextItemResponse, index: number) => {
   if (content.type === 'text') {
@@ -13,12 +14,10 @@ const renderContent = (content: RichTextItemResponse, index: number) => {
         {text.map((item, subIndex) => {
           if (item.startsWith('#')) {
             return (
-              <span
-                key={subIndex}
-                className=" bg-blue-100 text-blue-800 text-sm font-medium me-2 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300"
-              >
-                {item}
-              </span>
+              <Tag
+                className='bg-blue-100 text-blue-800 text-sm font-medium me-2 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 '
+                text={item.slice(1)}
+                key={subIndex} />
             );
           }
           return item
@@ -40,7 +39,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({ properties, last_edited_ti
   }, [last_edited_time]);
 
   return (
-    <div className="mb-6 px-4 py-4 rounded overflow-hidden shadow-lg bg-zinc-800 w-full">
+    <div className="mb-4 px-4 py-4 rounded overflow-hidden shadow-lg bg-zinc-800 w-full">
       <div className="flex justify-between items-center text-xs">{time}</div>
       <div className="py-4">
         <div className="text-gray-300 text-sm">

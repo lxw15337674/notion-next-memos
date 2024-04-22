@@ -40,7 +40,8 @@ const TagSuggestions = () => {
   isVisibleRef.current = !!(position && suggestionsRef.current.length > 0);
 
   const autocomplete = (tag: string) => {
-    insertText(tag, 1);
+    const [word] = getCurrentWord();
+    insertText(tag.slice(word.length - 1), 1);
     hide();
   };
 
@@ -74,7 +75,7 @@ const TagSuggestions = () => {
     const currentChar = editor.value[editor.selectionEnd];
     const isActive = word.startsWith("#") && currentChar !== "#";
     const caretCordinates = getCaretCoordinates(editor, index);
-    // caretCordinates.top -= editor.scrollTop 
+    caretCordinates.left += 20
     isActive ? setPosition(caretCordinates) : hide();
   };
 

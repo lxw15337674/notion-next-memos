@@ -1,13 +1,14 @@
 import useTagStore from "@/store/tag";
 import { Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy";
 import Icon from "../../Icon";
-import { Tag } from "@/type";
+import { TagType } from "@/type";
+import Tag from "@/components/Tag";
 
 interface Props {
-    tag: Tag
+    tag: TagType
 }
 
-export const TagItemContainer = ({tag}:Props) => {
+export const TagItemContainer = ({ tag }: Props) => {
     // const isActive = tagQuery === tag.text;
     // const hasSubTags = tag.subTags.length > 0;
 
@@ -51,9 +52,7 @@ export const TagItemContainer = ({tag}:Props) => {
                             </MenuItem> */}
                         </Menu>
                     </Dropdown>
-                    <span className="truncate cursor-pointer hover:opacity-80" onClick={handleTagClick}>
-                        {tag.name}
-                    </span>
+                    <Tag className="truncate cursor-pointer hover:opacity-80" text={tag.name} />
                 </div>
             </div>
         </>

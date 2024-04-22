@@ -13,10 +13,12 @@ const ClientNotion = new Client({
 export const getDBData = async (config: {
     startCursor?: string;
     pageSize?: number;
+    filter?: any
 }) => {
     const {
         startCursor=undefined,
-        pageSize=20
+        pageSize=20,
+        filter
     } = config
     const listUsersResponse = await ClientNotion.databases.query({
         database_id: NOTION_DATABASE_ID,
@@ -28,6 +30,7 @@ export const getDBData = async (config: {
         ],
         page_size: pageSize,
         start_cursor: startCursor,
+        filter,
     });
     return listUsersResponse;
 };
