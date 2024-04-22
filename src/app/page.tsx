@@ -48,8 +48,8 @@ export default function Home() {
               }
             >
               {
-                memos.map((memo, index) => (
-                  <MemoView key={index} {...memo} />
+                memos.map((memo) => (
+                  <MemoView key={memo.id} {...memo} />
                 ))
               }
             </InfiniteScroll>
