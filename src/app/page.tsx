@@ -32,7 +32,13 @@ export default function Home() {
               dataLength={memos?.length}
               next={fetchPagedData}
               hasMore={databases.has_more}
-              loader={<h4>Loading...</h4>}
+              loader={
+                <p
+                  className=" text my-4 text-center"
+                >
+                  <b>Loading...</b>
+                </p>
+              }
               endMessage={
                 <p
                   className=" text my-4 text-center"
