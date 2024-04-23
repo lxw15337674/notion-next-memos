@@ -22,7 +22,7 @@ interface ComputedState {
     memosByTag: Map<string, number>
 }
 
-const useCountStore = create(devtools(persist(computed<MemoStore, ComputedState>(
+const useCountStore = create(devtools(computed<MemoStore, ComputedState>(
     (set) => ({
         recordMap: null,
         setRecordMap: (recordMap: ExtendedRecordMap) => {
@@ -37,7 +37,7 @@ const useCountStore = create(devtools(persist(computed<MemoStore, ComputedState>
         }
         return []
     },
-        memosByDaysMap: (state) => {
+    memosByDaysMap: (state) => {
         return state.memos.reduce((acc, memo) => {
             const day = format(memo.created_time, 'yyyy/MM/dd')
             acc.set(day, (acc.get(day) || []).concat(memo.id));
@@ -85,9 +85,6 @@ const useCountStore = create(devtools(persist(computed<MemoStore, ComputedState>
 
         return tagMap
     },
-}), {
-    name: 'count',
-    storage: createJSONStorage(() => localStorage),
 }), {
     name: 'count'
 }
