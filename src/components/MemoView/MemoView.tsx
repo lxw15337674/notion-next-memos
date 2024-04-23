@@ -1,3 +1,4 @@
+'use client'
 import { convertGMTDateToLocal, parseContent } from '@/utils';
 import { MultiSelectPropertyItemObjectResponse, DatabaseObjectResponse, RichTextItemResponse } from '@notionhq/client/build/src/api-endpoints';
 import React, { useMemo } from 'react';
