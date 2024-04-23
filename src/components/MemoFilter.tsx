@@ -1,5 +1,5 @@
+'use client'
 import classNames from "classnames";
-import { useEffect } from "react";
 import Icon from "./Icon";
 import useFilterStore from "@/store/filter";
 import { useUpdateEffect } from "ahooks";

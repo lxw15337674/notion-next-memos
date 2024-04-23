@@ -1,4 +1,3 @@
-'use client'
 import Editor from "@/components/Editor";
 import MemoView from "@/components/MemoView/MemoView";
 import RightSide from "@/components/HomeSideBar";
@@ -9,60 +8,35 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import MemoFilter from "@/components/MemoFilter";
 import useCountStore from "@/store/count";
 import { getDBMeta } from "@/api/countAction";
+import { NotionAPI } from "notion-client";
+import Main from "./Main";
 
 
-export default function Home() {
-  const { memos, fetchInitData, fetchPagedData, databases } = useMemoStore()
-  const { fetchTags } = useTagStore()
-  const { setRecordMap } = useCountStore()
-  useMount(() => {
-    fetchInitData()
-    fetchTags()
-    getDBMeta().then((map) => {
-      setRecordMap(map)
-    })
+
+
+
+
+
+export default async function Home() {
+  const api = new NotionAPI({
+    activeUser: process.env.NOTION_ACTIVE_USER,
+    authToken: process.env.NOTION_TOKEN_V2
   })
-  return (
-    <>
-      <main className="  flex-grow shrink flex flex-col justify-start items-center overflow-hidden h-full  mr-60 
-      ">
-        <div className="w-full mt-4 ">
-          <div className="mb-4">
-            <Editor />
-          </div>
-          <div className="mb-4">
-            <MemoFilter />
-          </div>
-          <section className="overflow-y-auto " >
-            <InfiniteScroll
-              dataLength={memos?.length}
-              next={fetchPagedData}
-              hasMore={databases.has_more}
-              loader={
-                <p
-                  className=" text my-4 text-center text-muted-foreground"
-                >
-                  <b>Loading...</b>
-                </p>
-              }
-              endMessage={
-                <p
-                  className=" text my-4 text-center text-muted-foreground"
-                >
-                  <b>---- 已全部加载 {memos.length} 条笔记 ----</b>
-                </p>
-              }
-            >
-              {
-                memos.map((memo) => (
-                  <MemoView key={memo.id} {...memo} />
-                ))
-              }
-            </InfiniteScroll>
-          </section>
+  const recordMap = await api.getPage(process.env.NOTION_DATABASE_ID!, {})
+  return <>
+    <main className="  flex-grow shrink flex flex-col justify-start items-center overflow-hidden h-full  mr-60">
+      <div className="w-full mt-4 ">
+        <div className="mb-4">
+          <Editor />
         </div>
-      </main>
-      <RightSide />
-    </>
-  );
+        <div className="mb-4">
+          <MemoFilter />
+        </div>
+        <section className="overflow-y-auto " >
+          <Main recordMap={recordMap} />
+        </section>
+      </div>
+    </main>
+    <RightSide />
+  </>
 }

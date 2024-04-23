@@ -1,11 +1,7 @@
 'use client'
-import React, { useMemo } from 'react';
-import Icon from '../Icon';
-import useTagStore from '@/store/tag';
+import React from 'react';
 import TagsSection from './TagsSection';
-import useMemoStore from '@/store/memo';
-import { DayMemosItem } from '@/api/type';
-import Count from './Count1';
+import Count from './Count';
 import ActivityCalendar from '../ActivityCalendar';
 
 
