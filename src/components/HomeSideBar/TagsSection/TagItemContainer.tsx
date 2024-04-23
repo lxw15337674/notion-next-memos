@@ -3,61 +3,50 @@ import { Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy";
 import Icon from "../../Icon";
 import { TagType } from "@/type";
 import Tag from "@/components/Tag";
+import useCountStore from "@/store/count";
+import useFilterStore from "@/store/filter";
+import { useMemo } from "react";
 
 interface Props {
     tag: TagType
 }
 
 export const TagItemContainer = ({ tag }: Props) => {
-    // const isActive = tagQuery === tag.text;
-    // const hasSubTags = tag.subTags.length > 0;
+    const { memosByTag } = useCountStore()
+    const { filter, setFilter, removeFilter } = useFilterStore()
+    const isActive = useMemo(() => {
+        return filter.includes(tag.name)
+    }, [
+        filter, tag
+    ])
 
     const handleTagClick = () => {
-        // if (isActive) {
-        //     filterStore.setTagFilter(undefined);
-        // } else {
-        //     filterStore.setTagFilter(tag.text);
-        // }
-    };
-
-    const handleToggleBtnClick = (event: React.MouseEvent) => {
-    };
-
-    const handleDeleteTag = async () => {
-
+        if (isActive) {
+            removeFilter(tag.name)
+        } else {
+            setFilter([...filter, tag.name])
+        }
     };
 
     return (
-        <>
-            <div className="relative flex flex-row justify-between items-center w-full leading-6 py-0 mt-px rounded-lg text-sm select-none shrink-0">
-                <div
-                    className={`flex flex-row justify-start items-center truncate shrink leading-5 mr-1 text-gray-600 dark:text-gray-400 
-                        }`}
-                >
-                    <Dropdown>
-                        <MenuButton slots={{ root: "div" }}>
-                            <div className="shrink-0 group">
-                                <Icon.Hash className="group-hover:hidden w-4 h-auto shrink-0 opacity-60 mr-1" />
-                                <Icon.MoreVertical className="hidden group-hover:block w-4 h-auto shrink-0 opacity-60 mr-1" />
-                            </div>
-                        </MenuButton>
-                        <Menu size="sm" placement="bottom">
-                            {/* <MenuItem  >
-                                <Icon.Edit3 className="w-4 h-auto" />
-                                {t("common.rename")}
-                            </MenuItem>
-                            <MenuItem color="danger" onClick={handleDeleteTag}>
-                                <Icon.Trash className="w-4 h-auto" />
-                                {t("common.delete")}
-                            </MenuItem> */}
-                        </Menu>
-                    </Dropdown>
-                    <Tag className="truncate " text={tag.name} >
-                        {tag.name}
-                    </Tag>
+        <div className="relative flex flex-row justify-between items-center  leading-6 py-0.5 rounded-lg text-sm select-none  cursor-pointer w-[75%]" onClick={handleTagClick}
+        >
+            <div
+                className={`flex flex-row justify-start items-center
+                    px-2 py-1 rounded
+                    truncate shrink leading-5 mr-1   w-full
+                    ${isActive ? "bg-green-600  dark:bg-green-600 text-white dark:text-white active" : "  hover:bg-zinc-100 dark:hover:bg-zinc-700"}
+                        `}
+            >
+
+                <Tag className="truncate " text={tag.name} >
+                    {tag.name}
+                </Tag>
+                <div className="ml-auto">
+                    {memosByTag.get(tag.name) || 0}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

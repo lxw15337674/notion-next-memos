@@ -4,13 +4,14 @@ import Icon from "./Icon";
 import useFilterStore from "@/store/filter";
 import { useUpdateEffect } from "ahooks";
 import useMemoStore from "@/store/memo";
+import { Button } from "./ui/button";
 
 interface Props {
   className?: string;
 }
 
 const MemoFilter = (props: Props) => {
-  const { filter, removeFilter } = useFilterStore()
+  const { filter, removeFilter, clearFilter } = useFilterStore()
   const { fetchInitData } = useMemoStore()
   useUpdateEffect(() => {
     fetchInitData()
@@ -38,7 +39,7 @@ const MemoFilter = (props: Props) => {
               "max-w-xs flex flex-row justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded whitespace-nowrap truncate hover:line-through "
             }
             onClick={() => {
-              removeFilter()
+              removeFilter(item)
             }}
           >
             #{item}
@@ -46,6 +47,9 @@ const MemoFilter = (props: Props) => {
           </div>
         ))
       }
+      <div className="ml-auto" >
+        <Button variant="outline" onClick={clearFilter} size="sm" className="leading-7 h-7">重置</Button>
+      </div>
     </div>
   );
 };

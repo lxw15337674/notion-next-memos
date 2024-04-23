@@ -1,6 +1,6 @@
 'use server'
 import { Client } from "@notionhq/client"
-import { CreatePageParameters, CreatePageResponse, DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints"
+import { CreatePageParameters, CreatePageResponse, DatabaseObjectResponse, QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints"
 import { convertTextToProperties } from "@/utils/converter"
 import { TagType } from "@/type"
 import useMemoStore from "@/store/memo"
@@ -58,20 +58,19 @@ export async function createPageInDatabase(content: string) {
         properties: convertTextToProperties(content) as Record<string, any>
     };
     // 创建新页面
-    return  await ClientNotion.pages.create(newPageData);
-    
+    return await ClientNotion.pages.create(newPageData) as unknown as DatabaseObjectResponse
+
 }
 
 // 删除特定页面
-async function archivePage(pageId: string) {
+export async function archivePage(pageId: string, archived: boolean) {
     try {
-        await ClientNotion.pages.update({
+        return await ClientNotion.pages.update({
             page_id: pageId,
-            archived: true,
-        });
-        
+            archived,
+        }) as unknown as DatabaseObjectResponse
     } catch (error) {
-        
+        console.error(error);
     }
 }
 

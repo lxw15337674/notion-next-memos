@@ -7,8 +7,9 @@ import { createJSONStorage, devtools, persist } from "zustand/middleware";
 interface MemoStore {
     // 后期可以做多重搜索
     filter: string[]
-    setFilter: (filter: string[]) => void;
-    removeFilter: () => void;
+    setFilter: (tags: string[]) => void;
+    removeFilter: (tag: string) => void;
+    clearFilter: () => void;
 }
 interface ComputedState {
     // memos: DatabaseObjectResponse[]
@@ -16,17 +17,22 @@ interface ComputedState {
 }
 
 
-const useFilterStore = create(persist( computed<MemoStore, ComputedState>(
+const useFilterStore = create(persist(computed<MemoStore, ComputedState>(
     (set, get) => ({
         filter: [],
         setFilter: (filter) => {
             set({ filter })
         },
-        removeFilter: () => {
+        removeFilter: (tag) => {
+            set({
+                filter: get().filter.filter((item) => item !== tag)
+            })
+        },
+        clearFilter: () => {
             set({
                 filter: []
             })
-        },
+        }
     }), {
     filterParams: (state) => {
         if (
@@ -46,7 +52,7 @@ const useFilterStore = create(persist( computed<MemoStore, ComputedState>(
             )
         }
     }
-}),{
+}), {
     name: 'filter',
     storage: createJSONStorage(() => localStorage),
 }

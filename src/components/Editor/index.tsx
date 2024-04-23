@@ -1,33 +1,33 @@
 'use client'
 import React from 'react';
 import useEditorStore from '@/store/editor';
-import { IconButton, Textarea } from '@mui/joy';
+import { Textarea } from '@mui/joy';
 import Icon from '../Icon';
 import { createPageInDatabase } from '@/api/actions';
 import useMemoStore from '@/store/memo';
 import TagSuggestions from './TagSuggestions';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
+import { Button } from '../ui/button';
+import useTagStore from '@/store/tag';
 
 const Editor = () => {
     const { editorRef, insertText } = useEditorStore()
-    const { addRecord } = useMemoStore()
+    const { insertMemo } = useMemoStore()
+    const { fetchTags } = useTagStore()
     const onSave = async () => {
         const content = editorRef.current?.value ?? ''
         if (content.trim().length === 0) return
         const data = await createPageInDatabase(content)
-        addRecord(data as any)
+        insertMemo(data, 0)
+        fetchTags()
         editorRef.current!.value = ''
     }
     return (
         <div className='relative'>
             <Textarea
-                className="w-full h-full "
+                className="w-full h-full bg-card text-card-foreground "
                 placeholder="此刻的想法..."
                 minRows={3}
-                sx={{
-                    backgroundColor: '#27272a',
-                }}
                 ref={(ref) => {
                     if (ref) {
                         //@ts-ignore
@@ -36,19 +36,17 @@ const Editor = () => {
                 }}
                 endDecorator={
                     <Box
+                        className="pt-1"
                         sx={{
                             display: 'flex',
-                            gap: 'var(--Textarea-paddingBlock)',
-                            pt: 'var(--Textarea-paddingBlock)',
                             borderTop: '1px solid',
-                            borderColor: 'divider',
                             flex: 'auto',
                         }}
                     >
-                        <IconButton onClick={() => insertText('#', 0)} >
-                            <Icon.Hash size={18} />
-                        </IconButton>
-                        <Button onClick={onSave} sx={{ ml: 'auto' }}>  <Icon.Send size={18} /></Button>
+                        <Button variant="ghost" size="icon" onClick={() => insertText('#', 0)} >
+                            <Icon.Hash size={16} />
+                        </Button>
+                        <Button variant="outline" size="icon" onClick={onSave} className="ml-auto w-16" > <Icon.Send size={20} className='' /></Button>
                     </Box>
                 }
             />

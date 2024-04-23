@@ -8,9 +8,10 @@ import useFilterStore from './filter';
 interface MemoStore {
     memos: DatabaseObjectResponse[]
     databases: QueryDatabaseResponse,
-    addRecord: (page: DatabaseObjectResponse) => void;
     fetchInitData: () => void;
     fetchPagedData: () => void;
+    removeMemo: (pageId: string) => number;
+    insertMemo: (page: DatabaseObjectResponse, index: number) => void;
 }
 const useMemoStore = create(devtools(
     persist<MemoStore>(
@@ -26,10 +27,20 @@ const useMemoStore = create(devtools(
                 },
                 request_id: "",
             },
-            // 插入第一行数据
-            addRecord: async (page) => {
+            // 删除某条数据
+            removeMemo:  (pageId: string) => {
+                const index = get().memos.findIndex((item) => item.id === pageId);
                 set({
-                    memos: [page, ...get().memos]
+                    memos:  get().memos.filter((item) => item.id !== pageId)
+                });
+                return index
+            },
+            // 插入数据
+            insertMemo:  (page: DatabaseObjectResponse, index: number) => {
+                const memos = get().memos;
+                memos.splice(index, 0, page);
+                set({
+                    memos
                 });
             },
             // 获取初始化数据

@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import useTagStore from "@/store/tag";
 import OverflowTip from "../OverflowTip";
-import classNames from "classnames";
 import useEditorStore from "@/store/editor";
 import getCaretCoordinates from "textarea-caret";
+import { Card } from "../ui/card";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 
 type Position = { left: number; top: number; height: number };
@@ -93,23 +94,23 @@ const TagSuggestions = () => {
 
   if (!isVisibleRef.current || !position) return null;
   return (
-    <div
-      className="z-20 p-1 mt-1 -ml-2 absolute max-w-[12rem] gap-px rounded font-mono flex flex-col justify-start items-start overflow-auto shadow bg-zinc-100 dark:bg-zinc-700"
+    <Card
+      className="z-20 p-1 mt-1 -ml-2 absolute max-w-[12rem] gap-px rounded font-mono flex flex-col justify-start items-start overflow-auto shadow "
       style={{ left: position.left, top: position.top + position.height }}
     >
       {suggestionsRef.current.map((tag, i) => (
-        <div
+        <DropdownMenuItem
           key={tag}
           onMouseDown={() => autocomplete(tag)}
-          className={classNames(
-            "rounded p-1 px-2 w-full truncate text-sm dark:text-gray-300 cursor-pointer hover:bg-zinc-200 dark:hover:bg-zinc-800",
-            i === selected ? "bg-zinc-300 dark:bg-zinc-600" : "",
-          )}
+        // className={classNames(
+        //   "rounded p-1 px-2 w-full truncate text-sm ",
+        //   // i === selected ? "bg-zinc-300 dark:bg-zinc-600" : "",
+        // )}
         >
           <OverflowTip>{tag}</OverflowTip>
-        </div>
+        </DropdownMenuItem>
       ))}
-    </div>
+    </Card>
   );
 };
 
