@@ -1,12 +1,11 @@
+import { format } from 'date-fns';
 import { Block, CollectionPropertySchema, CollectionPropertySchemaMap, ExtendedRecordMap, SelectOption } from 'notion-types';
 import { create } from "zustand";
 import computed from 'zustand-middleware-computed'
-import { DayMemosItem } from '@/api/type';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
 interface MemoStore {
     recordMap: ExtendedRecordMap | null;
-    fetchRecordMap: (map: ExtendedRecordMap) => Promise<void>;
     setRecordMap: (recordMap: ExtendedRecordMap) => void;
 }
 
@@ -15,7 +14,7 @@ type Property = CollectionPropertySchema & { id: string }
 
 interface ComputedState {
     memos: Block[] // Update the type of memos property
-    memosByDay: DayMemosItem[],
+    memosByDaysMap: Map<string, string[]>
     schema: CollectionPropertySchemaMap
     contentSchema: Property | undefined
     tagSchema: Property | undefined
@@ -26,9 +25,6 @@ interface ComputedState {
 const useCountStore = create(devtools(persist(computed<MemoStore, ComputedState>(
     (set) => ({
         recordMap: null,
-        fetchRecordMap: async (recordMap) => {
-            set({ recordMap });
-        },
         setRecordMap: (recordMap: ExtendedRecordMap) => {
             set({ recordMap });
         }
@@ -41,20 +37,12 @@ const useCountStore = create(devtools(persist(computed<MemoStore, ComputedState>
         }
         return []
     },
-    memosByDay: (state) => {
-        return state.memos.reduce<DayMemosItem[]>((acc, memo) => {
-            const day = new Date(memo.created_time).toLocaleDateString()
-            const index = acc.findIndex((item) => item.date === day)
-            if (index !== -1) {
-                acc[index].memos.push(memo.id)
-            } else {
-                acc.push({
-                    date: day,
-                    memos: [memo.id]
-                })
-            }
-            return acc
-        }, [])
+        memosByDaysMap: (state) => {
+        return state.memos.reduce((acc, memo) => {
+            const day = format(memo.created_time, 'yyyy/MM/dd')
+            acc.set(day, (acc.get(day) || []).concat(memo.id));
+            return acc;
+        }, new Map<string, string[]>());
     },
     allTags: (state) => {
         return state.tagSchema?.options ?? []
@@ -84,8 +72,8 @@ const useCountStore = create(devtools(persist(computed<MemoStore, ComputedState>
         const tagId = tagSchema.id
         const tagMap = new Map<string, number>()
         state.memos.forEach((memo) => {
-            const tags = memo.properties[tagId][0][0].split(',') as string[]
-            if (tags) {
+            const tags = (memo.properties?.[tagId]?.[0]?.[0]?.split(',') ?? []) as string[]
+            if (tags.length) {
                 tags.forEach((tag) => {
                     if (!tagMap.has(tag)) {
                         tagMap.set(tag, 0)
@@ -94,7 +82,7 @@ const useCountStore = create(devtools(persist(computed<MemoStore, ComputedState>
                 })
             }
         })
-        
+
         return tagMap
     },
 }), {

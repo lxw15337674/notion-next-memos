@@ -10,24 +10,6 @@ import ActivityCalendar from '../ActivityCalendar';
 
 
 const RightSide: React.FC = () => {
-    const { tags } = useTagStore()
-    const { memos } = useMemoStore()
-    // 按create_time聚合，以天为单位
-    const memosByDay = useMemo(() => memos.reduce<DayMemosItem[]>((acc, memo) => {
-        const day = new Date(memo.created_time).toLocaleDateString()
-        const index = acc.findIndex((item) => item.date === day)
-        if (index !== -1) {
-            acc[index].memos.push(memo.id)
-        } else {
-            acc.push({
-                date: day,
-                memos: [memo.id]
-            })
-        }
-        return acc
-    }, []), [
-        memos
-    ])
     return (
         <div className='h-screen
         group flex flex-col justify-start items-start    transition-all   px-4 py-4

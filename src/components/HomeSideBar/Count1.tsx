@@ -8,7 +8,7 @@ import { Card } from '../ui/card';
 
 const Count: React.FC = () => {
     const { tags } = useTagStore()
-    const { memosByDay, memos, memosByTag } = useCountStore()
+    const { memosByDaysMap, memos, memosByTag } = useCountStore()
     
     return (
         <Card className="w-full border  py-2 px-3 rounded-md space-y-0.5">
@@ -20,7 +20,7 @@ const Count: React.FC = () => {
                     <Icon.CalendarDays className="w-4 h-auto mr-1" />
                     <span className="block text-base sm:text-sm">天</span>
                 </div>
-                <span className="font-mono">{memosByDay?.length}</span>
+                <span className="font-mono">{memosByDaysMap?.size}</span>
             </div>
             <div className="w-full flex justify-between items-center">
                 <div className="w-full flex justify-start items-center">

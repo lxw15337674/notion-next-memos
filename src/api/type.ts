@@ -9,7 +9,3 @@ export interface CreatePageData {
     Properties: { [key: string]: PageProperty };
 }
 
-export interface DayMemosItem {
-    date: string;
-    memos: string[];
-}
