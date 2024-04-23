@@ -8,7 +8,7 @@ import { Card } from '../ui/card';
 
 const Count: React.FC = () => {
     const { tags } = useTagStore()
-    const { memosByDaysMap, memos, memosByTag } = useCountStore()
+    const { memosByDaysMap, memos } = useCountStore()
     
     return (
         <Card className="w-full border  py-2 px-3 rounded-md space-y-0.5">

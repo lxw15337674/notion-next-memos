@@ -8,9 +8,7 @@ interface MemoStore {
     recordMap: ExtendedRecordMap | null;
     setRecordMap: (recordMap: ExtendedRecordMap) => void;
 }
-
 type Property = CollectionPropertySchema & { id: string }
-
 
 interface ComputedState {
     memos: Block[] // Update the type of memos property

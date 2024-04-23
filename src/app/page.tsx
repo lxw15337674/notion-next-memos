@@ -11,12 +11,6 @@ import { getDBMeta } from "@/api/countAction";
 import { NotionAPI } from "notion-client";
 import Main from "./Main";
 
-
-
-
-
-
-
 export default async function Home() {
   const api = new NotionAPI({
     activeUser: process.env.NOTION_ACTIVE_USER,

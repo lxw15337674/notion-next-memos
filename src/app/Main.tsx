@@ -21,32 +21,30 @@ export default function Home({ recordMap }: Props) {
         setRecordMap(recordMap)
     })
     return (
-        <section className="overflow-y-auto " >
-            <InfiniteScroll
-                dataLength={memos?.length}
-                next={fetchPagedData}
-                hasMore={databases.has_more}
-                loader={
-                    <p
-                        className=" text my-4 text-center text-muted-foreground"
-                    >
-                        <b>Loading...</b>
-                    </p>
-                }
-                endMessage={
-                    <p
-                        className=" text my-4 text-center text-muted-foreground"
-                    >
-                        <b>---- 已全部加载 {memos.length} 条笔记 ----</b>
-                    </p>
-                }
-            >
-                {
-                    memos.map((memo) => (
-                        <MemoView key={memo.id} {...memo} />
-                    ))
-                }
-            </InfiniteScroll>
-        </section>
+        <InfiniteScroll
+            dataLength={memos?.length}
+            next={fetchPagedData}
+            hasMore={databases.has_more}
+            loader={
+                <p
+                    className=" text my-4 text-center text-muted-foreground"
+                >
+                    <b>Loading...</b>
+                </p>
+            }
+            endMessage={
+                <p
+                    className=" text my-4 text-center text-muted-foreground"
+                >
+                    <b>---- 已全部加载 {memos.length} 条笔记 ----</b>
+                </p>
+            }
+        >
+            {
+                memos.map((memo) => (
+                    <MemoView key={memo.id} {...memo} />
+                ))
+            }
+        </InfiniteScroll>
     );
 }
