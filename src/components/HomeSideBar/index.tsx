@@ -8,8 +8,8 @@ import { DayMemosItem } from '@/api/type';
 
 
 const RightSide: React.FC = () => {
-    const {tags}=useTagStore()
-    const {memos} = useMemoStore()
+    const { tags } = useTagStore()
+    const { memos } = useMemoStore()
     // 按create_time聚合，以天为单位
     const memosByDay = useMemo(() => memos.reduce<DayMemosItem[]>((acc, memo) => {
         const day = new Date(memo.created_time).toLocaleDateString()
@@ -23,12 +23,12 @@ const RightSide: React.FC = () => {
             })
         }
         return acc
-    },[]),[
+    }, []), [
         memos
     ])
     return (
         <div className='
-        group flex flex-col justify-start items-start select-none border-r  dark:bg-opacity-40 transition-all hover:shadow-xl z-2  px-4 mt-8
+        group flex flex-col justify-start items-start select-none  dark:bg-opacity-40 transition-all hover:shadow-xl z-2  px-4 mt-8
          w-40 fixed right-0 top-0 '>
             <div className="w-full border  py-2 px-3 rounded-md space-y-0.5 text-gray-500 dark:text-gray-400 bg-zinc-50 dark:bg-zinc-900 dark:border-zinc-800">
                 <div className="mb-1 w-full flex flex-row justify-between items-center">
@@ -56,9 +56,9 @@ const RightSide: React.FC = () => {
                     <span className="font-mono">{tags.length}</span>
                 </div>
             </div>
-            <TagsSection/>
+            <TagsSection />
         </div>
     );
 };
- 
+
 export default RightSide;

@@ -58,8 +58,7 @@ export async function createPageInDatabase(content: string) {
         properties: convertTextToProperties(content) as Record<string, any>
     };
     // 创建新页面
-    const data = await ClientNotion.pages.create(newPageData);
-    useMemoStore.getState().addRecord(data as any)
+    return  await ClientNotion.pages.create(newPageData);
     
 }
 

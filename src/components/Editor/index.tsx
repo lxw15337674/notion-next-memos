@@ -9,18 +9,18 @@ import TagSuggestions from './TagSuggestions';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 
-
-
 const Editor = () => {
     const { editorRef, insertText } = useEditorStore()
+    const { addRecord } = useMemoStore()
     const onSave = async () => {
         const content = editorRef.current?.value ?? ''
         if (content.trim().length === 0) return
-        await createPageInDatabase(content)
+        const data = await createPageInDatabase(content)
+        addRecord(data as any)
         editorRef.current!.value = ''
     }
     return (
-        <div className='relative'> 
+        <div className='relative'>
             <Textarea
                 className="w-full h-full "
                 placeholder="此刻的想法..."
@@ -48,7 +48,7 @@ const Editor = () => {
                         <IconButton onClick={() => insertText('#', 0)} >
                             <Icon.Hash size={18} />
                         </IconButton>
-                        <Button onClick={onSave} sx={{ ml: 'auto' }}>  <Icon.Send size={18}/></Button>
+                        <Button onClick={onSave} sx={{ ml: 'auto' }}>  <Icon.Send size={18} /></Button>
                     </Box>
                 }
             />
