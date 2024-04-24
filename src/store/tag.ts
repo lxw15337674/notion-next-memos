@@ -18,11 +18,11 @@ const useTagStore = create<TagStore>()(
         tags: [],
         fetchTags: async () => {
           const tags = await getAllLabels();
-          set({ tags });
+          set({ tags: tags ?? [] });
         },
-        upsertTag: async (tagName: string) => {},
-        batchUpsertTag: async (tagNames: string[]) => {},
-        deleteTag: async (tagName: string) => {},
+        upsertTag: async (tagName: string) => { },
+        batchUpsertTag: async (tagNames: string[]) => { },
+        deleteTag: async (tagName: string) => { },
       }),
       {
         name: 'memos-storage',

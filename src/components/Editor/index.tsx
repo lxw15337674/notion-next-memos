@@ -15,15 +15,16 @@ const Editor = () => {
   const { insertMemo } = useMemoStore();
   const { fetchTags } = useTagStore();
   const onSave = async () => {
-    if (!editorRef) {
+    const editor = editorRef?.current;
+    if (!editor) {
       return
     }
-    const content = editorRef.value ?? '';
+    const content = editor.value ?? '';
     if (content.trim().length === 0) return;
     const data = await createPageInDatabase(content);
     insertMemo(data, 0);
     fetchTags();
-    editorRef.value = '';
+    editor.value = '';
   };
   return (
     <div className="relative">
@@ -32,9 +33,7 @@ const Editor = () => {
         placeholder="此刻的想法..."
         minRows={3}
         ref={(ref) => {
-          if (ref) {
-            (editorRef as any).current = ref.children[0];
-          }
+          (editorRef as any).current = ref?.children?.[0] as HTMLTextAreaElement
         }}
         endDecorator={
           <Box

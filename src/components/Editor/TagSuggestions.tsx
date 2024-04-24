@@ -14,7 +14,7 @@ const TagSuggestions = () => {
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));
   tagsRef.current = Array.from(tagStore.tags);
-  const editor = editorRef
+  const editor = editorRef.current
   const [selected, select] = useState(0);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
