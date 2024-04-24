@@ -8,8 +8,6 @@ import React, { useMemo } from 'react';
 import Tag from '../Tag';
 import MemoActionMenu from './MemoActionMenu';
 import { Card } from '@/components/ui/card';
-import { Button } from '../ui/button';
-import Link from 'next/link';
 
 const MemoView: React.FC<DatabaseObjectResponse> = ({
   properties,
@@ -58,18 +56,16 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
   };
 
   return (
-    <Card className="mb-4 px-4 py-2 rounded overflow-hidden shadow-lg  w-full">
+    <Card className="mb-4 p-2 rounded overflow-hidden  w-full">
       <div className="flex justify-between items-center text-xs">
         {time}
         <MemoActionMenu className="-ml-1" memoId={id} />
       </div>
-      <div className="py-2">
-        <div className="font-medium">
-          {(properties.content as any)?.rich_text?.map(
-            (item: RichTextItemResponse, index: number) =>
-              renderContent(item, index),
-          )}
-        </div>
+      <div className="font-medium mt-2">
+        {(properties.content as any)?.rich_text?.map(
+          (item: RichTextItemResponse, index: number) =>
+            renderContent(item, index),
+        )}
       </div>
       {/* <div>
         {labelList?.map((label, index) => (

@@ -25,13 +25,13 @@ export const TagItemContainer = ({ tag }: Props) => {
 
   return (
     <div
-      className="relative flex flex-row justify-between items-center  leading-6 py-0.5 rounded-lg text-sm select-none  cursor-pointer width-[11rem]"
+      className="relative flex flex-row justify-between items-center  leading-6 py-0.5 rounded-lg text-sm select-none  cursor-pointer w-full"
       onClick={handleTagClick}
     >
       <div
         className={`flex flex-row justify-start items-center
-                    px-2 py-1 rounded
-                    truncate shrink leading-5 mr-1   w-full
+                    px-2 py-2 rounded
+                    truncate shrink leading-5   w-[11rem]
                     ${isActive ? 'bg-green-600  dark:bg-green-600 text-white dark:text-white active' : '  hover:bg-zinc-100 dark:hover:bg-zinc-700'}
                         `}
       >

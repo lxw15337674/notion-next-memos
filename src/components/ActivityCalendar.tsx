@@ -20,16 +20,16 @@ const ActivityCalendar: React.FC = () => {
       return '';
     }
     const colorMap: Record<number, string> = {
-      1: 'bg-green-600',
-      2: 'bg-green-700',
-      3: 'bg-green-800',
-      4: 'bg-green-900',
-      5: 'bg-green-950',
+      1: 'bg-green-600 ',
+      2: 'bg-green-700 ',
+      3: 'bg-green-800 ',
+      4: 'bg-green-900 ',
+      5: 'bg-green-950 ',
     };
-    return colorMap[count] ?? 'bg-green-950';
-  };
+      return `${colorMap[count] ?? 'bg-green-950'} text-white `;
+    };
 
-  const Row: CustomComponents['Row'] = (props) => {
+    const Row: CustomComponents['Row'] = (props) => {
     const { styles, classNames, showWeekNumber, components } = useDayPicker();
     const DayComponent = components?.Day ?? Day;
     const WeeknumberComponent = components?.WeekNumber ?? WeekNumber;

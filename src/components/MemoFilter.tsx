@@ -4,7 +4,6 @@ import Icon from './Icon';
 import useFilterStore from '@/store/filter';
 import { useDebounceFn, useUpdateEffect } from 'ahooks';
 import useMemoStore from '@/store/memo';
-import { Button } from './ui/button';
 
 interface Props {
   className?: string;
@@ -68,7 +67,7 @@ const MemoFilter = (props: Props) => {
           <Icon.X className="w-4 h-auto ml-1 opacity-60" />
         </div>
       )}
-      {tagFilter.map((item, index) => (
+      {tagFilter.map((item) => (
         <div
           key={item}
           className={
@@ -83,14 +82,14 @@ const MemoFilter = (props: Props) => {
         </div>
       ))}
       <div className="ml-auto">
-        <Button
-          variant="outline"
+        <div
+          className={
+            ' flex justify-start items-center px-6 mr-2 cursor-pointer  rounded  border  bg-background hover:bg-accent hover:text-accent-foreground '
+          }
           onClick={clearFilter}
-          size="sm"
-          className="leading-7 h-7"
         >
-          重置
-        </Button>
+          <div className="truncate max-w-xs ">重置</div>
+        </div>
       </div>
     </div>
   );
