@@ -1,10 +1,11 @@
-import type { Metadata } from 'next';
 import './globals.css';
 import LeftSide from '@/components/LeftSide';
 import { CssVarsProvider } from '@mui/joy';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import MobileHeader from '@/components/MobileHeader';
+import { Metadata } from 'next';
+import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'memos',
@@ -20,7 +21,6 @@ export default async function RootLayout({
     <html lang="en">
       <body>
         <CssVarsProvider defaultMode="dark">
-          {' '}
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
