@@ -28,7 +28,6 @@ const Editor = () => {
         className="w-full h-full bg-card text-card-foreground"
         placeholder="此刻的想法..."
         minRows={3}
-        className="bg-card"
         ref={(ref) => {
           if (ref) {
             //@ts-ignore
@@ -57,7 +56,6 @@ const Editor = () => {
               onClick={onSave}
               className="ml-auto w-16"
             >
-              {' '}
               <Icon.Send size={20} className="" />
             </Button>
           </Box>

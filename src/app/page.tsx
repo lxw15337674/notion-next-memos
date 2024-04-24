@@ -1,5 +1,4 @@
 import Editor from '@/components/Editor';
-import RightSide from '@/components/HomeSideBar';
 import MemoFilter from '@/components/MemoFilter';
 import { NotionAPI } from 'notion-client';
 import Main from './Main';
