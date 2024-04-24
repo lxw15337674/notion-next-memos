@@ -16,7 +16,7 @@ interface MemoStore {
 interface ComputedState {
   // memos: DatabaseObjectResponse[]
   timeFilterText: string;
-  filterParams?: Object;
+  filterParams?: object;
   // 是否存在筛选
   hasFilter: boolean;
 }
@@ -66,7 +66,7 @@ const useFilterStore = create(
           if (!state.hasFilter) {
             return undefined;
           }
-          const filter: object[] = state.tagFilter.map((item) => {
+          const filter: any[] = state.tagFilter.map((item) => {
             return {
               property: 'tags',
               multi_select: {

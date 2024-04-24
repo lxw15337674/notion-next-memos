@@ -15,12 +15,15 @@ const Editor = () => {
   const { insertMemo } = useMemoStore();
   const { fetchTags } = useTagStore();
   const onSave = async () => {
-    const content = editorRef.current?.value ?? '';
+    if (!editorRef) {
+      return
+    }
+    const content = editorRef.value ?? '';
     if (content.trim().length === 0) return;
     const data = await createPageInDatabase(content);
     insertMemo(data, 0);
     fetchTags();
-    editorRef.current!.value = '';
+    editorRef.value = '';
   };
   return (
     <div className="relative">
@@ -30,8 +33,7 @@ const Editor = () => {
         minRows={3}
         ref={(ref) => {
           if (ref) {
-            //@ts-ignore
-            editorRef.current = ref.children[0];
+            (editorRef as any).current = ref.children[0];
           }
         }}
         endDecorator={

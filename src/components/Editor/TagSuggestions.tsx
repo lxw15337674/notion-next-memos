@@ -14,7 +14,7 @@ const TagSuggestions = () => {
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));
   tagsRef.current = Array.from(tagStore.tags);
-
+  const editor = editorRef
   const [selected, select] = useState(0);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
@@ -22,7 +22,6 @@ const TagSuggestions = () => {
   const hide = () => setPosition(null);
 
   const getCurrentWord = (): [word: string, startIndex: number] => {
-    const editor = editorRef.current;
     if (!editor) return ['', 0];
     const cursorPos = editor.selectionEnd;
     const before = editor.value.slice(0, cursorPos).match(/\S*$/) || {
@@ -73,7 +72,6 @@ const TagSuggestions = () => {
   };
 
   const handleInput = () => {
-    const editor = editorRef.current;
     if (!editor) return;
     select(0);
     const [word, index] = getCurrentWord();
@@ -86,7 +84,6 @@ const TagSuggestions = () => {
 
   const listenersAreRegisteredRef = useRef(false);
   const registerListeners = () => {
-    const editor = editorRef.current;
     if (!editor || listenersAreRegisteredRef.current) return;
     editor.addEventListener('click', hide);
     editor.addEventListener('blur', hide);
@@ -94,7 +91,7 @@ const TagSuggestions = () => {
     editor.addEventListener('input', handleInput);
     listenersAreRegisteredRef.current = true;
   };
-  useEffect(registerListeners, [!!editorRef.current]);
+  useEffect(registerListeners, [!!editorRef]);
 
   if (!isVisibleRef.current || !position) return null;
   return (
