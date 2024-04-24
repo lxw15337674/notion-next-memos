@@ -36,14 +36,16 @@ const MemoFilter = (props: Props) => {
           <div
             key={item}
             className={
-              "max-w-xs flex flex-row justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded whitespace-nowrap truncate hover:line-through "
+              " flex justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded  hover:line-through "
             }
             onClick={() => {
               removeFilter(item)
             }}
           >
-            #{item}
-            <Icon.X className="w-4 h-auto ml-1 opacity-40" />
+            <div className="truncate max-w-xs ">
+              #{item}
+            </div>
+            <Icon.X className="w-4 h-auto ml-1 opacity-60" />
           </div>
         ))
       }

@@ -1,6 +1,3 @@
-import useTagStore from "@/store/tag";
-import { Dropdown, Menu, MenuButton, MenuItem } from "@mui/joy";
-import Icon from "../../Icon";
 import { TagType } from "@/type";
 import Tag from "@/components/Tag";
 import useCountStore from "@/store/count";
@@ -29,7 +26,7 @@ export const TagItemContainer = ({ tag }: Props) => {
     };
 
     return (
-        <div className="relative flex flex-row justify-between items-center  leading-6 py-0.5 rounded-lg text-sm select-none  cursor-pointer w-[75%]" onClick={handleTagClick}
+        <div className="relative flex flex-row justify-between items-center  leading-6 py-0.5 rounded-lg text-sm select-none  cursor-pointer w-44" onClick={handleTagClick}
         >
             <div
                 className={`flex flex-row justify-start items-center
