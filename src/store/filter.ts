@@ -66,7 +66,7 @@ const useFilterStore = create(
           if (!state.hasFilter) {
             return undefined;
           }
-          let filter: object[] = state.tagFilter.map((item) => {
+          const filter: object[] = state.tagFilter.map((item) => {
             return {
               property: 'tags',
               multi_select: {

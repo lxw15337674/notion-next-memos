@@ -26,10 +26,10 @@ const ActivityCalendar: React.FC = () => {
       4: 'bg-green-900 ',
       5: 'bg-green-950 ',
     };
-      return `${colorMap[count] ?? 'bg-green-950'} text-white `;
-    };
+    return `${colorMap[count] ?? 'bg-green-950'} text-white `;
+  };
 
-    const Row: CustomComponents['Row'] = (props) => {
+  const Row: CustomComponents['Row'] = (props) => {
     const { styles, classNames, showWeekNumber, components } = useDayPicker();
     const DayComponent = components?.Day ?? Day;
     const WeeknumberComponent = components?.WeekNumber ?? WeekNumber;
