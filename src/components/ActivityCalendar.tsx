@@ -5,11 +5,12 @@ import { zhCN } from 'date-fns/locale';
 import useCountStore from "@/store/count";
 import { CustomComponents, Day, WeekNumber, useDayPicker } from "react-day-picker";
 import { format, getUnixTime } from "date-fns";
+import useFilterStore from "@/store/filter";
 
 
 const ActivityCalendar: React.FC = () => {
     const { memosByDaysMap } = useCountStore()
-
+    const { timeFilter, setTimeFilter } = useFilterStore()
     const remarkedColor = (count: number): string => {
         if (count === 0) {
             return '';
@@ -21,7 +22,7 @@ const ActivityCalendar: React.FC = () => {
             4: 'bg-green-900',
             5: 'bg-green-950',
         };
-        return colorMap[count] ?? 'bg-green-950'; 
+        return colorMap[count] ?? 'bg-green-950';
     };
 
     const Row: CustomComponents['Row'] = (props) => {
@@ -60,12 +61,14 @@ const ActivityCalendar: React.FC = () => {
     }
 
     return (
-        <Card className="  mt-4 w-full ">
+        <Card className="mt-4 w-full ">
             <Calendar
                 locale={zhCN}
                 captionLayout="dropdown"
                 className="px-1 py-2 "
                 mode="single"
+                selected={timeFilter}
+                onSelect={setTimeFilter}
                 classNames={{
                     day_today: '',
                 }}

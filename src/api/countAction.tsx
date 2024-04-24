@@ -1,7 +1,7 @@
-'use server'
-import { NotionAPI } from 'notion-client'
+// 'use server'
+// import { NotionAPI } from 'notion-client'
 
-export async function getDBMeta() {
+// export async function getDBMeta() {
 
     // const api = new NotionAPI({
     //     activeUser: process.env.NOTION_ACTIVE_USER,

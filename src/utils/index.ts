@@ -4,46 +4,42 @@ interface Content {
 }
 export function parseContent(text: string): Content[] {
     const res: Content[] = [];
-    let pre = '';
-    let flag = false;
-    for (let char of text) {
-        if (char === '#') {
-            if (pre.length) {
-                res.push({
-                    text: pre,
-                    type: flag ? 'tag' : 'text'
-                })
+    let buffer = '';
+    let isTag = false;
+
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+
+        // Check for '#' character to start a tag
+        if (char === '#' && !isTag) {
+            if (buffer.length > 0) {
+                res.push({ text: buffer, type: 'text' });
             }
-            pre = ''
-            flag = true;
+            buffer = '#';
+            isTag = true; // We are now inside a tag
         }
-        if (char === ' ' && flag) {
-            flag = false
-            if (pre !== '#') {
-                res.push({
-                    text: pre,
-                    type: 'tag'
-                });
-                pre = '';
-            }
+        // Check for ' ' to end a tag
+        else if (char === ' ' && isTag) {
+            res.push({ text: buffer, type: 'tag' });
+            buffer = ' ';
+            isTag = false; // We are now outside a tag
         }
-        pre += char
+        // Append other characters to buffer
+        else {
+            buffer += char;
+        }
     }
 
-    if (pre !== '') {
-        res.push({
-            text: pre,
-            type: flag ? 'tag' : 'text'
-        });
+    // Push the last buffer content if it's not empty
+    if (buffer.length > 0) {
+        if (buffer.split('').every(item => item === '#')) {
+            isTag = false
+        }
+        res.push({ text: buffer, type: isTag ? 'tag' : 'text' });
     }
 
     return res;
 }
-// Example usage
-// const text = "1#123 123";
-// const separatedParts = separateTextAndLabels(text);
-// console.log(separatedParts); // Output: ["1", "#123", "123"]
-
 
 export function extractTags(text: string): string[] {
     // 使用正则表达式匹配标签（#开头，后跟字母数字字符）
@@ -53,6 +49,7 @@ export function extractTags(text: string): string[] {
     // 如果找到标签，则返回标签数组，否则返回空数组
     return tags ? tags : [];
 }
+
 export function convertGMTDateToLocal(gmtDateString: string) {
     // Parse the GMT date string
     const gmtDate = new Date(gmtDateString);

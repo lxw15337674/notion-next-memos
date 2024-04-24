@@ -1,13 +1,6 @@
 import Editor from "@/components/Editor";
-import MemoView from "@/components/MemoView/MemoView";
 import RightSide from "@/components/HomeSideBar";
-import useMemoStore from "@/store/memo";
-import useTagStore from "@/store/tag";
-import { useMount } from 'ahooks'
-import InfiniteScroll from 'react-infinite-scroll-component';
 import MemoFilter from "@/components/MemoFilter";
-import useCountStore from "@/store/count";
-import { getDBMeta } from "@/api/countAction";
 import { NotionAPI } from "notion-client";
 import Main from "./Main";
 

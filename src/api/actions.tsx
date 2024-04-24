@@ -1,9 +1,8 @@
 'use server'
 import { Client } from "@notionhq/client"
-import { CreatePageParameters, CreatePageResponse, DatabaseObjectResponse, QueryDatabaseResponse } from "@notionhq/client/build/src/api-endpoints"
+import { CreatePageParameters, DatabaseObjectResponse } from "@notionhq/client/build/src/api-endpoints"
 import { convertTextToProperties } from "@/utils/converter"
 import { TagType } from "@/type"
-import useMemoStore from "@/store/memo"
 
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID!
 const ClientNotion = new Client({

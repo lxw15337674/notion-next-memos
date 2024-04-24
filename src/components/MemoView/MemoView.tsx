@@ -23,14 +23,13 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({ properties, last_edited_ti
 
   const renderContent = (content: RichTextItemResponse, index: number) => {
     if (content.type === 'text') {
-      // TODO: 
-      if (content.href) {
-        return <Button asChild className="text-blue-500">
-          <Link href={content.text.content}>
-            {content.text.content}
-          </Link>
-        </Button>;
-      }
+      // if (content.href) {
+      //   return <Button asChild className="text-blue-500">
+      //     <Link href={content.text.content}>
+      //       {content.text.content}
+      //     </Link>
+      //   </Button>;
+      // }
       const text = parseContent(content.text.content);
       return (
         <p key={index} className='break-words w-full leading-6	text-sm'>

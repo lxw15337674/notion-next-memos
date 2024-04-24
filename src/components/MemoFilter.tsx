@@ -11,15 +11,14 @@ interface Props {
 }
 
 const MemoFilter = (props: Props) => {
-  const { filter, removeFilter, clearFilter } = useFilterStore()
+  const { filter, timeFilterText, setTimeFilter, removeFilter, clearFilter } = useFilterStore()
   const { fetchInitData } = useMemoStore()
   useUpdateEffect(() => {
     fetchInitData()
-  }, [filter])
-  if (!filter.length) {
+  }, [filter, timeFilterText])
+  if (!filter.length && !timeFilterText) {
     return null;
   }
-
   return (
     <div
       className={classNames(
@@ -31,6 +30,21 @@ const MemoFilter = (props: Props) => {
         <Icon.Filter className="w-4 h-auto mr-1" />
         <span>筛选器</span>
       </div>
+      {
+        timeFilterText && <div
+          className={
+            " flex justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded  hover:line-through "
+          }
+          onClick={() => {
+            setTimeFilter()
+          }}
+        >
+          <div className="truncate max-w-xs ">
+            {timeFilterText}
+          </div>
+          <Icon.X className="w-4 h-auto ml-1 opacity-60" />
+        </div>
+      }
       {
         filter.map((item, index) => (
           <div

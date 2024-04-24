@@ -1,18 +1,19 @@
-import { getDBData } from '@/api/actions';
-import { DatabaseObjectResponse, QueryDatabaseResponse } from '@notionhq/client/build/src/api-endpoints';
+import { format } from "date-fns";
 import { create } from "zustand";
 import computed from 'zustand-middleware-computed';
-import { createJSONStorage, devtools, persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 interface MemoStore {
-    // 后期可以做多重搜索
-    filter: string[]
+    filter: string[];
+    timeFilter?: Date;
+    setTimeFilter: (time?: Date) => void;
     setFilter: (tags: string[]) => void;
     removeFilter: (tag: string) => void;
     clearFilter: () => void;
 }
 interface ComputedState {
     // memos: DatabaseObjectResponse[]
+    timeFilterText: string
     filterParams?: Object
 }
 
@@ -23,6 +24,9 @@ const useFilterStore = create(persist(computed<MemoStore, ComputedState>(
         setFilter: (filter) => {
             set({ filter })
         },
+        setTimeFilter: (time) => {
+            set({ timeFilter: time })
+        },
         removeFilter: (tag) => {
             set({
                 filter: get().filter.filter((item) => item !== tag)
@@ -30,31 +34,47 @@ const useFilterStore = create(persist(computed<MemoStore, ComputedState>(
         },
         clearFilter: () => {
             set({
-                filter: []
+                filter: [],
+                timeFilter: undefined
             })
         }
     }), {
+    timeFilterText: (state) => {
+        if (!state?.timeFilter) {
+            return ''
+        }
+        return format(state.timeFilter, 'yyyy-MM-dd')
+    },
     filterParams: (state) => {
         if (
-            state.filter.length === 0
+            state.filter.length === 0 && !state.timeFilter
         ) {
             return undefined
         }
-        return {
-            "and": state.filter.map((item) => {
-                return {
-                    property: "tags",
-                    multi_select: {
-                        contains: item
-                    }
+        let filter: object[] = state.filter.map((item) => {
+            return {
+                property: "tags",
+                multi_select: {
+                    contains: item
                 }
             }
-            )
+        }
+        )
+        if (state.timeFilterText) {
+            filter.push({
+                timestamp: "created_time",
+                created_time: {
+                    equals: state.timeFilterText
+                }
+            })
+        }
+        return {
+            "and": filter
         }
     }
 }), {
     name: 'filter',
-    storage: createJSONStorage(() => localStorage),
+    storage: createJSONStorage(() => sessionStorage),
 }
 )
 );

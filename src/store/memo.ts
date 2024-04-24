@@ -63,7 +63,7 @@ const useMemoStore = create(devtools(
             }
         }), {
         name: 'memos-storage',
-            storage: createJSONStorage(() => localStorage),
+            storage: createJSONStorage(() => sessionStorage),
     })
     , {
         name: 'memo'
