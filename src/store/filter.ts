@@ -4,7 +4,7 @@ import computed from 'zustand-middleware-computed';
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface MemoStore {
-    filter: string[];
+    tagFilter: string[];
     timeFilter?: Date;
     setTimeFilter: (time?: Date) => void;
     setFilter: (tags: string[]) => void;
@@ -20,21 +20,21 @@ interface ComputedState {
 
 const useFilterStore = create(persist(computed<MemoStore, ComputedState>(
     (set, get) => ({
-        filter: [],
-        setFilter: (filter) => {
-            set({ filter })
+        tagFilter: [],
+        setFilter: (tagFilter) => {
+            set({ tagFilter })
         },
         setTimeFilter: (time) => {
             set({ timeFilter: time })
         },
         removeFilter: (tag) => {
             set({
-                filter: get().filter.filter((item) => item !== tag)
+                tagFilter: get().tagFilter.filter((item) => item !== tag)
             })
         },
         clearFilter: () => {
             set({
-                filter: [],
+                tagFilter: [],
                 timeFilter: undefined
             })
         }
@@ -47,11 +47,11 @@ const useFilterStore = create(persist(computed<MemoStore, ComputedState>(
     },
     filterParams: (state) => {
         if (
-            state.filter.length === 0 && !state.timeFilter
+            state.tagFilter.length === 0 && !state.timeFilter
         ) {
             return undefined
         }
-        let filter: object[] = state.filter.map((item) => {
+        let filter: object[] = state.tagFilter.map((item) => {
             return {
                 property: "tags",
                 multi_select: {

@@ -10,18 +10,18 @@ interface Props {
 
 export const TagItemContainer = ({ tag }: Props) => {
     const { memosByTag } = useCountStore()
-    const { filter, setFilter, removeFilter } = useFilterStore()
+    const { tagFilter, setFilter, removeFilter } = useFilterStore()
     const isActive = useMemo(() => {
-        return filter.includes(tag.name)
+        return tagFilter.includes(tag.name)
     }, [
-        filter, tag
+        tagFilter, tag
     ])
 
     const handleTagClick = () => {
         if (isActive) {
             removeFilter(tag.name)
         } else {
-            setFilter([...filter, tag.name])
+            setFilter([...tagFilter, tag.name])
         }
     };
 

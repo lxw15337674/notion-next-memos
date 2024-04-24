@@ -25,7 +25,7 @@ const Editor = () => {
     return (
         <div className='relative'>
             <Textarea
-                className="w-full h-full bg-card text-card-foreground "
+                className="w-full h-full bg-card text-card-foreground"
                 placeholder="此刻的想法..."
                 minRows={3}
                 ref={(ref) => {

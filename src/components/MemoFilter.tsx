@@ -2,7 +2,7 @@
 import classNames from "classnames";
 import Icon from "./Icon";
 import useFilterStore from "@/store/filter";
-import { useUpdateEffect } from "ahooks";
+import { useDebounceFn, useUpdateEffect } from "ahooks";
 import useMemoStore from "@/store/memo";
 import { Button } from "./ui/button";
 
@@ -11,12 +11,15 @@ interface Props {
 }
 
 const MemoFilter = (props: Props) => {
-  const { filter, timeFilterText, setTimeFilter, removeFilter, clearFilter } = useFilterStore()
+  const { tagFilter, timeFilterText, setTimeFilter, removeFilter, clearFilter } = useFilterStore()
   const { fetchInitData } = useMemoStore()
+  const { run: debounceFetchData } = useDebounceFn(fetchInitData, {
+    wait: 500,
+  })
   useUpdateEffect(() => {
-    fetchInitData()
-  }, [filter, timeFilterText])
-  if (!filter.length && !timeFilterText) {
+    debounceFetchData()
+  }, [tagFilter, timeFilterText])
+  if (!tagFilter.length && !timeFilterText) {
     return null;
   }
   return (
@@ -46,7 +49,7 @@ const MemoFilter = (props: Props) => {
         </div>
       }
       {
-        filter.map((item, index) => (
+        tagFilter.map((item, index) => (
           <div
             key={item}
             className={

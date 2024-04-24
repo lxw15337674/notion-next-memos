@@ -10,8 +10,8 @@ export default async function Home() {
     authToken: process.env.NOTION_TOKEN_V2
   })
   const recordMap = await api.getPage(process.env.NOTION_DATABASE_ID!, {})
-  return <>
-    <main className="  flex-grow shrink flex flex-col justify-start items-center overflow-hidden h-full  mr-60">
+  return <div className="md:flex">
+    <main className="  flex-grow shrink flex flex-col justify-start items-center overflow-hidden h-full  md:mr-60">
       <div className="w-full mt-4 ">
         <div className="mb-4">
           <Editor />
@@ -25,5 +25,5 @@ export default async function Home() {
       </div>
     </main>
     <RightSide />
-  </>
+  </div>
 }

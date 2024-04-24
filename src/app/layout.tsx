@@ -33,7 +33,7 @@ export default async function RootLayout({
             <Toaster />
             <div className="h-full">
               <LeftSide />
-              <div className="flex-1 ml-40 pl-6">
+              <div className="flex-1 md:ml-40 md:pl-6 px-4">
                 {children}
               </div>
             </div>
