@@ -4,7 +4,7 @@ import OverflowTip from "../OverflowTip";
 import useEditorStore from "@/store/editor";
 import getCaretCoordinates from "textarea-caret";
 import { Card } from "../ui/card";
-import { DropdownMenuItem } from "../ui/dropdown-menu";
+import classNames from "classnames";
 
 
 type Position = { left: number; top: number; height: number };
@@ -99,16 +99,16 @@ const TagSuggestions = () => {
       style={{ left: position.left, top: position.top + position.height }}
     >
       {suggestionsRef.current.map((tag, i) => (
-        <DropdownMenuItem
+        <div
           key={tag}
           onMouseDown={() => autocomplete(tag)}
-        // className={classNames(
-        //   "rounded p-1 px-2 w-full truncate text-sm ",
-        //   // i === selected ? "bg-zinc-300 dark:bg-zinc-600" : "",
-        // )}
+          className={classNames(
+            "rounded p-1 px-2 w-full truncate text-sm cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-600",
+            i === selected ? "bg-zinc-300 dark:bg-zinc-600" : "",
+          )}
         >
           <OverflowTip>{tag}</OverflowTip>
-        </DropdownMenuItem>
+        </div>
       ))}
     </Card>
   );

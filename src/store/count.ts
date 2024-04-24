@@ -2,7 +2,7 @@ import { format } from 'date-fns';
 import { Block, CollectionPropertySchema, CollectionPropertySchemaMap, ExtendedRecordMap, SelectOption } from 'notion-types';
 import { create } from "zustand";
 import computed from 'zustand-middleware-computed'
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 
 interface MemoStore {
     recordMap: ExtendedRecordMap | null;

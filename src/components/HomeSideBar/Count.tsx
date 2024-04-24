@@ -20,21 +20,21 @@ const Count: React.FC = () => {
                     <Icon.CalendarDays className="w-4 h-auto mr-1" />
                     <span className="block text-base sm:text-sm">天</span>
                 </div>
-                <span className="font-mono">{memosByDaysMap?.size}</span>
+                <span className="font-mono">{memosByDaysMap?.size??0}</span>
             </div>
             <div className="w-full flex justify-between items-center">
                 <div className="w-full flex justify-start items-center">
                     <Icon.Library className="w-4 h-auto mr-1" />
                     <span className="block text-base sm:text-sm">笔记</span>
                 </div>
-                {memos?.length}
+                {memos?.length??0}
             </div>
             <div className="w-full flex justify-between items-center">
                 <div className="w-full flex justify-start items-center">
                     <Icon.Hash className="w-4 h-auto mr-1" />
                     <span className="block text-base sm:text-sm">标签</span>
                 </div>
-                <span className="font-mono">{tags.length}</span>
+                <span className="font-mono">{tags?.length??0}</span>
             </div>
         </Card>
     );
