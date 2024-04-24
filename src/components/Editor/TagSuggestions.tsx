@@ -1,16 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import useTagStore from "@/store/tag";
-import OverflowTip from "../OverflowTip";
-import useEditorStore from "@/store/editor";
-import getCaretCoordinates from "textarea-caret";
-import { Card } from "../ui/card";
-import classNames from "classnames";
-
+import { useEffect, useRef, useState } from 'react';
+import useTagStore from '@/store/tag';
+import OverflowTip from '../OverflowTip';
+import useEditorStore from '@/store/editor';
+import getCaretCoordinates from 'textarea-caret';
+import { Card } from '../ui/card';
+import classNames from 'classnames';
 
 type Position = { left: number; top: number; height: number };
 
 const TagSuggestions = () => {
-  const { editorRef, insertText } = useEditorStore()
+  const { editorRef, insertText } = useEditorStore();
   const [position, setPosition] = useState<Position | null>(null);
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));
@@ -24,17 +23,22 @@ const TagSuggestions = () => {
 
   const getCurrentWord = (): [word: string, startIndex: number] => {
     const editor = editorRef.current;
-    if (!editor) return ["", 0];
+    if (!editor) return ['', 0];
     const cursorPos = editor.selectionEnd;
-    const before = editor.value.slice(0, cursorPos).match(/\S*$/) || { 0: "", index: cursorPos };
-    const after = editor.value.slice(cursorPos).match(/^\S*/) || { 0: "" };
+    const before = editor.value.slice(0, cursorPos).match(/\S*$/) || {
+      0: '',
+      index: cursorPos,
+    };
+    const after = editor.value.slice(cursorPos).match(/^\S*/) || { 0: '' };
     return [before[0] + after[0], before.index ?? cursorPos];
   };
 
   const suggestionsRef = useRef<string[]>([]);
   suggestionsRef.current = (() => {
     const search = getCurrentWord()[0].slice(1).toLowerCase();
-    return tagsRef.current.filter((tag) => tag.name.toLowerCase().includes(search)).map((tag) => tag.name);
+    return tagsRef.current
+      .filter((tag) => tag.name.toLowerCase().includes(search))
+      .map((tag) => tag.name);
   })();
 
   const isVisibleRef = useRef(false);
@@ -50,18 +54,18 @@ const TagSuggestions = () => {
     if (!isVisibleRef.current) return;
     const suggestions = suggestionsRef.current;
     const selected = selectedRef.current;
-    if (["Escape", "ArrowLeft", "ArrowRight"].includes(e.code)) hide();
-    if ("ArrowDown" === e.code) {
+    if (['Escape', 'ArrowLeft', 'ArrowRight'].includes(e.code)) hide();
+    if ('ArrowDown' === e.code) {
       select((selected + 1) % suggestions.length);
       e.preventDefault();
       e.stopPropagation();
     }
-    if ("ArrowUp" === e.code) {
+    if ('ArrowUp' === e.code) {
       select((selected - 1 + suggestions.length) % suggestions.length);
       e.preventDefault();
       e.stopPropagation();
     }
-    if (["Enter", "Tab"].includes(e.code)) {
+    if (['Enter', 'Tab'].includes(e.code)) {
       autocomplete(suggestions[selected]);
       e.preventDefault();
       e.stopPropagation();
@@ -74,9 +78,9 @@ const TagSuggestions = () => {
     select(0);
     const [word, index] = getCurrentWord();
     const currentChar = editor.value[editor.selectionEnd];
-    const isActive = word.startsWith("#") && currentChar !== "#";
+    const isActive = word.startsWith('#') && currentChar !== '#';
     const caretCordinates = getCaretCoordinates(editor, index);
-    caretCordinates.left += 20
+    caretCordinates.left += 20;
     isActive ? setPosition(caretCordinates) : hide();
   };
 
@@ -84,10 +88,10 @@ const TagSuggestions = () => {
   const registerListeners = () => {
     const editor = editorRef.current;
     if (!editor || listenersAreRegisteredRef.current) return;
-    editor.addEventListener("click", hide);
-    editor.addEventListener("blur", hide);
-    editor.addEventListener("keydown", handleKeyDown);
-    editor.addEventListener("input", handleInput);
+    editor.addEventListener('click', hide);
+    editor.addEventListener('blur', hide);
+    editor.addEventListener('keydown', handleKeyDown);
+    editor.addEventListener('input', handleInput);
     listenersAreRegisteredRef.current = true;
   };
   useEffect(registerListeners, [!!editorRef.current]);
@@ -103,8 +107,8 @@ const TagSuggestions = () => {
           key={tag}
           onMouseDown={() => autocomplete(tag)}
           className={classNames(
-            "rounded p-1 px-2 w-full truncate text-sm cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-600",
-            i === selected ? "bg-zinc-300 dark:bg-zinc-600" : "",
+            'rounded p-1 px-2 w-full truncate text-sm cursor-pointer hover:bg-zinc-300 dark:hover:bg-zinc-600',
+            i === selected ? 'bg-zinc-300 dark:bg-zinc-600' : '',
           )}
         >
           <OverflowTip>{tag}</OverflowTip>

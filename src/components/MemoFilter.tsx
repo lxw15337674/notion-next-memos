@@ -1,25 +1,34 @@
-'use client'
-import classNames from "classnames";
-import Icon from "./Icon";
-import useFilterStore from "@/store/filter";
-import { useDebounceFn, useUpdateEffect } from "ahooks";
-import useMemoStore from "@/store/memo";
-import { Button } from "./ui/button";
+'use client';
+import classNames from 'classnames';
+import Icon from './Icon';
+import useFilterStore from '@/store/filter';
+import { useDebounceFn, useUpdateEffect } from 'ahooks';
+import useMemoStore from '@/store/memo';
+import { Button } from './ui/button';
 
 interface Props {
   className?: string;
 }
 
 const MemoFilter = (props: Props) => {
-  const { tagFilter, timeFilterText, setTimeFilter, removeFilter, clearFilter } = useFilterStore()
-  const { fetchInitData } = useMemoStore()
+  const {
+    tagFilter,
+    timeFilterText,
+    setTimeFilter,
+    removeTagFilter,
+    clearFilter,
+    textFilter,
+    setTextFilter,
+    hasFilter,
+  } = useFilterStore();
+  const { fetchInitData } = useMemoStore();
   const { run: debounceFetchData } = useDebounceFn(fetchInitData, {
     wait: 500,
-  })
+  });
   useUpdateEffect(() => {
-    debounceFetchData()
-  }, [tagFilter, timeFilterText])
-  if (!tagFilter.length && !timeFilterText) {
+    debounceFetchData();
+  }, [tagFilter, timeFilterText, textFilter]);
+  if (!hasFilter) {
     return null;
   }
   return (
@@ -33,41 +42,55 @@ const MemoFilter = (props: Props) => {
         <Icon.Filter className="w-4 h-auto mr-1" />
         <span>筛选器</span>
       </div>
-      {
-        timeFilterText && <div
+      {textFilter && (
+        <div
           className={
-            " flex justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded  hover:line-through "
+            ' flex justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded  hover:line-through '
           }
           onClick={() => {
-            setTimeFilter()
+            setTextFilter('');
           }}
         >
-          <div className="truncate max-w-xs ">
-            {timeFilterText}
-          </div>
+          <div className="truncate max-w-xs ">关键字 : {textFilter}</div>
           <Icon.X className="w-4 h-auto ml-1 opacity-60" />
         </div>
-      }
-      {
-        tagFilter.map((item, index) => (
-          <div
-            key={item}
-            className={
-              " flex justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded  hover:line-through "
-            }
-            onClick={() => {
-              removeFilter(item)
-            }}
-          >
-            <div className="truncate max-w-xs ">
-              #{item}
-            </div>
-            <Icon.X className="w-4 h-auto ml-1 opacity-60" />
-          </div>
-        ))
-      }
-      <div className="ml-auto" >
-        <Button variant="outline" onClick={clearFilter} size="sm" className="leading-7 h-7">重置</Button>
+      )}
+      {timeFilterText && (
+        <div
+          className={
+            ' flex justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded  hover:line-through '
+          }
+          onClick={() => {
+            setTimeFilter();
+          }}
+        >
+          <div className="truncate max-w-xs ">日期 : {timeFilterText}</div>
+          <Icon.X className="w-4 h-auto ml-1 opacity-60" />
+        </div>
+      )}
+      {tagFilter.map((item, index) => (
+        <div
+          key={item}
+          className={
+            ' flex justify-start items-center px-2 mr-2 cursor-pointer dark:text-gray-400 bg-gray-200 dark:bg-zinc-800 rounded  hover:line-through '
+          }
+          onClick={() => {
+            removeTagFilter(item);
+          }}
+        >
+          <div className="truncate max-w-xs ">标签 : {item}</div>
+          <Icon.X className="w-4 h-auto ml-1 opacity-60" />
+        </div>
+      ))}
+      <div className="ml-auto">
+        <Button
+          variant="outline"
+          onClick={clearFilter}
+          size="sm"
+          className="leading-7 h-7"
+        >
+          重置
+        </Button>
       </div>
     </div>
   );
