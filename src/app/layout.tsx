@@ -19,7 +19,7 @@ export default async function RootLayout({
 }>) {
   return (
     <>
-      <html lang="en">
+      <html >
         <body>
           <CssVarsProvider defaultMode="dark">
             <ThemeProvider

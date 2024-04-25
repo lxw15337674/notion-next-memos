@@ -1,27 +1,33 @@
 'use client';
-import { convertGMTDateToLocal, parseContent } from '@/utils';
 import {
   DatabaseObjectResponse,
+  MultiSelectPropertyItemObjectResponse,
   RichTextItemResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 import React, { useMemo } from 'react';
 import Tag from '../Tag';
 import MemoActionMenu from './MemoActionMenu';
 import { Card } from '@/components/ui/card';
+import { convertGMTDateToLocal, parseContent } from '@/utils/parser';
+import "@github/relative-time-element";
 
 const MemoView: React.FC<DatabaseObjectResponse> = ({
   properties,
   last_edited_time,
+  created_time,
   id,
 }) => {
-  // const labelList = useMemo(() => {
-  //   const tags = properties?.tags as unknown as MultiSelectPropertyItemObjectResponse;
-  //   return tags?.multi_select?.map((item) => item.name);
-  // }, [properties.tags]);
+  const labelList = useMemo(() => {
+    const tags = properties?.tags as unknown as MultiSelectPropertyItemObjectResponse;
+    return tags?.multi_select?.map((item) => item.name);
+  }, [properties.tags]);
 
   const time = useMemo(() => {
     return convertGMTDateToLocal(last_edited_time);
   }, [last_edited_time]);
+  const isRecentTime = useMemo(() => {
+    return Date.now() - new Date(created_time).getTime() < 1000 * 60 * 60 * 24
+  }, [created_time])
 
   const renderContent = (content: RichTextItemResponse, index: number) => {
     if (content.type === 'text') {
@@ -32,23 +38,9 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
       //     </Link>
       //   </Button>;
       // }
-      const text = parseContent(content.text.content);
       return (
-        <p key={index} className="break-words w-full leading-6	text-sm">
-          {text.map((item, subIndex) => {
-            if (item.type === 'tag') {
-              return (
-                <Tag
-                  className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
-                  text={item.text.slice(1)}
-                  key={subIndex}
-                >
-                  {item.text}
-                </Tag>
-              );
-            }
-            return item.text;
-          })}
+        <p key={index} className="whitespace-pre-wrap break-words w-full leading-6	text-sm">
+          {content.plain_text}
         </p>
       );
     }
@@ -58,7 +50,14 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
   return (
     <Card className="mb-4 px-2 py-4 rounded overflow-hidden  w-full">
       <div className="flex justify-between items-center text-xs">
-        {time}
+        <div>
+          {time}
+          {isRecentTime &&
+            <span className='ml-2'>
+              ( <relative-time datetime={new Date(created_time).toISOString()} tense="past" /> )
+            </span>
+          }
+        </div>
         <MemoActionMenu className="-ml-1" memoId={id} />
       </div>
       <div className="font-medium mt-2">
@@ -67,16 +66,17 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
             renderContent(item, index),
         )}
       </div>
-      {/* <div>
+      <div className='mt-2'>
         {labelList?.map((label, index) => (
-          <span
-            key={index}
-            className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+          <Tag
+            className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
+            text={label}
+            key={label}
           >
             #{label}
-          </span>
+          </Tag>
         ))}
-      </div> */}
+      </div>
     </Card>
   );
 };

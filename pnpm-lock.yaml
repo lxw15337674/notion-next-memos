@@ -11,6 +11,9 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.11.5
     version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.2.79)(react@18.2.0)
+  '@github/relative-time-element':
+    specifier: ^4.4.0
+    version: 4.4.0
   '@mui/joy':
     specifier: 5.0.0-beta.32
     version: 5.0.0-beta.32(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
@@ -791,6 +794,10 @@ packages:
 
   /@floating-ui/utils@0.2.1:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
+    dev: false
+
+  /@github/relative-time-element@4.4.0:
+    resolution: {integrity: sha512-CrI6oAecoahG7PF5dsgjdvlF5kCtusVMjg810EULD81TvnDsP+k/FRi/ClFubWLgBo4EGpr2EfvmumtqQFo7ow==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:

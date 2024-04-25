@@ -4,7 +4,7 @@ import {
   CreatePageParameters,
   DatabaseObjectResponse,
 } from '@notionhq/client/build/src/api-endpoints';
-import { convertTextToProperties } from '@/utils/converter';
+import { splitMode } from '@/utils/parser';
 import { TagType } from '@/type';
 
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID!;
@@ -51,7 +51,7 @@ export async function createPageInDatabase(content: string) {
   // 定义新页面的属性
   const newPageData: CreatePageParameters = {
     parent: { database_id: NOTION_DATABASE_ID },
-    properties: convertTextToProperties(content) as Record<string, any>,
+    properties: splitMode(content) as Record<string, any>,
   };
   // 创建新页面
   return (await ClientNotion.pages.create(
