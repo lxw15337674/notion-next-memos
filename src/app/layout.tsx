@@ -5,7 +5,6 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import MobileHeader from '@/components/MobileHeader';
 import { Metadata } from 'next';
-import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'memos',
@@ -23,7 +22,7 @@ export default async function RootLayout({
         <CssVarsProvider defaultMode="dark">
           <ThemeProvider
             attribute="class"
-            defaultTheme="system"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >
