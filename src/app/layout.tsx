@@ -5,11 +5,12 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import MobileHeader from '@/components/MobileHeader';
 import { Metadata } from 'next';
+import Head from 'next/head';
 
-export const metadata: Metadata = {
-  title: 'memos',
-  description: 'memos by notion api',
-};
+// export const metadata: Metadata = {
+//   title: 'memos',
+//   description: 'memos by notion api',
+// };
 
 export default async function RootLayout({
   children,
@@ -17,24 +18,26 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <CssVarsProvider defaultMode="dark">
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Toaster />
-            <div className="h-full">
-              <MobileHeader />
-              <LeftSide />
-              <div className="flex-1 md:ml-40 md:pl-6 px-4">{children}</div>
-            </div>
-          </ThemeProvider>
-        </CssVarsProvider>
-      </body>
-    </html>
+    <>
+      <html lang="en">
+        <body>
+          <CssVarsProvider defaultMode="dark">
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="dark"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Toaster />
+              <div className="h-full">
+                <MobileHeader />
+                <LeftSide />
+                <div className="flex-1 md:ml-40 md:pl-6 px-4">{children}</div>
+              </div>
+            </ThemeProvider>
+          </CssVarsProvider>
+        </body>
+      </html>
+    </>
   );
 }

@@ -1,11 +1,7 @@
-import { Dropdown, Menu, MenuButton, MenuItem } from '@mui/joy';
-import classNames from 'classnames';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Icon from '../Icon';
@@ -13,6 +9,7 @@ import { archivePage } from '@/api/actions';
 import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/components/ui/use-toast';
 import useMemoStore from '@/store/memo';
+import { Button } from '../ui/button';
 
 interface Props {
   memoId: string;
@@ -51,33 +48,22 @@ const MemoActionMenu = (props: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <span
-          className={classNames(
-            'flex justify-center items-center rounded-full hover:opacity-70',
-            props.className,
-          )}
+        <Button 
+          variant="ghost"
+          size="icon"
         >
           <Icon.MoreVertical
             className="w-4 h-4 mx-auto text-gray-500 dark:text-gray-400"
-            onClick={() => {
-              toast({
-                title: 'Uh oh! Something went wrong.',
-                description: 'There was a problem with your request.',
-                action: (
-                  <ToastAction altText="Try again">Try again</ToastAction>
-                ),
-              });
-            }}
           />
-        </span>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel
+        <DropdownMenuItem
           className="cursor-pointer"
           onClick={handleDeleteMemoClick}
         >
           删除
-        </DropdownMenuLabel>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

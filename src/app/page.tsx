@@ -3,6 +3,7 @@ import MemoFilter from '@/components/MemoFilter';
 import { NotionAPI } from 'notion-client';
 import Main from './Main';
 import SideBar from './SideBar';
+import Head from 'next/head'
 
 export default async function Home() {
   const api = new NotionAPI({

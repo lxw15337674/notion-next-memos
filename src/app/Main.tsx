@@ -2,16 +2,17 @@
 import MemoView from '@/components/MemoView/MemoView';
 import useMemoStore from '@/store/memo';
 import useTagStore from '@/store/tag';
-import { useMount } from 'ahooks';
+import { useFavicon, useMount, useTitle } from 'ahooks';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useCountStore from '@/store/count';
 import { ExtendedRecordMap } from 'notion-types';
-
 interface Props {
   recordMap: ExtendedRecordMap;
 }
 
 export default function Home({ recordMap }: Props) {
+  useTitle('memos - 个人笔记本')
+  useFavicon('/favicon.ico')
   const { memos, fetchInitData, fetchPagedData, databases } = useMemoStore();
   const { fetchTags } = useTagStore();
   const { setRecordMap } = useCountStore();

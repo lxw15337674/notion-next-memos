@@ -1,4 +1,5 @@
 import Tools from '@/components/Tools';
+import Head from 'next/head';
 import React from 'react';
 
 const SideBar: React.FC = () => {
@@ -12,6 +13,7 @@ const SideBar: React.FC = () => {
          w-60 fixed right-0 top-0 "
     >
       <Tools />
+      
     </div>
   );
 };
