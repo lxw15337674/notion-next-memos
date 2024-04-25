@@ -49,7 +49,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
 
   return (
     <Card className="mb-4 px-2 py-4 rounded overflow-hidden  w-full">
-      <div className="flex justify-between items-center text-xs">
+      <div className="flex justify-between items-center text-sm text-gray-500">
         <div>
           {time}
           {isRecentTime &&
@@ -60,7 +60,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
         </div>
         <MemoActionMenu className="-ml-1" memoId={id} />
       </div>
-      <div className="font-medium mt-2">
+      <div className="font-medium">
         {(properties.content as any)?.rich_text?.map(
           (item: RichTextItemResponse, index: number) =>
             renderContent(item, index),
