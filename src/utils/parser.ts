@@ -108,7 +108,7 @@ export function splitMode(content: string): Properties {
   let text = ''
   lines.forEach((line) => {
     const content = parseContent(line)
-    for (let item of content) {
+    for (const item of content) {
       if (item.type === 'tag') {
         tags.push(item.text.slice(1))
       } else {
