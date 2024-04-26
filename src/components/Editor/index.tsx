@@ -33,9 +33,9 @@ const Editor = () => {
       }, 50);
     }
   }
-  const { run:createRecord,loading} = useRequest(createPageInDatabase,{
-    manual:true,
-    onSuccess:(data)=>{
+  const { run: createRecord, loading } = useRequest(createPageInDatabase, {
+    manual: true,
+    onSuccess: (data) => {
       insertMemo(data, 0);
       fetchTags();
       editor!.value = '';
@@ -47,7 +47,7 @@ const Editor = () => {
     }
     const content = editor.value ?? '';
     if (content.trim().length === 0) return;
-     await createRecord(content);
+    await createRecord(content);
   };
   return (
     <div className="relative">
@@ -59,7 +59,7 @@ const Editor = () => {
         endDecorator={
           <Box
             className="py-1 border-t  flex items-center flex-auto"
-           
+
           >
             <Button
               variant="ghost"
@@ -77,7 +77,7 @@ const Editor = () => {
               className="ml-auto w-16 h-8"
             >
               {
-                loading ? <Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20}  />
+                loading ? <Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20} />
               }
             </Button>
           </Box>
