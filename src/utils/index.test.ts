@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { parseContent } from '.';
+import { parseContent } from './parser';
 
 describe('parseContent ', () => {
   test('test duplicate #', () => {
@@ -22,4 +22,14 @@ describe('parseContent ', () => {
       { text: 'https://www.baidu.com', type: 'text' },
     ]);
   });
+  test('test tag with only #',()=>{
+    expect(parseContent('#')).toEqual([
+      { text: '#', type: 'text' },
+    ]);
+  })
+  test('test tag at the end',()=>{
+    expect(parseContent('# ')).toEqual([
+      { text: '# ', type: 'text' },
+    ]);
+  })
 });

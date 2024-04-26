@@ -22,8 +22,11 @@ export function parseContent(text: string): Content[] {
     }
     // Check for ' ' to end a tag
     else if (char === ' ' && isTag) {
-      res.push({ text: buffer, type: 'tag' });
-      buffer = ' ';
+      if (buffer !== '#') {
+        res.push({ text: buffer, type: 'tag' });
+        buffer = '';
+      }
+      buffer += ' '
       isTag = false; // We are now outside a tag
     }
     // Append other characters to buffer
