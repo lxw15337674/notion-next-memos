@@ -1,6 +1,6 @@
 'use client';
 import React, { useRef } from 'react';
-import { Textarea } from '@mui/joy';
+import { Autocomplete, Textarea } from '@mui/joy';
 import Icon from '../Icon';
 import { createPageInDatabase } from '@/api/actions';
 import useMemoStore from '@/store/memo';
@@ -12,7 +12,7 @@ import useTagStore from '@/store/tag';
 const Editor = () => {
   const { insertMemo } = useMemoStore();
   const { fetchTags } = useTagStore();
-  const editorRef = useRef<HTMLDivElement | null>(null);
+  const editorRef = useRef<HTMLTextAreaElement | null>(null);
   const insertText = (text: string, offset = 0) => {
     const current = editorRef?.current?.children?.[0] as HTMLTextAreaElement;
     if (current) {
@@ -50,7 +50,7 @@ const Editor = () => {
         className="w-full h-full bg-card text-card-foreground"
         placeholder="此刻的想法..."
         minRows={3}
-        ref={editorRef}
+        slotProps={{ textarea: { ref: editorRef } }}
         endDecorator={
           <Box
             className="pt-1"

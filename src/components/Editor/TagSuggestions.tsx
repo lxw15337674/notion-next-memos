@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 type Position = { left: number; top: number; height: number };
 interface Props {
-  editorRef?: React.RefObject<HTMLDivElement>;
+  editorRef?: React.RefObject<HTMLTextAreaElement>;
   insertText: (text: string, offset?: number) => void;
 }
 const TagSuggestions = ({ editorRef, insertText }: Props) => {
@@ -15,7 +15,7 @@ const TagSuggestions = ({ editorRef, insertText }: Props) => {
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));
   tagsRef.current = Array.from(tagStore.tags);
-  const editor = editorRef?.current?.children[0] as HTMLTextAreaElement;
+  const editor = editorRef?.current
 
   const [selected, select] = useState(0);
   const selectedRef = useRef(selected);
