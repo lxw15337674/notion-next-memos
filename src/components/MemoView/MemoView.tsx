@@ -38,10 +38,17 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
       //     </Link>
       //   </Button>;
       // }
+      const text = parseContent(content.plain_text)
       return (
         <p key={index} className="whitespace-pre-wrap break-words w-full leading-6	text-sm">
-          {content.plain_text}
+          {text.map((item, index) => {
+            if (item.type==='tag') {
+              return <span key={index} className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300">{item.text}</span>
+            }
+            return <span key={index}>{item.text}</span>
+          })}
         </p>
+        
       );
     }
     return null;
