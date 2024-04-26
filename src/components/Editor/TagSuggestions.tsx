@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import useTagStore from '@/store/tag';
 import OverflowTip from '../OverflowTip';
-import useEditorStore from '@/store/editor';
 import getCaretCoordinates from 'textarea-caret';
 import { Card } from '../ui/card';
 import classNames from 'classnames';
 
 type Position = { left: number; top: number; height: number };
-
-const TagSuggestions = () => {
-  const { editorRef, insertText } = useEditorStore();
+interface Props {
+  editorRef?: React.RefObject<HTMLDivElement>;
+  insertText: (text: string, offset?: number) => void;
+}
+const TagSuggestions = ({ editorRef, insertText }: Props) => {
+    
   const [position, setPosition] = useState<Position | null>(null);
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));

@@ -1,6 +1,5 @@
 'use client';
-import React from 'react';
-import useEditorStore from '@/store/editor';
+import React, { useRef } from 'react';
 import { Textarea } from '@mui/joy';
 import Icon from '../Icon';
 import { createPageInDatabase } from '@/api/actions';
@@ -11,9 +10,28 @@ import { Button } from '../ui/button';
 import useTagStore from '@/store/tag';
 
 const Editor = () => {
-  const { editorRef, insertText } = useEditorStore();
   const { insertMemo } = useMemoStore();
   const { fetchTags } = useTagStore();
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const insertText = (text: string, offset = 0) => {
+    const current = editorRef?.current?.children?.[0] as HTMLTextAreaElement;
+    if (current) {
+      if (current === null) return;
+      const value = current.value;
+      const start = current.selectionStart;
+      const end = current.selectionEnd;
+      const newValue = value.slice(0, start) + `${text} ` + value.slice(end);
+      current.value = newValue;
+      setTimeout(() => {
+        current.selectionStart = start + text.length + offset;
+        current.selectionEnd = start + text.length + offset;
+        current.focus();
+        // 触发事件
+        const event = new Event('input');
+        current.dispatchEvent(event);
+      }, 50);
+    }
+  }
   const onSave = async () => {
     const editor = editorRef?.current?.children?.[0] as HTMLTextAreaElement;
     if (!editor) {
@@ -63,7 +81,7 @@ const Editor = () => {
           </Box>
         }
       />
-      <TagSuggestions />
+      <TagSuggestions editorRef={editorRef} insertText={insertText} />
     </div>
   );
 };

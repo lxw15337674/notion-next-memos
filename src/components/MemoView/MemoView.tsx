@@ -48,7 +48,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
   };
 
   return (
-    <Card className="mb-4 px-2 py-4 rounded overflow-hidden  w-full">
+    <Card className="mb-2 px-2 py-2 rounded overflow-hidden  w-full">
       <div className="flex justify-between items-center text-sm text-gray-500">
         <div>
           {time}

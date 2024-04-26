@@ -18,9 +18,7 @@ export default async function Home() {
           <div className="mb-4">
             <Editor />
           </div>
-          <div className="mb-4">
             <MemoFilter />
-          </div>
           <section className="overflow-y-auto ">
             <Main recordMap={recordMap} />
           </section>
