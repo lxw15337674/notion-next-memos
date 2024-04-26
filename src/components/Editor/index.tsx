@@ -53,12 +53,8 @@ const Editor = () => {
         slotProps={{ textarea: { ref: editorRef } }}
         endDecorator={
           <Box
-            className="pt-1"
-            sx={{
-              display: 'flex',
-              borderTop: '1px solid',
-              flex: 'auto',
-            }}
+            className="py-1 border-t  flex items-center flex-auto"
+           
           >
             <Button
               variant="ghost"
@@ -70,8 +66,9 @@ const Editor = () => {
             <Button
               variant="outline"
               size="icon"
+              type='submit'
               onClick={onSave}
-              className="ml-auto w-16"
+              className="ml-auto w-16 h-8"
             >
               <Icon.Send size={20} className="" />
             </Button>
