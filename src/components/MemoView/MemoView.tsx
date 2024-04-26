@@ -66,7 +66,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
             renderContent(item, index),
         )}
       </div>
-      <div className='mt-2'>
+      <div className='mt-4 pt-2'>
         {labelList?.map((label, index) => (
           <Tag
             className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "

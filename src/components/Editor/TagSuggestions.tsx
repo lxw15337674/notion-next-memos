@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import useTagStore from '@/store/tag';
 import OverflowTip from '../OverflowTip';
 import getCaretCoordinates from 'textarea-caret';
@@ -11,7 +11,6 @@ interface Props {
   insertText: (text: string, offset?: number) => void;
 }
 const TagSuggestions = ({ editorRef, insertText }: Props) => {
-    
   const [position, setPosition] = useState<Position | null>(null);
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));
@@ -21,18 +20,21 @@ const TagSuggestions = ({ editorRef, insertText }: Props) => {
   const [selected, select] = useState(0);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
-
   const hide = () => setPosition(null);
 
   const getCurrentWord = (): [word: string, startIndex: number] => {
     if (!editor) return ['', 0];
-    const cursorPos = editor.selectionEnd;
-    const before = editor.value.slice(0, cursorPos).match(/\S*$/) || {
-      0: '',
-      index: cursorPos,
-    };
-    const after = editor.value.slice(cursorPos).match(/^\S*/) || { 0: '' };
-    return [before[0] + after[0], before.index ?? cursorPos];
+    const after = editor.selectionEnd;
+    const before = editor.selectionStart
+    if (before !== after) {
+      return ['', 0]
+    }
+    for (let i = after - 1; i >= 0; i--) {
+      if (['#', ' '].includes(editor.value[i])) {
+        return [editor.value.slice(i, after), i]
+      }
+    }
+    return [editor.value.slice(0, after), 0]
   };
 
   const suggestionsRef = useRef<string[]>([]);

@@ -74,35 +74,6 @@ export function convertGMTDateToLocal(gmtDateString: string) {
 }
 
 
-// 合并模式：标签和文本合并在一起。
-export function mergedMode(content: string): Properties {
-  // 将字符串按换行符分割成数组
-  const lines = content.split('\n');
-
-  // 遍历每一行，创建对应的rich_text对象
-  const richTextArray = lines.map((line) => ({
-    type: 'text',
-    text: {
-      content: line,
-    },
-  }));
-
-  // 提取标签
-  const tags = extractTags(content);
-
-  // 返回Notion Page Properties格式的对象
-  return {
-    content: {
-      rich_text: richTextArray,
-    },
-    tags: {
-      multi_select: tags.map((tag) => ({
-        name: tag,
-      })),
-    },
-  };
-}
-
 // 拆分模式：标签和文本分开。
 export function splitMode(content: string): Properties {
   // 将字符串按换行符分割成数组
@@ -114,9 +85,8 @@ export function splitMode(content: string): Properties {
     for (const item of content) {
       if (item.type === 'tag') {
         tags.push(item.text.slice(1))
-      } else {
-        text += item.text
       }
+      text += item.text
     }
     text += '\n'
   })

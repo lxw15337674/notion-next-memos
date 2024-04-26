@@ -50,9 +50,6 @@ const Editor = () => {
         className="w-full h-full bg-card text-card-foreground"
         placeholder="此刻的想法..."
         minRows={3}
-        // ref={(ref) => {
-        //   // (editorRef as any).current = ref?.children?.[0] as HTMLTextAreaElement
-        // }}
         ref={editorRef}
         endDecorator={
           <Box
