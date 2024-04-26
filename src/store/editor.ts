@@ -1,19 +1,20 @@
+import { TextareaTypeMap } from '@mui/joy';
 import React from 'react';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 interface EditorStore {
-  editorRef: React.RefObject<HTMLTextAreaElement>;
+  editorRef?: React.RefObject<HTMLDivElement>;
   insertText: (text: string, offset?: number) => void;
 }
 
 const useEditorStore = create<EditorStore>()(
   devtools((set, get) => ({
-    editorRef: React.createRef<HTMLTextAreaElement>(),
+    editorRef: React.createRef(),
     insertText: (text, offset = 0) => {
       const { editorRef } = get();
-      if (editorRef.current) {
-        const current = editorRef.current;
+      const current = editorRef?.current?.children?.[0] as HTMLTextAreaElement;
+      if (current) {
         if (current === null) return;
         const value = current.value;
         const start = current.selectionStart;

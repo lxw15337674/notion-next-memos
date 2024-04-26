@@ -14,7 +14,8 @@ const TagSuggestions = () => {
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));
   tagsRef.current = Array.from(tagStore.tags);
-  const editor = editorRef.current
+  const editor = editorRef?.current?.children[0] as HTMLTextAreaElement;
+
   const [selected, select] = useState(0);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
@@ -91,7 +92,7 @@ const TagSuggestions = () => {
     editor.addEventListener('input', handleInput);
     listenersAreRegisteredRef.current = true;
   };
-  useEffect(registerListeners, [!!editorRef]);
+  useEffect(registerListeners, [!!editor]);
 
   if (!isVisibleRef.current || !position) return null;
   return (
