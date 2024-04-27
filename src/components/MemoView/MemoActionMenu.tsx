@@ -13,7 +13,6 @@ import { Button } from '../ui/button';
 
 interface Props {
   memoId: string;
-  className?: string;
   onEdit: () => void;
 }
 

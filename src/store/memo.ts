@@ -47,7 +47,7 @@ const useMemoStore = create<MemoStore>()(
         // 更新数据
         updateMemo: (page: DatabaseObjectResponse) => {
           set((state) => {
-            const index = state.memos.findIndex((item) => item.id === page.id);
+            const index = state.memos.findIndex((item: DatabaseObjectResponse) => item.id === page.id);
             if (index !== -1) {
               state.memos[index] = page;
             }
@@ -59,7 +59,6 @@ const useMemoStore = create<MemoStore>()(
             filter: useFilterStore.getState().filterParams,
           });
           set({
-            databases,
             databases,
             memos: databases.results as DatabaseObjectResponse[],
           });
