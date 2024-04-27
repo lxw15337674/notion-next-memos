@@ -42,7 +42,9 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
       return (
         <p key={index} className="whitespace-pre-wrap break-words w-full leading-6	text-sm">
           {text.map((item, index) => {
+            // TODO: 改成一個配置
             if (item.type==='tag') {
+              return null
               return <span key={index} className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300">{item.text}</span>
             }
             return <span key={index}>{item.text}</span>
