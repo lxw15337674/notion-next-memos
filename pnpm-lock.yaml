@@ -68,6 +68,9 @@ dependencies:
   notion-client:
     specifier: ^6.16.0
     version: 6.16.0
+  pinyin-pro:
+    specifier: ^3.20.2
+    version: 3.20.2
   react:
     specifier: ^18
     version: 18.2.0
@@ -5734,6 +5737,10 @@ packages:
   /pify@2.3.0:
     resolution: {integrity: sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==}
     engines: {node: '>=0.10.0'}
+
+  /pinyin-pro@3.20.2:
+    resolution: {integrity: sha512-i+qJ+f8lmIxITL/0V2HorGlUfPwHJ/b4DDWh5SlN5lVC8g1lfKWDRjdWUOsY373J4il8gH0IfiYwPtRha49ITw==}
+    dev: false
 
   /pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}

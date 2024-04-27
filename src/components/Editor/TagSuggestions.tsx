@@ -4,6 +4,7 @@ import OverflowTip from '../OverflowTip';
 import getCaretCoordinates from 'textarea-caret';
 import { Card } from '../ui/card';
 import classNames from 'classnames';
+import { match } from 'pinyin-pro';
 
 type Position = { left: number; top: number; height: number };
 interface Props {
@@ -40,8 +41,9 @@ const TagSuggestions = ({ editorRef, insertText }: Props) => {
   const suggestionsRef = useRef<string[]>([]);
   suggestionsRef.current = (() => {
     const search = getCurrentWord()[0].slice(1).toLowerCase();
+    const keyword = getCurrentWord()[0].slice(1)
     return tagsRef.current
-      .filter((tag) => tag.name.toLowerCase().includes(search))
+      .filter((tag) => tag.name.toLowerCase().includes(search) || match(tag.name, keyword))
       .map((tag) => tag.name);
   })();
 
