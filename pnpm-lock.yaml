@@ -53,6 +53,9 @@ dependencies:
   date-fns:
     specifier: ^3.6.0
     version: 3.6.0
+  html-to-image:
+    specifier: ^1.11.11
+    version: 1.11.11
   immer:
     specifier: ^10.0.4
     version: 10.0.4
@@ -95,6 +98,9 @@ dependencies:
   textarea-caret:
     specifier: ^3.1.0
     version: 3.1.0
+  unsplash-js:
+    specifier: ^7.0.19
+    version: 7.0.19
   vaul:
     specifier: ^0.9.0
     version: 0.9.0(@types/react-dom@18.2.25)(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
@@ -4199,6 +4205,10 @@ packages:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
     dev: true
 
+  /html-to-image@1.11.11:
+    resolution: {integrity: sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==}
+    dev: false
+
   /http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
     dev: false
@@ -6796,6 +6806,11 @@ packages:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
     engines: {node: '>= 4.0.0'}
     dev: true
+
+  /unsplash-js@7.0.19:
+    resolution: {integrity: sha512-j6qT2floy5Q2g2d939FJpwey1yw/GpQecFiSouyJtsHQPj3oqmqq3K4rI+GF8vU1zwGCT7ZwIGQd2dtCQLjYJw==}
+    engines: {node: '>=10'}
+    dev: false
 
   /update-browserslist-db@1.0.13(browserslist@4.23.0):
     resolution: {integrity: sha512-xebP81SNcPuNpPP3uzeW1NYXxI3rxyJzF3pD6sH4jE7o/IX+WtSpwnVU+qIsDPyk0d3hmFQ7mjqc6AtV604hbg==}

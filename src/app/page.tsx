@@ -3,6 +3,7 @@ import { NotionAPI } from 'notion-client';
 import Main from './Main';
 import SideBar from './SideBar';
 import NewMemoEditor from './NewMemoEditor';
+import GenShareCard from '@/components/MemoView/GenShareCard';
  
 export default async function Home() {
   const api = new NotionAPI({
@@ -15,6 +16,7 @@ export default async function Home() {
       <main className="  flex-grow shrink flex flex-col justify-start items-center overflow-hidden h-full  md:mr-60">
         <div className="w-full mt-4 ">
           <div className="mb-4" id='edit'>
+            <GenShareCard />
             <NewMemoEditor />
           </div>
             <MemoFilter />
