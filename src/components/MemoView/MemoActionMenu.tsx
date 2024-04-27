@@ -14,10 +14,11 @@ import { Button } from '../ui/button';
 interface Props {
   memoId: string;
   className?: string;
+  onEdit: () => void;
 }
 
 const MemoActionMenu = (props: Props) => {
-  const { memoId } = props;
+  const { memoId, onEdit } = props;
   const { toast } = useToast();
   const { removeMemo, insertMemo } = useMemoStore();
   const handleDeleteMemoClick = async () => {
@@ -45,10 +46,13 @@ const MemoActionMenu = (props: Props) => {
       ),
     });
   };
+  const handleEditMemoClick = () => {
+    onEdit?.()
+  }
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button 
+        <Button
           variant="ghost"
           size="icon"
         >
@@ -60,10 +64,18 @@ const MemoActionMenu = (props: Props) => {
       <DropdownMenuContent>
         <DropdownMenuItem
           className="cursor-pointer"
+          onClick={handleEditMemoClick}
+        >
+          编辑
+        </DropdownMenuItem>
+
+        <DropdownMenuItem
+          className="cursor-pointer text-red-500 dark:text-red-400"
           onClick={handleDeleteMemoClick}
         >
           删除
         </DropdownMenuItem>
+       
       </DropdownMenuContent>
     </DropdownMenu>
   );

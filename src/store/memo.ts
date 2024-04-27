@@ -4,22 +4,24 @@ import {
   QueryDatabaseResponse,
 } from '@notionhq/client/build/src/api-endpoints';
 import { create } from 'zustand';
-import computed from 'zustand-middleware-computed';
 import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 import useFilterStore from './filter';
+import { immer } from 'zustand/middleware/immer';
 
 interface MemoStore {
   memos: DatabaseObjectResponse[];
   databases: QueryDatabaseResponse;
-  fetchInitData: () => void;
-  fetchPagedData: () => void;
+  fetchInitData: () => Promise<void>;
+  fetchPagedData: () => Promise<void>;
   removeMemo: (pageId: string) => number;
-  insertMemo: (page: DatabaseObjectResponse, index: number) => void;
+  insertMemo: (page: DatabaseObjectResponse) => void;
+  updateMemo: (page: DatabaseObjectResponse) => void;
 }
-const useMemoStore = create(
+
+const useMemoStore = create<MemoStore>()(
   devtools(
-    persist<MemoStore>(
-      (set, get) => ({
+    persist(
+      immer((set, get) => ({
         memos: [],
         databases: {
           object: 'list',
@@ -33,17 +35,22 @@ const useMemoStore = create(
         // 删除某条数据
         removeMemo: (pageId: string) => {
           const index = get().memos.findIndex((item) => item.id === pageId);
-          set({
-            memos: get().memos.filter((item) => item.id !== pageId),
-          });
+          set((state) => {state.memos.splice(index, 1)});
           return index;
         },
         // 插入数据
-        insertMemo: (page: DatabaseObjectResponse, index: number) => {
-          const memos = get().memos;
-          memos.splice(index, 0, page);
-          set({
-            memos,
+        insertMemo: (page: DatabaseObjectResponse) => {
+          set((state) => {
+            state.memos.unshift(page)
+          });
+        },
+        // 更新数据
+        updateMemo: (page: DatabaseObjectResponse) => {
+          set((state) => {
+            const index = state.memos.findIndex((item) => item.id === page.id);
+            if (index !== -1) {
+              state.memos[index] = page;
+            }
           });
         },
         // 获取初始化数据
@@ -56,30 +63,30 @@ const useMemoStore = create(
             memos: databases.results as DatabaseObjectResponse[],
           });
         },
+        // 获取分页数据
         fetchPagedData: async () => {
-          const startCursor = get().databases.next_cursor ?? undefined;
-          const databases = await getDBData({
-            startCursor,
-            filter: useFilterStore.getState().filterParams,
-          });
-          set({
-            databases,
-            memos: [
-              ...get().memos,
-              ...(databases.results as DatabaseObjectResponse[]),
-            ],
-          });
+          const startCursor = get().databases.next_cursor;
+          if (startCursor) {
+            const databases = await getDBData({
+              startCursor,
+              filter: useFilterStore.getState().filterParams,
+            });
+            set((state) => {
+              state.databases = databases;
+              state.memos.push(...(databases.results as DatabaseObjectResponse[]));
+            });
+          }
         },
-      }),
+      })),
       {
-        name: 'memos-storage',
-        storage: createJSONStorage(() => sessionStorage),
-      },
+        name: 'memos-storage', // 存储名称
+        storage: createJSONStorage(() => sessionStorage), // 使用sessionStorage存储
+      }
     ),
     {
-      name: 'memo',
-    },
-  ),
+      name: 'memo', // devtools名称
+    }
+  )
 );
 
 export default useMemoStore;

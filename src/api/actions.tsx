@@ -46,9 +46,7 @@ export const getDBData = async (config: {
 //     return listUsersResponse.results as DatabaseObjectResponse[]
 // }
 
-// 添加新页面到数据库
 export async function createPageInDatabase(content: string) {
-  // 定义新页面的属性
   const newPageData: CreatePageParameters = {
     parent: { database_id: NOTION_DATABASE_ID },
     properties: splitMode(content) as Record<string, any>,
@@ -59,7 +57,6 @@ export async function createPageInDatabase(content: string) {
   )) as unknown as DatabaseObjectResponse;
 }
 
-// 删除特定页面
 export async function archivePage(pageId: string, archived: boolean) {
   try {
     return (await ClientNotion.pages.update({
@@ -71,32 +68,16 @@ export async function archivePage(pageId: string, archived: boolean) {
   }
 }
 
-// 更新页面的属性
-// async function updatePageProperties(pageId:string) {
-//     try {
-//         const newTitle = "Updated Page Title";
-//         // 更新页面的名称属性
-//         const response = await notion.pages.update({
-//             page_id: pageId,
-//             properties: {
-//                 Name: {
-//                     id: "name_property_id", // 替换为实际的属性ID
-//                     type: "title",
-//                     title: [
-//                         {
-//                             text: {
-//                                 content: newTitle,
-//                             },
-//                         },
-//                     ],
-//                 },
-//             },
-//         });
-//
-//     } catch (error) {
-//
-//     }
-// }
+export async function updatePageProperties(pageId: string, content: string) {
+  try {
+    return (await ClientNotion.pages.update({
+      page_id: pageId,
+      properties: splitMode(content) as Record<string, any>
+    })) as unknown as DatabaseObjectResponse;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 // 获取所有标签
 export async function getAllLabels() {

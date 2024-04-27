@@ -38,7 +38,7 @@ export default function Home({ recordMap }: Props) {
       }
     >
       {memos.map((memo) => (
-        <MemoView key={memo.id} {...memo} />
+        <MemoView key={memo.id} {...memo}/>
       ))}
     </InfiniteScroll>
   );
