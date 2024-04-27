@@ -53,9 +53,6 @@ dependencies:
   date-fns:
     specifier: ^3.6.0
     version: 3.6.0
-  immer:
-    specifier: ^10.0.4
-    version: 10.0.4
   lucide-react:
     specifier: ^0.371.0
     version: 0.371.0(react@18.2.0)
@@ -97,7 +94,7 @@ dependencies:
     version: 0.9.0(@types/react-dom@18.2.25)(@types/react@18.2.79)(react-dom@18.2.0)(react@18.2.0)
   zustand:
     specifier: ^4.5.2
-    version: 4.5.2(@types/react@18.2.79)(immer@10.0.4)(react@18.2.0)
+    version: 4.5.2(@types/react@18.2.79)(react@18.2.0)
   zustand-middleware-computed:
     specifier: ^1.2.1
     version: 1.2.1
@@ -4250,10 +4247,6 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
-  /immer@10.0.4:
-    resolution: {integrity: sha512-cuBuGK40P/sk5IzWa9QPUaAdvPHjkk1c+xYsd9oZw+YQQEV+10G0P5uMpGctZZKnyQ+ibRO08bD25nWLmYi2pw==}
-    dev: false
-
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -7089,7 +7082,7 @@ packages:
     engines: {node: '>=16'}
     dev: false
 
-  /zustand@4.5.2(@types/react@18.2.79)(immer@10.0.4)(react@18.2.0):
+  /zustand@4.5.2(@types/react@18.2.79)(react@18.2.0):
     resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
@@ -7105,7 +7098,6 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.2.79
-      immer: 10.0.4
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false

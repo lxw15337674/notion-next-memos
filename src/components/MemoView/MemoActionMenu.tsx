@@ -33,7 +33,7 @@ const MemoActionMenu = (props: Props) => {
           onClick={async () => {
             const memo = await archivePage(memoId, false);
             if (memo) {
-              insertMemo(memo, index);
+              insertMemo(memo);
             }
             toast({
               title: '已撤回',

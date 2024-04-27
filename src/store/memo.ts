@@ -60,6 +60,7 @@ const useMemoStore = create<MemoStore>()(
           });
           set({
             databases,
+            databases,
             memos: databases.results as DatabaseObjectResponse[],
           });
         },

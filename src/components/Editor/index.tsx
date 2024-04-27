@@ -7,7 +7,7 @@ import Box from '@mui/joy/Box';
 import { Button } from '../ui/button';
 import useTagStore from '@/store/tag';
 import { Loader2 } from 'lucide-react';
-import { useKeyPress } from 'ahooks';
+import { useDebounceFn, useKeyPress } from 'ahooks';
 
 interface Props {
   onSubmit: (text: string) => Promise<any>;
@@ -18,7 +18,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
   const { fetchTags } = useTagStore();
   const [loading, setLoading] = React.useState(false);
   const editorRef = useRef<HTMLTextAreaElement | null>(null);
-  const insertText = (text: string, offset = 0) => {
+  const { run: insertText } = useDebounceFn((text: string, offset = 0) => {
     const editor = editorRef.current;
     if (editor) {
       const value = editor.value;
@@ -33,9 +33,9 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
         // 触发事件
         const event = new Event('input');
         editor.dispatchEvent(event);
-      }, 50);
+      }, 100);
     }
-  }
+  }, { wait: 200 });
   const onSave = async () => {
     const editor = editorRef.current;
     if (!editor) {
