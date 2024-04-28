@@ -1,6 +1,6 @@
 import { Properties } from '@/type';
 
-interface Content {
+export interface Content {
   text: string;
   type: 'text' | 'tag';
 }
@@ -79,8 +79,8 @@ export function splitMode(content: string): Properties {
   // 将字符串按换行符分割成数组
   const lines = content.split('\n');
   const tags: string[] = []
-  let text = ''
-  lines.forEach((line) => {
+  const richTexts = lines.map((line) => {
+    let text = ''
     const content = parseContent(line)
     for (const item of content) {
       if (item.type === 'tag') {
@@ -88,17 +88,17 @@ export function splitMode(content: string): Properties {
       }
       text += item.text
     }
-    text += '\n'
+    return text
   })
-  text = text.slice(0, -1)
+  // text = text.slice(0, -1)
   return {
     content: {
-      rich_text: [{
+      rich_text: richTexts.map((text) => ({
         type: 'text',
         text: {
           content: text,
         },
-      }],
+      })), 
     },
     tags: {
       multi_select: tags.map((tag) => ({

@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        cursive: ['"Comic Sans MS"', 'cursive'], // 添加 cursive 字体
+      },
       colors: {
         border: 'hsl(var(--border)) ',
         input: 'hsl(var(--input))',

@@ -2,6 +2,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Icon from '../Icon';
@@ -10,19 +11,25 @@ import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/components/ui/use-toast';
 import useMemoStore from '@/store/memo';
 import { Button } from '../ui/button';
+import ShareCardDialog from '../ShareCardDialog';
+import { useState } from 'react';
+import { Content } from '@/utils/parser';
+import useShareCardStore from '@/store/shareCard';
 
 interface Props {
   memoId: string;
   onEdit: () => void;
+  parsedContent: Content[][]
 }
 
 const MemoActionMenu = (props: Props) => {
-  const { memoId, onEdit } = props;
+  const { memoId, onEdit, parsedContent } = props;
+  const { openShareCord } = useShareCardStore()
   const { toast } = useToast();
   const { removeMemo, insertMemo } = useMemoStore();
   const handleDeleteMemoClick = async () => {
     await archivePage(memoId, true);
-    const index = removeMemo(memoId);
+    removeMemo(memoId);
     toast({
       title: '已删除',
       description: '已将笔记归档',
@@ -49,34 +56,42 @@ const MemoActionMenu = (props: Props) => {
     onEdit?.()
   }
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button
-          variant="ghost"
-          size="icon"
-        >
-          <Icon.MoreVertical
-            className="w-4 h-4 mx-auto text-gray-500 dark:text-gray-400"
-          />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuItem
-          className="cursor-pointer"
-          onClick={handleEditMemoClick}
-        >
-          编辑
-        </DropdownMenuItem>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <Button
+            variant="ghost"
+            size="icon"
+          >
+            <Icon.MoreVertical
+              className="w-4 h-4 mx-auto text-gray-500 dark:text-gray-400"
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => openShareCord(parsedContent)}
+          >
+            生成分享卡片
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={handleEditMemoClick}
+          >
+            编辑
+          </DropdownMenuItem>
 
-        <DropdownMenuItem
-          className="cursor-pointer text-red-500 dark:text-red-400"
-          onClick={handleDeleteMemoClick}
-        >
-          删除
-        </DropdownMenuItem>
-       
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuItem
+            className="cursor-pointer text-red-500 dark:text-red-400"
+            onClick={handleDeleteMemoClick}
+          >
+            删除
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 };
 

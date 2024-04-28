@@ -22,7 +22,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
   id,
 }) => {
   const [isEdited, setIsEdited] = React.useState(false);
-  const labelList = useMemo(() => {
+  const memoTags = useMemo(() => {
     const tags = properties?.tags as unknown as MultiSelectPropertyItemObjectResponse;
     return tags?.multi_select?.map((item) => item.name);
   }, [properties.tags]);
@@ -44,7 +44,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
     return Date.now() - new Date(created_time).getTime() < 1000 * 60 * 60 * 24
   }, [created_time])
 
-  const paginationText = useMemo(() => {
+  const memoContentText = useMemo(() => {
     return (properties.content as any)?.rich_text?.map(
       (item: RichTextItemResponse) => item.plain_text,
     ) as string[]
@@ -52,34 +52,16 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
     properties.content
   ])
 
-  const textRender = useMemo(() => {
-    return paginationText.map((item, index) => {
-      const text = parseContent(item)
-      return (
-        <p key={index} className="whitespace-pre-wrap break-words w-full leading-6	text-sm">
-          {text.map((item, index) => {
-            if (item.type === 'tag') {
-              return null
-              // TODO: 改成一個配置
-              // return <Tag
-              //   className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
-              //   text={item.text}
-              //   key={item.text}
-              // >
-              //   #{item.text}
-              // </Tag>
-            }
-            return <span key={index}>{item.text}</span>
-          })}
-        </p>
-      )
+  const parsedContent = useMemo(() => {
+    return memoContentText.map((item) => {
+      return parseContent(item)
     })
-  }, [paginationText])
+  }, [memoContentText])
 
   if (isEdited) {
     return (
       <div className='mb-2'>
-        <Editor onSubmit={(text) => updateRecord(id, text)} defaultValue={paginationText.join('\n')}
+        <Editor onSubmit={(text) => updateRecord(id, text)} defaultValue={memoContentText.join('\n')}
           onCancel={() => setIsEdited(false)}
         />
       </div>
@@ -96,13 +78,19 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
             </span>
           }
         </div>
-        <MemoActionMenu memoId={id} onEdit={() => setIsEdited(true)} />
+        <MemoActionMenu parsedContent={parsedContent} memoId={id} onEdit={() => setIsEdited(true)} />
       </div>
       <div className="font-medium">
-        {textRender}
+        {parsedContent.map((item, index) => (
+          <p key={index} className="whitespace-pre-wrap break-words w-full leading-6 text-sm">
+            {item.filter(item => item.type !== 'tag').map((textItem, textIndex) => (
+              <span key={textIndex}>{textItem.text}</span>
+            ))}
+          </p>
+        ))}
       </div>
       <div className='mt-4 pt-2'>
-        {labelList?.map((label, index) => (
+        {memoTags?.map((label) => (
           <Tag
             className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
             text={label}
