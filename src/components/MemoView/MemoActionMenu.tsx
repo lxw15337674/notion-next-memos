@@ -11,7 +11,7 @@ import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/components/ui/use-toast';
 import useMemoStore from '@/store/memo';
 import { Button } from '../ui/button';
-import ShareCardDialog from '../ShareCardDialog';
+import ShareCardDialog from '../ShareCard/ShareCardDialog';
 import { useState } from 'react';
 import { Content } from '@/utils/parser';
 import useShareCardStore from '@/store/shareCard';
@@ -73,7 +73,7 @@ const MemoActionMenu = (props: Props) => {
             className="cursor-pointer"
             onClick={() => openShareCord(parsedContent)}
           >
-            生成分享卡片
+            生成分享图
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

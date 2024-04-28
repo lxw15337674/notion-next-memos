@@ -3,7 +3,7 @@ import { NotionAPI } from 'notion-client';
 import Main from './Main';
 import SideBar from './SideBar';
 import NewMemoEditor from './NewMemoEditor';
-import ShareCardDialog from '@/components/ShareCardDialog';
+import ShareCardDialog from '@/components/ShareCard/ShareCardDialog';
  
 export default async function Home() {
   const api = new NotionAPI({

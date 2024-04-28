@@ -2,7 +2,7 @@
 
 import { toBlob } from "html-to-image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { format } from "date-fns";
 import {
     Dialog,
@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dialog"
 import { useRequest } from "ahooks";
 import useShareCardStore from "@/store/shareCard";
+import ImageBackgroundCard from "./ImageBackgroundCard";
+import XiaohongshuCard from "./XiaohongshuCard";
 
 
 const image = "https://source.unsplash.com/random/1080x1920?wallpapers";
@@ -55,7 +57,7 @@ const ShareCardDialog = () => {
             a.download = `${name}.png`;
             a.click();
         } catch (e) {
-            
+
         }
     };
     return <>
@@ -64,38 +66,17 @@ const ShareCardDialog = () => {
                 <DialogHeader>
                     <DialogTitle>生成分享图</DialogTitle>
                     <DialogDescription>
-                        <div className="mt-2 flex justify-center text-white ">
+                        <div className="mt-2 flex justify-center  ">
                             <div
-                                ref={ref}
-                                className="relative aspect-[3/4] w-96 overflow-hidden bg-black">
-                                <div
-                                    id="draw-share-card-bg"
-                                    className="absolute left-0 right-0 top-0 aspect-[3/4] h-full backdrop-filter backdrop-blur-none blur-[1px] opacity-80"
-                                    style={{
-                                        backgroundImage: `url(${url})`,
-                                        backgroundSize: "cover",
-                                    }}
-                                />
-                                <div
-                                    className="absolute left-0 right-0 top-0 h-full opacity-40 backdrop-blur-none "
-                                    style={{ backgroundColor: "#1F2937" }}
-                                />
-                                <div className="relative h-full w-full p-4">
-                                    <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
-                                        <div className="w-full text-center text-2xl font-cursive font-normal">
-                                            {content.map((item, index) => (
-                                                <p className="whitespace-pre-wrap" key={index}>{item}</p>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="absolute bottom-6 right-2 left-2 opacity-80 text-sm text-center ">
-                                        <div> Bhwa233</div>
-                                        <div> {format(new Date(), 'yyyy-MM-dd')}</div>
-                                    </div>
-                                    <div className="absolute bottom-2 right-2   text-sm text-center opacity-60">
-                                        <div className="text-right">💭memos</div>
-                                    </div>
-                                </div>
+                              className="border"
+                            >
+                                 <XiaohongshuCard
+                                    url={url }
+                                    cardRef={ref}
+                                    content={content}
+                                    date={format(new Date(), 'yyyy-MM-dd')}
+                                /> 
+                                
                             </div>
                         </div>
                     </DialogDescription>
