@@ -21,7 +21,7 @@ function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
                 />
             )}
             {/* 内容区域 */}
-            <div className="relative w-full pt-2  text-white">
+            <div className="relative w-full pt-2  dark:text-white text-gray-900">
                 {/* 作者和日期 */}
                 <div className="opacity-80 text-sm mb-1 flex justify-between">
                     <span>Bhwa233</span>
@@ -42,4 +42,4 @@ function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
     );
 }
 
-export default XiaohongshuCard; 
+export default XiaohongshuCard;
