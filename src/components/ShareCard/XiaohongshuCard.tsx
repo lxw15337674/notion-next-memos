@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { LegacyRef } from 'react';
 
 export interface CardProps {
     url?: string;
     content: string[];
     date: string;
-    cardRef?: React.RefObject<HTMLDivElement>;
+    cardRef?: LegacyRef<HTMLDivElement>;
 }
 
 function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
+    
     return (
-        <div ref={cardRef} className="relative aspect-[3/4] w-96 bg-background  p-2">
+        <div ref={cardRef} className="relative aspect-[3/4] w-64 bg-background  p-2 ">
             {/* 背景图片 */}
             {url && (
                 <div
@@ -21,14 +22,14 @@ function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
                 />
             )}
             {/* 内容区域 */}
-            <div className="relative w-full pt-2  dark:text-white text-gray-900">
+            <div className="relative w-full pt-1  dark:text-white text-gray-900">
                 {/* 作者和日期 */}
-                <div className="opacity-80 text-sm mb-1 flex justify-between">
+                <div className="opacity-80 text-xs mb-1 flex justify-between">
                     <span>Bhwa233</span>
                     <span> {date}</span>
                 </div>
                 <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
-                    <div className="w-full text-xl font-cursive font-normal">
+                    <div className="w-full text-sm font-cursive font-normal">
                         {content.map((item, index) => (
                             <p className="whitespace-pre-wrap" key={index}>
                                 {item}
@@ -36,7 +37,7 @@ function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
                         ))}
                     </div>
                 </div>
-                <div className="text-right opacity-80">💭memos</div>
+                <div className="text-right text-xs opacity-80">💭memos</div>
             </div>
         </div>
     );

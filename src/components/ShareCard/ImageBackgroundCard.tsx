@@ -8,7 +8,7 @@ function ImageBackgroundCard({ url, content, date, cardRef }: CardProps) {
         <div className="relative aspect-[3/4] w-96" ref={cardRef}>
             {/* 背景图片 */}
             <div
-                className="absolute left-0 right-0 top-0 aspect-[3/4] h-full backdrop-filter backdrop-blur-none blur-[1px] opacity-80"
+                className="absolute left-0 right-0 top-0 aspect-[3/4] h-full backdrop-filter backdrop-blur-none  opacity-80"
                 style={{
                     backgroundImage: `url(${url})`,
                     backgroundSize: 'cover',
@@ -20,7 +20,7 @@ function ImageBackgroundCard({ url, content, date, cardRef }: CardProps) {
                 style={{ backgroundColor: '#1F2937' }}
             />
             {/* 内容区域 */}
-            <div className="relative h-full w-full p-4">
+            <div className="relative h-full w-full p-4 text-white ">
                 <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
                     <div className="w-full text-center text-2xl font-cursive font-normal">
                         {content.map((item, index) => (
@@ -36,7 +36,7 @@ function ImageBackgroundCard({ url, content, date, cardRef }: CardProps) {
                     <div>{date}</div>
                 </div>
                 {/* 来源 */}
-                <div className="absolute bottom-2 right-2 text-sm text-center opacity-60">
+                <div className="absolute bottom-2 right-2 text-sm text-center opacity-80">
                     <div className="text-right">💭memos</div>
                 </div>
             </div>
