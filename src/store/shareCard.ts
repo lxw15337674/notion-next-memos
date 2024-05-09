@@ -17,7 +17,7 @@ const useShareCardStore = create<ShareCardStore>()(
         (set) => ({
             text: [],
             open: false,
-            isShowTags: false,
+            isShowTags: true,
             toggleShowTags: () => {
                 set((state) => ({ isShowTags: !state.isShowTags }));
             },
