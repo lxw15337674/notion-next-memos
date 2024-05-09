@@ -55,23 +55,22 @@ const TagSuggestions = ({ editorRef, replaceText }: Props) => {
     replaceText(`#${tag}`, start, start + word.length, 1);
     hide();
   };
-
   const handleKeyDown = (e: KeyboardEvent) => {
     if (!isVisibleRef.current) return;
     const suggestions = suggestionsRef.current;
     const selected = selectedRef.current;
-    if (['Escape', 'ArrowLeft', 'ArrowRight'].includes(e.code)) hide();
-    if ('ArrowDown' === e.code) {
+    if (['Escape', 'ArrowLeft', 'ArrowRight'].includes(e.key)) hide();
+    if ('ArrowDown' === e.key) {
       select((selected + 1) % suggestions.length);
       e.preventDefault();
       e.stopPropagation();
     }
-    if ('ArrowUp' === e.code) {
+    if ('ArrowUp' === e.key) {
       select((selected - 1 + suggestions.length) % suggestions.length);
       e.preventDefault();
       e.stopPropagation();
     }
-    if (['Enter', 'Tab'].includes(e.code)) {
+    if (['Enter', 'Tab'].includes(e.key)) {
       autocomplete(suggestions[selected]);
       e.preventDefault();
       e.stopPropagation();
