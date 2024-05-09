@@ -61,7 +61,7 @@ const ShareCardDialog = () => {
 
     return <>
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="max-w-[100vw] w-auto">
+            <DialogContent className="md:max-w-[100vw] w-auto overflow-auto">
                 <DialogHeader>
                     <DialogTitle>生成分享图</DialogTitle>
                     <DialogDescription>
@@ -103,12 +103,12 @@ const ShareCardDialog = () => {
                     <Button variant="outline" onClick={run}>更换背景图</Button>
                     <Button variant="outline" onClick={
                         () => imageDownload(refs.current[0])
-                    }>下载第一个</Button>
+                    }>下载风格1</Button>
                     <Button variant="outline"
                         onClick={
                             () => imageDownload(refs.current[1])
                         }
-                    >下载第二个</Button>
+                    >下载风格2</Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
