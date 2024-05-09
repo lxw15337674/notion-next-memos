@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Textarea } from '@mui/joy';
 import Icon from '../Icon';
 import TagSuggestions from './TagSuggestions';
@@ -14,16 +14,18 @@ interface Props {
   onCancel?: () => void;
   defaultValue?: string;
 }
+export interface  ReplaceTextFunction{
+  (text: string,start:number,end:number, cursorOffset?:number):void
+}
+
 const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
   const { fetchTags } = useTagStore();
   const [loading, setLoading] = React.useState(false);
-  const editorRef = useRef<HTMLTextAreaElement | null>(null);
-  const { run: insertText } = useDebounceFn((text: string, offset = 0) => {
-    const editor = editorRef.current;
+  const [editorRef,setEditorRef] = useState<HTMLTextAreaElement|null >(null);
+  const { run: replaceText } = useDebounceFn<ReplaceTextFunction>((text,start,end,offset=0) => {
+    const editor = editorRef;
     if (editor) {
       const value = editor.value;
-      const start = editor.selectionStart;
-      const end = editor.selectionEnd;
       const newValue = value.slice(0, start) + `${text} ` + value.slice(end);
       editor.value = newValue;
       setTimeout(() => {
@@ -37,7 +39,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
     }
   }, { wait: 200 });
   const onSave = async () => {
-    const editor = editorRef.current;
+    const editor = editorRef;
     if (!editor) {
       return
     }
@@ -52,7 +54,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
   };
   useKeyPress('ctrl.enter', (e) => {
     // 判断是否focus
-    if (editorRef.current === document.activeElement) {
+    if (editorRef === document.activeElement) {
       e.preventDefault();
       e.stopPropagation();
       onSave();
@@ -66,7 +68,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
         minRows={3}
         autoFocus
         defaultValue={defaultValue}
-        slotProps={{ textarea: { ref: editorRef } }}
+        slotProps={{ textarea: { ref: setEditorRef } }}
         endDecorator={
           <Box
             className="py-1 border-t  flex items-center flex-auto "
@@ -74,7 +76,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => insertText('#', 0)}
+              onClick={() => replaceText('#', 0)}
             >
               <Icon.Hash size={16} />
             </Button>
@@ -106,7 +108,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
           </Box>
         }
       />
-      <TagSuggestions editorRef={editorRef} insertText={insertText} />
+      <TagSuggestions editorRef={editorRef} replaceText={replaceText} />
     </div>
   );
 };

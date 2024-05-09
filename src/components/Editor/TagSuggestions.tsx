@@ -5,19 +5,19 @@ import getCaretCoordinates from 'textarea-caret';
 import { Card } from '../ui/card';
 import classNames from 'classnames';
 import { match } from 'pinyin-pro';
+import { ReplaceTextFunction } from '.';
 
 type Position = { left: number; top: number; height: number };
 interface Props {
-  editorRef?: React.RefObject<HTMLTextAreaElement>;
-  insertText: (text: string, offset?: number) => void;
+  editorRef: HTMLTextAreaElement | null;
+  replaceText: ReplaceTextFunction;
 }
-const TagSuggestions = ({ editorRef, insertText }: Props) => {
+const TagSuggestions = ({ editorRef, replaceText }: Props) => {
   const [position, setPosition] = useState<Position | null>(null);
   const tagStore = useTagStore();
   const tagsRef = useRef(Array.from(tagStore.tags));
   tagsRef.current = Array.from(tagStore.tags);
-  const editor = editorRef?.current
-
+  const editor = editorRef
   const [selected, select] = useState(0);
   const selectedRef = useRef(selected);
   selectedRef.current = selected;
@@ -51,8 +51,8 @@ const TagSuggestions = ({ editorRef, insertText }: Props) => {
   isVisibleRef.current = !!(position && suggestionsRef.current.length > 0);
 
   const autocomplete = (tag: string) => {
-    const [word] = getCurrentWord();
-    insertText(tag.slice(word.length - 1), 1);
+    const [word, start] = getCurrentWord();
+    replaceText(`#${tag}`, start, start + word.length, 1);
     hide();
   };
 
@@ -99,7 +99,6 @@ const TagSuggestions = ({ editorRef, insertText }: Props) => {
     listenersAreRegisteredRef.current = true;
   };
   useEffect(registerListeners, [!!editor]);
-
   if (!isVisibleRef.current || !position) return null;
   return (
     <Card
