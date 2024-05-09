@@ -16,7 +16,7 @@ import useShareCardStore from "@/store/shareCard";
 import ImageBackgroundCard from "./ImageBackgroundCard";
 import XiaohongshuCard from "./XiaohongshuCard";
 import { toBlob } from "html-to-image";
-
+import { Checkbox } from "../ui/checkbox";
 
 const image = "https://source.unsplash.com/random/1080x1920?wallpapers";
 
@@ -50,13 +50,15 @@ const imageDownload = async (card: HTMLDivElement) => {
     }
 };
 const ShareCardDialog = () => {
-    const { text, open, setOpen } = useShareCardStore();
+    const { text, open, setOpen, toggleShowTags, isShowTags } = useShareCardStore();
     const { data: url, run } = useRequest(getImageUrl)
     const content = useMemo(() => {
-        return text.map((item) => {
+        return text.map((content) => {
+            return content.filter((item) => item.type === 'text' || isShowTags && item.type === 'tag')
+        }).map((item) => {
             return item.map((i) => i.text).join('')
         });
-    }, [text])
+    }, [text, isShowTags])
     const refs = useRef<HTMLDivElement[]>([]);
 
     return <>
@@ -99,7 +101,20 @@ const ShareCardDialog = () => {
                         </div>
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter>
+                <DialogFooter >
+                    <div className="items-center flex space-x-2 cursor-pointer">
+                        <Checkbox id="terms1" checked={isShowTags}
+                            onCheckedChange={toggleShowTags}
+                        />
+                        <div className="grid gap-1.5 leading-none">
+                            <label
+                                htmlFor="terms1"
+                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                是否过滤标签
+                            </label>
+                        </div>
+                    </div>
                     <Button variant="outline" onClick={run}>更换背景图</Button>
                     <Button variant="outline" onClick={
                         () => imageDownload(refs.current[0])
