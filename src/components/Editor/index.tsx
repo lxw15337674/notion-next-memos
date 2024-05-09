@@ -14,15 +14,15 @@ interface Props {
   onCancel?: () => void;
   defaultValue?: string;
 }
-export interface  ReplaceTextFunction{
-  (text: string,start:number,end:number, cursorOffset?:number):void
+export interface ReplaceTextFunction {
+  (text: string, start: number, end: number, cursorOffset?: number): void
 }
 
 const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
   const { fetchTags } = useTagStore();
   const [loading, setLoading] = React.useState(false);
-  const [editorRef,setEditorRef] = useState<HTMLTextAreaElement|null >(null);
-  const { run: replaceText } = useDebounceFn<ReplaceTextFunction>((text,start,end,offset=0) => {
+  const [editorRef, setEditorRef] = useState<HTMLTextAreaElement | null>(null);
+  const { run: replaceText } = useDebounceFn<ReplaceTextFunction>((text, start, end, offset = 0) => {
     const editor = editorRef;
     if (editor) {
       const value = editor.value;
@@ -76,7 +76,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => replaceText('#', 0)}
+              onClick={() => replaceText('#', editorRef?.selectionStart, editorRef?.selectionStart, 0)}
             >
               <Icon.Hash size={16} />
             </Button>
