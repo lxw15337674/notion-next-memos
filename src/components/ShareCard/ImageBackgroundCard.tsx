@@ -20,7 +20,7 @@ function ImageBackgroundCard({ url, content, date, cardRef }: CardProps) {
                 style={{ backgroundColor: '#1F2937' }}
             />
             {/* 内容区域 */}
-            <div className="relative h-full w-full p-4 text-white overflow-hidden">
+            <div className="relative h-full w-full p-4 text-white overflow-hidden ">
                 <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">
                     <div className="w-full text-center text-2xl font-cursive font-normal">
                         {content.map((item, index) => (

@@ -83,7 +83,7 @@ const ShareCardDialog = () => {
                 <DialogHeader>
                     <DialogTitle>生成分享图</DialogTitle>
                     <DialogDescription>
-                        <div className="mt-2 flex justify-center ">
+                        <div className="mt-2 flex  overflow-auto max-h-[80vh] max-w-[80vw]">
                             {
                                 ShardCards.map((item, index) => {
                                     const { name, component: Card } = item;
