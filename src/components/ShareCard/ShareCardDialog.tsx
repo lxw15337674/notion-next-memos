@@ -17,6 +17,7 @@ import ImageBackgroundCard from "./ImageBackgroundCard";
 import XiaohongshuCard from "./XiaohongshuCard";
 import { toBlob } from "html-to-image";
 import { Checkbox } from "../ui/checkbox";
+import SpotifyCard from "./SpotifyCard";
 
 const image = "https://source.unsplash.com/random/1080x1920?wallpapers";
 
@@ -24,6 +25,21 @@ const getImageUrl = async () => {
     const res = await fetch(image);
     return res.url;
 }
+
+const ShardCards = [
+    {
+        name: '小红书风格',
+        component: XiaohongshuCard
+    },
+    {
+        name: '图片背景风格',
+        component: ImageBackgroundCard
+    },
+    {
+        name: 'Spotify风格',
+        component: SpotifyCard
+    }
+]
 
 const imageDownload = async (card: HTMLDivElement) => {
     if (!card) return;
@@ -67,37 +83,27 @@ const ShareCardDialog = () => {
                 <DialogHeader>
                     <DialogTitle>生成分享图</DialogTitle>
                     <DialogDescription>
-                        <div className="mt-2 flex justify-center items-center">
-                            <div
-                                className="border"
-                            >
-                                <XiaohongshuCard
-                                    url={url}
-                                    cardRef={ref => {
-                                        if (ref) {
-                                            refs.current[0] = ref
-                                        }
-                                    }}
-                                    content={content}
-                                    date={format(new Date(), 'yyyy-MM-dd')}
-                                />
-
-                            </div>
-                            <div
-                                className="border ml-4"
-                            >
-                                <ImageBackgroundCard
-                                    url={url}
-                                    cardRef={ref => {
-                                        if (ref) {
-                                            refs.current[1] = ref
-                                        }
-                                    }}
-                                    content={content}
-                                    date={format(new Date(), 'yyyy-MM-dd')}
-                                />
-
-                            </div>
+                        <div className="mt-2 flex justify-center ">
+                            {
+                                ShardCards.map((item, index) => {
+                                    const { name, component: Card } = item;
+                                    return <div className="mr-4 " key={index}>
+                                        <div className="text-center md:text-base mb-2 text-white">{name}</div>
+                                        <div className="border">
+                                        <Card
+                                            url={url}
+                                            cardRef={ref => {
+                                                if (ref) {
+                                                    refs.current[index] = ref
+                                                }
+                                            }}
+                                            content={content}
+                                            date={format(new Date(), 'yyyy-MM-dd')}
+                                        />
+                                        </div>
+                                    </div>
+                                })
+                            }
                         </div>
                     </DialogDescription>
                 </DialogHeader>
@@ -116,14 +122,11 @@ const ShareCardDialog = () => {
                         </div>
                     </div>
                     <Button variant="outline" onClick={run}>更换背景图</Button>
-                    <Button variant="outline" onClick={
-                        () => imageDownload(refs.current[0])
-                    }>下载风格1</Button>
-                    <Button variant="outline"
-                        onClick={
-                            () => imageDownload(refs.current[1])
-                        }
-                    >下载风格2</Button>
+                    {
+                        ShardCards.map((item, index) => {
+                            return <Button key={index} variant="outline" onClick={() => imageDownload(refs.current[index])}>下载{item.name}</Button>
+                        })
+                    }
                 </DialogFooter>
             </DialogContent>
         </Dialog>

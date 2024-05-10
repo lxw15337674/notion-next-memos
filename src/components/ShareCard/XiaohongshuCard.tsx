@@ -14,7 +14,7 @@ function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
             {/* 背景图片 */}
             {url && (
                 <div
-                    className=" inset-0 aspect-[3/4]  backdrop-filter backdrop-blur-none "
+                    className=" inset-0 aspect-[3/4]  backdrop-filter backdrop-blur-none  rounded-lg p-4 shadow-md"
                     style={{
                         backgroundImage: `url(${url})`,
                         backgroundSize: 'cover',
