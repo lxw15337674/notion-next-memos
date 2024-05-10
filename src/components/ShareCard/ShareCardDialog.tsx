@@ -111,7 +111,7 @@ const ShareCardDialog = () => {
                                 htmlFor="terms1"
                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
-                                是否过滤标签
+                                保留标签
                             </label>
                         </div>
                     </div>
