@@ -12,6 +12,7 @@
     "react/no-unused-prop-types": "warn",
     "react/require-default-props": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    " react-hooks/exhaustive-deps": "off",
     "import/extensions": [
       "warn",
       "ignorePackages",
