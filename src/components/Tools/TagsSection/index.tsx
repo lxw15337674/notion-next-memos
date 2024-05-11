@@ -1,3 +1,4 @@
+"use client"
 import useTagStore from '@/store/tag';
 import TagItemContainer from './TagItemContainer';
 import { ScrollArea } from '@/components/ui/scroll-area';

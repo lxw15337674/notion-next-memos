@@ -1,4 +1,3 @@
-'use client';
 import React from 'react';
 import TagsSection from './TagsSection';
 import Count from './Count';

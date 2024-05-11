@@ -1,5 +1,4 @@
 'use client'
-import { PasswordInput } from "@/components/PasswordInput"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -14,6 +13,7 @@ import useConfigStore from "@/store/config"
 import { useState } from "react"
 import { useRouter } from 'next/navigation';
 import { useMount } from "ahooks"
+import PasswordInput from "@/components/PasswordInput"
 
 export default function Login() {
     const { setAccessCodePermission } = useConfigStore();

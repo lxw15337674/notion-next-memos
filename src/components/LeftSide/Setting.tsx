@@ -14,7 +14,7 @@ import {
 import { Label } from "@/components/ui/label"
 import { Switch } from '../ui/switch';
 import useConfigStore from '@/store/config';
-import { PasswordInput } from '../PasswordInput';
+import PasswordInput  from '../PasswordInput';
 import { Separator } from '../ui/separator';
 import { useRouter } from 'next/navigation';
 import { useThrottleFn } from 'ahooks';

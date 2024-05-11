@@ -1,3 +1,4 @@
+'use client'
 import useFilterStore from '@/store/filter';
 import Icon from '../Icon';
 import { Input } from '@mui/joy';

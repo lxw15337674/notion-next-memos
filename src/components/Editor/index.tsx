@@ -76,7 +76,13 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => replaceText('#', editorRef?.selectionStart, editorRef?.selectionStart, 0)}
+              onClick={() => {
+                if (!editorRef) {
+                  return
+                }
+                replaceText('#', editorRef?.selectionStart, editorRef?.selectionStart, 0)
+              }
+              }
             >
               <Icon.Hash size={16} />
             </Button>

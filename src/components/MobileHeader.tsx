@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import NavigationDrawer from './NavigationDrawer';
 import useIsMobile from '@/hooks/useIsMobile';
 import { ModeToggle } from './LeftSide/ModeToggle';
-import { Config } from './LeftSide/Setting';
+import { Setting } from './LeftSide/Setting';
 
 interface Props {
   className?: string;
@@ -35,7 +35,7 @@ const MobileHeader = (props: Props) => {
         <div className='mr-1'>
           <ModeToggle />
         </div>
-        <Config/>
+        <Setting/>
       </div>
     </div>
   );

@@ -9,7 +9,6 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, type, ...props }, ref) => {
         const [showPassword, setShowPassword] = React.useState(false);
         const togglePasswordVisibility = () => setShowPassword(!showPassword);
-
         return (
             <div className={cn('relative', className)}>
                 <input
@@ -37,5 +36,5 @@ const PasswordInput = React.forwardRef<HTMLInputElement, InputProps>(
         );
     },
 );
-
-export { PasswordInput }
+PasswordInput.displayName = "PasswordInput";
+export default PasswordInput 
