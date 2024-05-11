@@ -1,13 +1,8 @@
 import React, { LegacyRef } from 'react';
+import { CardProps } from './XiaohongshuCard';
 
-export interface CardProps {
-    url?: string;
-    content: string[];
-    date: string;
-    cardRef?: LegacyRef<HTMLDivElement>;
-}
 
-function XiaohongshuCard({  content, date, cardRef, userName }: CardProps) {
+function SpotifyCard({  content, date, cardRef, userName }: CardProps) {
     return (
         <div ref={cardRef} className="relative w-64   p-2 bg-[#77767c]">
             <div className="bg-[#898991] rounded-lg p-4 shadow-md">
@@ -33,4 +28,4 @@ function XiaohongshuCard({  content, date, cardRef, userName }: CardProps) {
     );
 }
 
-export default XiaohongshuCard;
+export default SpotifyCard;
