@@ -1,5 +1,5 @@
-# **💭memos** 
-
+# **💭NMemos** 
+Quick notes, powered by Notion
 ## Preview
 
 Live Demo：https://noiton-next-memos-demo.vercel.app
