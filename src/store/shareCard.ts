@@ -9,7 +9,7 @@ interface ShareCardStore {
     isShowTags: boolean;
     toggleShowTags: () => void;
     openShareCord: (text: Content[][]) => void;
-    setOpen: (open:boolean) => void;
+    setOpen: (open: boolean) => void;
 }
 
 const useShareCardStore = create<ShareCardStore>()(
@@ -17,7 +17,7 @@ const useShareCardStore = create<ShareCardStore>()(
         (set) => ({
             text: [],
             open: false,
-            isShowTags: true,
+            isShowTags: false,
             toggleShowTags: () => {
                 set((state) => ({ isShowTags: !state.isShowTags }));
             },
