@@ -1,4 +1,4 @@
-# **💭NMemos** 
+# **💭Nmemos** 
 **Quick notes, powered by Notion**
 ## Preview
 
