@@ -40,7 +40,7 @@ const ShardCards = [
         component: SpotifyCard
     }
 ]
-
+const userName = process.env.USERNAME
 const imageDownload = async (card: HTMLDivElement) => {
     if (!card) return;
     try {
@@ -97,6 +97,7 @@ const ShareCardDialog = () => {
                                                     refs.current[index] = ref
                                                 }
                                             }}
+                                                userName={userName}
                                             content={content}
                                             date={format(new Date(), 'yyyy-MM-dd')}
                                         />

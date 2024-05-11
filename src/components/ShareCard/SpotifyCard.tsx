@@ -7,14 +7,13 @@ export interface CardProps {
     cardRef?: LegacyRef<HTMLDivElement>;
 }
 
-function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
-
+function XiaohongshuCard({  content, date, cardRef, userName }: CardProps) {
     return (
         <div ref={cardRef} className="relative w-64   p-2 bg-[#77767c]">
             <div className="bg-[#898991] rounded-lg p-4 shadow-md">
                 <div className="flex items-center mb-4">
                     <div>
-                        <p className="text-black font-bold">Bhwa233</p>
+                        <p className="text-black font-bold">{userName}</p>
                         <p className="text-gray-950 text-sm">{date}</p>
                     </div>
                 </div>

@@ -5,12 +5,12 @@ export interface CardProps {
     content: string[];
     date: string;
     cardRef?: LegacyRef<HTMLDivElement>;
+    userName?: string;
 }
 
-function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
-    
+function XiaohongshuCard({ url, content, date, cardRef, userName }: CardProps) {
     return (
-        <div ref={cardRef} className="relative aspect-[3/4] w-64 bg-background  p-2 ">
+        <div ref={cardRef} className="relative aspect-[3/4] w-64 bg-background  p-2">
             {/* 背景图片 */}
             {url && (
                 <div
@@ -25,7 +25,7 @@ function XiaohongshuCard({ url, content, date, cardRef }: CardProps) {
             <div className="relative w-full pt-1  dark:text-white text-gray-900">
                 {/* 作者和日期 */}
                 <div className="opacity-80 text-xs mb-1 flex justify-between">
-                    <span>Bhwa233</span>
+                    <span>{userName}</span>
                     <span> {date}</span>
                 </div>
                 <div className="relative z-10 flex h-full w-full flex-col items-center justify-center">

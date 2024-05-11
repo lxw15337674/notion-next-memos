@@ -3,7 +3,7 @@ import { CardProps } from './XiaohongshuCard';
 
 
 
-function ImageBackgroundCard({ url, content, date, cardRef }: CardProps) {
+function ImageBackgroundCard({ url, content, date, cardRef, userName }: CardProps) {
     return (
         <div className="relative aspect-[3/4] w-96" ref={cardRef}>
             {/* 背景图片 */}
@@ -32,7 +32,7 @@ function ImageBackgroundCard({ url, content, date, cardRef }: CardProps) {
                 </div>
                 {/* 作者和日期 */}
                 <div className="absolute bottom-6 right-2 left-2 opacity-80 text-sm text-center">
-                    <div>Bhwa233</div>
+                    <div>{userName}</div>
                     <div>{date}</div>
                 </div>
                 {/* 来源 */}
