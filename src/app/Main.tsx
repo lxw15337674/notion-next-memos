@@ -6,6 +6,8 @@ import { useFavicon, useMount, useTitle } from 'ahooks';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import useCountStore from '@/store/count';
 import { ExtendedRecordMap } from 'notion-types';
+import { useRouter } from 'next/navigation';
+import useConfigStore from '@/store/config';
 interface Props {
     recordMap: ExtendedRecordMap;
 }
@@ -16,7 +18,16 @@ export default function Home({ recordMap }: Props) {
     const { memos, fetchInitData, fetchPagedData, databases } = useMemoStore();
     const { fetchTags } = useTagStore();
     const { setRecordMap } = useCountStore();
+    const { setAccessCodePermission, config, setEditCodePermission } = useConfigStore();
+    const router = useRouter();
     useMount(() => {
+        setAccessCodePermission(config.codeConfig.accessCode).then((hasAccessCodePermission) => {
+            if (!hasAccessCodePermission) {
+                router.push('/login')
+                return
+            }
+        });
+        setEditCodePermission(config.codeConfig.editCode);
         fetchInitData();
         fetchTags();
         setRecordMap(recordMap);
