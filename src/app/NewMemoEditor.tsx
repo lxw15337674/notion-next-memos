@@ -4,6 +4,7 @@ import Editor from '@/components/Editor';
 import { useRequest } from 'ahooks';
 import { createPageInDatabase } from '@/api/actions';
 import useMemoStore from '@/store/memo';
+import useConfigStore from '@/store/config';
 
 const NewMemoEditor: React.FC = () => {
     const { insertMemo } = useMemoStore();

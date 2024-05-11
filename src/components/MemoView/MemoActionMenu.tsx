@@ -11,10 +11,9 @@ import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/components/ui/use-toast';
 import useMemoStore from '@/store/memo';
 import { Button } from '../ui/button';
-import ShareCardDialog from '../ShareCard/ShareCardDialog';
-import { useState } from 'react';
 import { Content } from '@/utils/parser';
 import useShareCardStore from '@/store/shareCard';
+import useConfigStore from '@/store/config';
 
 interface Props {
   memoId: string;
@@ -25,6 +24,7 @@ interface Props {
 const MemoActionMenu = (props: Props) => {
   const { memoId, onEdit, parsedContent } = props;
   const { openShareCord } = useShareCardStore()
+  const { hasEditCodePermission } = useConfigStore()
   const { toast } = useToast();
   const { removeMemo, insertMemo } = useMemoStore();
   const handleDeleteMemoClick = async () => {
@@ -75,20 +75,23 @@ const MemoActionMenu = (props: Props) => {
           >
             生成分享图
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={handleEditMemoClick}
-          >
-            编辑
-          </DropdownMenuItem>
+          {
+            hasEditCodePermission && <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={handleEditMemoClick}
+              >
+                编辑
+              </DropdownMenuItem>
 
-          <DropdownMenuItem
-            className="cursor-pointer text-red-500 dark:text-red-400"
-            onClick={handleDeleteMemoClick}
-          >
-            删除
-          </DropdownMenuItem>
+              <DropdownMenuItem
+                className="cursor-pointer text-red-500 dark:text-red-400"
+                onClick={handleDeleteMemoClick}
+              >
+                删除
+              </DropdownMenuItem></>
+          }
         </DropdownMenuContent>
       </DropdownMenu>
     </>

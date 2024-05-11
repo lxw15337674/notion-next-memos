@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { format } from "date-fns";
 import {
@@ -11,13 +11,14 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/components/ui/dialog"
-import { useRequest } from "ahooks";
+import { useBoolean, useRequest } from "ahooks";
 import useShareCardStore from "@/store/shareCard";
 import ImageBackgroundCard from "./ImageBackgroundCard";
 import XiaohongshuCard from "./XiaohongshuCard";
 import { toBlob } from "html-to-image";
 import { Checkbox } from "../ui/checkbox";
 import SpotifyCard from "./SpotifyCard";
+import useConfigStore from "@/store/config";
 
 const image = "https://source.unsplash.com/random/1080x1920?wallpapers";
 
@@ -66,8 +67,12 @@ const imageDownload = async (card: HTMLDivElement) => {
     }
 };
 const ShareCardDialog = () => {
-    const { text, open, setOpen, toggleShowTags, isShowTags } = useShareCardStore();
-    const { data: url, run } = useRequest(getImageUrl)
+    const { text, open, setOpen } = useShareCardStore();
+    const { config } = useConfigStore()
+    const [isShowTags, { toggle: toggleShowTags }] = useBoolean(config.generalConfig.isShowTagsInShareCard)
+    const { data: url, run } = useRequest(getImageUrl, {
+        manual: true
+    })
     const content = useMemo(() => {
         return text.map((content) => {
             return content.filter((item) => item.type === 'text' || isShowTags && item.type === 'tag')
@@ -90,17 +95,17 @@ const ShareCardDialog = () => {
                                     return <div className="mr-4 " key={index}>
                                         <div className="text-center md:text-base mb-2 text-white">{name}</div>
                                         <div className="border">
-                                        <Card
-                                            url={url}
-                                            cardRef={ref => {
-                                                if (ref) {
-                                                    refs.current[index] = ref
-                                                }
-                                            }}
+                                            <Card
+                                                url={url}
+                                                cardRef={ref => {
+                                                    if (ref) {
+                                                        refs.current[index] = ref
+                                                    }
+                                                }}
                                                 userName={userName}
-                                            content={content}
-                                            date={format(new Date(), 'yyyy-MM-dd')}
-                                        />
+                                                content={content}
+                                                date={format(new Date(), 'yyyy-MM-dd')}
+                                            />
                                         </div>
                                     </div>
                                 })

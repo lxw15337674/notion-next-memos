@@ -1,5 +1,6 @@
 'use server';
 import { Client } from '@notionhq/client';
+import { NotionAPI } from 'notion-client'
 import {
   CreatePageParameters,
   DatabaseObjectResponse,
@@ -86,4 +87,31 @@ export async function getAllLabels() {
   });
   return (listUsersResponse.properties.tags as any)?.multi_select
     ?.options as TagType[];
+}
+
+
+export async function validateAccessCode(password?: string) {
+  if (!process.env.ACCESS_CODE) {
+    return true;
+  }
+  return password === process.env.ACCESS_CODE;
+}
+
+export async function validateEditCode(password?: string) {
+  if (!process.env.EDIT_CODE) {
+    return true;
+  }
+  return password === process.env.EDIT_CODE;
+}
+
+const api = new NotionAPI({
+  activeUser: process.env.NOTION_ACTIVE_USER,
+  authToken: process.env.NOTION_TOKEN_V2
+})
+
+
+export async function getDBMeta() {
+  const recordMap = await api.getPage(process.env.NOTION_DATABASE_ID!, {
+  })
+  return recordMap
 }

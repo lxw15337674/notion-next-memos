@@ -2,7 +2,8 @@
 import classNames from 'classnames';
 import NavigationDrawer from './NavigationDrawer';
 import useIsMobile from '@/hooks/useIsMobile';
-import { ModeToggle } from './ModeToggle';
+import { ModeToggle } from './LeftSide/ModeToggle';
+import { Config } from './LeftSide/Setting';
 
 interface Props {
   className?: string;
@@ -30,8 +31,11 @@ const MobileHeader = (props: Props) => {
           笔记
         </span> */}
       </div>
-      <div className="flex flex-row justify-end items-center">
-        <ModeToggle />
+      <div className="flex flex-row justify-end items-center ">
+        <div className='mr-1'>
+          <ModeToggle />
+        </div>
+        <Config/>
       </div>
     </div>
   );

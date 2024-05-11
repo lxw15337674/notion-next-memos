@@ -14,6 +14,7 @@ import Editor from '../Editor';
 import useMemoStore from '@/store/memo';
 import { useRequest } from 'ahooks';
 import { updatePageProperties } from '@/api/actions';
+import useConfigStore from '@/store/config';
 
 const MemoView: React.FC<DatabaseObjectResponse> = ({
   properties,
@@ -31,6 +32,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
     return convertGMTDateToLocal(last_edited_time);
   }, [last_edited_time]);
   const { updateMemo } = useMemoStore();
+  const { config } = useConfigStore()
   const { runAsync: updateRecord } = useRequest(updatePageProperties, {
     manual: true,
     onSuccess: (data) => {
@@ -83,7 +85,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
       <div className="font-medium">
         {parsedContent.map((item, index) => (
           <p key={index} className="whitespace-pre-wrap break-words w-full leading-6 text-sm">
-            {item.filter(item => item.type !== 'tag').map((textItem, textIndex) => (
+            {item.filter(item => config.generalConfig.isShowTags || item.type !== 'tag').map((textItem, textIndex) => (
               <span key={textIndex}>{textItem.text}</span>
             ))}
           </p>

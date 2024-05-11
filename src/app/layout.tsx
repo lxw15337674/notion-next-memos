@@ -4,15 +4,8 @@ import { CssVarsProvider } from '@mui/joy';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import MobileHeader from '@/components/MobileHeader';
-import { Metadata } from 'next';
-import Head from 'next/head';
 
-// export const metadata: Metadata = {
-//   title: 'memos',
-//   description: 'memos by notion api',
-// };
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -29,11 +22,8 @@ export default async function RootLayout({
               disableTransitionOnChange
             >
               <Toaster />
-              <div className="h-full">
-                <MobileHeader />
-                <LeftSide />
-                <div className="flex-1 md:ml-40 md:pl-6 px-4">{children}</div>
-              </div>
+              {children}
+            
             </ThemeProvider>
           </CssVarsProvider>
         </body>
