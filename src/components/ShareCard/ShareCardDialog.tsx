@@ -19,11 +19,16 @@ import { toBlob } from "html-to-image";
 import { Checkbox } from "../ui/checkbox";
 import SpotifyCard from "./SpotifyCard";
 import useConfigStore from "@/store/config";
-
-const image = "https://source.unsplash.com/random/1080x1920?wallpapers";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const getImageUrl = async () => {
-    const res = await fetch(image);
+    const ImageUrl = "https://source.unsplash.com/random/1080x1920?wallpapers";
+    const res = await fetch(ImageUrl);
     return res.url;
 }
 
@@ -41,7 +46,7 @@ const ShardCards = [
         component: SpotifyCard
     }
 ]
-const userName = process.env.USERNAME
+const userName = process.env.USERNAME??'Bhwa233'
 const imageDownload = async (card: HTMLDivElement) => {
     if (!card) return;
     try {
@@ -71,7 +76,7 @@ const ShareCardDialog = () => {
     const { config } = useConfigStore()
     const [isShowTags, { toggle: toggleShowTags }] = useBoolean(config.generalConfig.isShowTagsInShareCard)
     const { data: url, run } = useRequest(getImageUrl, {
-        manual: true
+        manual: false
     })
     const content = useMemo(() => {
         return text.map((content) => {
@@ -81,7 +86,7 @@ const ShareCardDialog = () => {
         });
     }, [text, isShowTags])
     const refs = useRef<HTMLDivElement[]>([]);
-
+    
     return <>
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="md:max-w-[100vw] w-auto overflow-auto">
@@ -113,12 +118,12 @@ const ShareCardDialog = () => {
                         </div>
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter >
-                    <div className="items-center flex space-x-2 cursor-pointer">
+                <DialogFooter className="space-y-2">
+                    <div className="items-center flex space-x-2 cursor-pointer mt-2 mr-4">
                         <Checkbox id="terms1" checked={isShowTags}
                             onCheckedChange={toggleShowTags}
                         />
-                        <div className="grid gap-1.5 leading-none">
+                        <div className="grid gap-1.5 leading-none ">
                             <label
                                 htmlFor="terms1"
                                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -128,11 +133,30 @@ const ShareCardDialog = () => {
                         </div>
                     </div>
                     <Button variant="outline" onClick={run}>更换背景图</Button>
-                    {
-                        ShardCards.map((item, index) => {
-                            return <Button key={index} variant="outline" onClick={() => imageDownload(refs.current[index])}>下载{item.name}</Button>
-                        })
-                    }
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <Button
+                                variant="outline" 
+                                className="w-full md:w-auto"
+                            >
+                               下载
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            {
+                                ShardCards.map((item, index) => {
+                                    return <DropdownMenuItem
+                                        key={index}
+                                        className="cursor-pointer"
+                                        onClick={() => imageDownload(refs.current[index])}
+                                    >
+                                        下载{item.name}
+                                    </DropdownMenuItem>
+                                }
+                                )
+                            }
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
