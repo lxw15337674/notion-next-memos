@@ -85,9 +85,23 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
       <div className="font-medium">
         {parsedContent.map((item, index) => (
           <p key={index} className="whitespace-pre-wrap break-words w-full leading-6 text-sm">
-            {item.filter(item => config.generalConfig.isShowTags || item.type !== 'tag').map((textItem, textIndex) => (
-              <span key={textIndex}>{textItem.text}</span>
-            ))}
+            {
+              item.map(item => {
+                if (item.type === 'tag') {
+                  if (!config.generalConfig.isShowTags) {
+                    return null
+                  }
+                  return <Tag
+                    className="bg-blue-100 text-blue-800 font-medium mx-[1px] px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
+                    text={item.text}
+                    key={item.text}
+                  >
+                    #{item.text}
+                  </Tag>
+                }
+                return <span key={item.text}>{item.text}</span>
+              })
+            }
           </p>
         ))}
       </div>
