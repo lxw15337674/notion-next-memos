@@ -1,9 +1,14 @@
 import { Properties } from '@/type';
 
+enum ContentType {
+  Text = 'text',
+  Tag = 'tag',
+}
 export interface Content {
   text: string;
-  type: 'text' | 'tag';
+  type: ContentType
 }
+
 export function parseContent(text: string): Content[] {
   const res: Content[] = [];
   let buffer = '';
@@ -12,27 +17,23 @@ export function parseContent(text: string): Content[] {
     const char = text[i];
     // Check for '#' character to start a tag
     if (char === '#') {
-      if (isTag) {
-        if (buffer[buffer.length - 1] === '#') {
-          buffer += char;
-          continue
-        }
-        res.push({ text: buffer, type: 'tag' });
+      if (isTag && buffer.endsWith('#')) {
+        buffer += '#';
       } else {
-        if (buffer.length > 0) {
-          res.push({ text: buffer, type: 'text' });
+        if (buffer) {
+          res.push({ text: buffer, type: isTag ? ContentType.Tag : ContentType.Text });
         }
+        buffer = '#';
+        isTag = true;
       }
-      buffer = '#';
-      isTag = true; // We are now inside a tag
     }
     // Check for ' ' to end a tag
     else if ([' '].includes(char) && isTag) {
       if (buffer !== '#') {
-        res.push({ text: buffer, type: 'tag' });
+        res.push({ text: buffer, type: ContentType.Tag });
         buffer = '';
       }
-      buffer += ' '
+      buffer += ' ';
       isTag = false; // We are now outside a tag
     }
     // Append other characters to buffer
@@ -46,9 +47,8 @@ export function parseContent(text: string): Content[] {
     if (buffer.split('').every((item) => item === '#')) {
       isTag = false;
     }
-    res.push({ text: buffer, type: isTag ? 'tag' : 'text' });
+    res.push({ text: buffer, type: isTag ? ContentType.Tag : ContentType.Text });
   }
-
   return res;
 }
 
