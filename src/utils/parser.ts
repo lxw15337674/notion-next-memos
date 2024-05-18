@@ -8,20 +8,26 @@ export function parseContent(text: string): Content[] {
   const res: Content[] = [];
   let buffer = '';
   let isTag = false;
-
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
-
     // Check for '#' character to start a tag
-    if (char === '#' && !isTag) {
-      if (buffer.length > 0) {
-        res.push({ text: buffer, type: 'text' });
+    if (char === '#') {
+      if (isTag) {
+        if (buffer[buffer.length - 1] === '#') {
+          buffer += char;
+          continue
+        }
+        res.push({ text: buffer, type: 'tag' });
+      } else {
+        if (buffer.length > 0) {
+          res.push({ text: buffer, type: 'text' });
+        }
       }
       buffer = '#';
       isTag = true; // We are now inside a tag
     }
     // Check for ' ' to end a tag
-    else if (char === ' ' && isTag) {
+    else if ([' '].includes(char) && isTag) {
       if (buffer !== '#') {
         res.push({ text: buffer, type: 'tag' });
         buffer = '';
@@ -68,9 +74,7 @@ export function convertGMTDateToLocal(gmtDateString: string) {
   const seconds = gmtDate.getSeconds().toString().padStart(2, '0');
 
   // Create the local datetime string
-  const localDatetimeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-
-  return localDatetimeString;
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
 
@@ -98,7 +102,7 @@ export function splitMode(content: string): Properties {
         text: {
           content: text,
         },
-      })), 
+      })),
     },
     tags: {
       multi_select: tags.map((tag) => ({

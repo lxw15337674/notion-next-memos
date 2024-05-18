@@ -17,6 +17,14 @@ describe('parseContent ', () => {
       { text: ' 123', type: 'text' },
     ]);
   });
+  test('test 1#123#234', () => {
+    expect(parseContent('1#123#234')).toEqual([
+      { text: '1', type: 'text' },
+      { text: '#123', type: 'tag' },
+      { text: '#234', type: 'tag' },
+    ]);
+  });
+  
   test('test url', () => {
     expect(parseContent('https://www.baidu.com')).toEqual([
       { text: 'https://www.baidu.com', type: 'text' },
