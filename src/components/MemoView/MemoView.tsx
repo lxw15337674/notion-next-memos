@@ -96,7 +96,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
                     text={item.text}
                     key={item.text}
                   >
-                    #{item.text}
+                    {item.text}
                   </Tag>
                 }
                 return <span key={item.text}>{item.text}</span>
