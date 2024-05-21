@@ -64,10 +64,12 @@ const ActivityCalendar: React.FC = () => {
       </tr>
     );
   };
-
   return (
     <Card className=" w-full ">
       <Calendar
+        disabled={(date)=>{
+          return date > new Date();
+        }}
         locale={zhCN}
         captionLayout="dropdown"
         className="px-1 py-2 "
