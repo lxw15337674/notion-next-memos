@@ -1,5 +1,4 @@
 import Tools from '@/components/Tools';
-import Head from 'next/head';
 import React from 'react';
 
 const SideBar: React.FC = () => {
