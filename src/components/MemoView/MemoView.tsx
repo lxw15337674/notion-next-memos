@@ -86,7 +86,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
         {parsedContent.map((item, index) => (
           <p key={index} className="whitespace-pre-wrap break-words w-full leading-6 text-sm">
             {
-              item.map(item => {
+              item.map((item, index) => {
                 if (item.type === 'tag') {
                   if (!config.generalConfig.isShowTags) {
                     return null
@@ -94,12 +94,12 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
                   return <Tag
                     className="bg-blue-100 text-blue-800 font-medium mx-[1px] px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
                     text={item.text}
-                    key={item.text}
+                    key={item.text + index}
                   >
                     {item.text}
                   </Tag>
                 }
-                return <span key={item.text}>{item.text}</span>
+                return <span key={item.text + index}>{item.text}</span>
               })
             }
           </p>
