@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function Home({ recordMap }: Props) {
-    useTitle('memos - 个人笔记本')
+    useTitle('Nmemos')
     useFavicon('/favicon.ico')
     const { memos, fetchInitData, fetchPagedData, databases } = useMemoStore();
     const { fetchTags } = useTagStore();
