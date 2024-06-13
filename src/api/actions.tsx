@@ -46,7 +46,7 @@ export const getDBData = async (config: {
 //     return listUsersResponse.results as DatabaseObjectResponse[]
 // }
 
-export async function createPageInDatabase(content: string) {
+export async function createPageInDatabase(content: string,files?: File[]) {
   const newPageData: CreatePageParameters = {
     parent: { database_id: NOTION_DATABASE_ID },
     properties: splitMode(content) as Record<string, any>,

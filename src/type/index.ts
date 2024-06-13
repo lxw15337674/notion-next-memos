@@ -12,6 +12,13 @@ export interface Properties {
       name: string;
     }[];
   };
+  files: {
+    files: {
+      name: string;
+      type: string;
+      size: number;
+    }[];
+  };
 }
 
 export interface TagType {

@@ -22,6 +22,9 @@ Live Demo：https://noiton-next-memos-demo.vercel.app
 
 - Next.js
 - TypeScript
+- Tailwind
+- Shadcn
+- Ahooks
 
 ## Development
 

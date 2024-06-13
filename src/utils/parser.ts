@@ -111,3 +111,11 @@ export function splitMode(content: string): Properties {
     },
   };
 } 
+
+export function parseFiles(files: File[]): Properties {
+  return  {
+    files:{
+      
+    }
+  }
+}

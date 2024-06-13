@@ -8,9 +8,11 @@ import { Button } from '../ui/button';
 import useTagStore from '@/store/tag';
 import { Loader2 } from 'lucide-react';
 import { useDebounceFn, useKeyPress } from 'ahooks';
+import { useFileUpload } from './useFileUpload';
+import Image from '../Image';
 
 interface Props {
-  onSubmit: (text: string) => Promise<any>;
+  onSubmit: (text: string, files?: File[]) => Promise<any>;
   onCancel?: () => void;
   defaultValue?: string;
 }
@@ -22,6 +24,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
   const { fetchTags } = useTagStore();
   const [loading, setLoading] = React.useState(false);
   const [editorRef, setEditorRef] = useState<HTMLTextAreaElement | null>(null);
+  const [files, uploadFile, removeFile] = useFileUpload()
   const { run: replaceText } = useDebounceFn<ReplaceTextFunction>((text, start, end, offset = 0) => {
     const editor = editorRef;
     if (editor) {
@@ -70,48 +73,76 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
         defaultValue={defaultValue}
         slotProps={{ textarea: { ref: setEditorRef } }}
         endDecorator={
-          <Box
-            className="py-1 border-t  flex items-center flex-auto "
-          >
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => {
-                if (!editorRef) {
-                  return
-                }
-                replaceText('#', editorRef?.selectionStart, editorRef?.selectionStart, 0)
+          <div className='w-full max-w-full'>
+            <div className='flex space-x-1 pb-2'>
+              {
+                files?.map((file, index) => {
+                  return <Image
+                    key={file.name}
+                    src={file.source} alt='file' className='h-[100px] w-[100px]' onDelete={() => {
+                      removeFile(index)
+                    }} />
+                })
               }
-              }
-            >
-              <Icon.Hash size={16} />
-            </Button>
-            <div className="flex items-center ml-auto">
-              {onCancel && <Button
-                disabled={loading}
-                variant="ghost"
-                size='icon'
-                onClick={onCancel}
-                className="w-16 h-8"
-              >
-                取消
-              </Button>
-              }
-              <Button
-                disabled={loading}
-                variant="outline"
-                size="icon"
-                type='submit'
-                onClick={onSave}
-                className="ml-4 w-16 h-8"
-              >
-                {
-                  loading ? <Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20} />
-                }
-              </Button>
             </div>
+            <Box
+              className="py-1 border-t  flex items-center flex-auto "
+            >
+              <Button
+                variant="ghost"
+                size="icon"
+                title='插入标签'
+                onClick={() => {
+                  if (!editorRef) {
+                    return
+                  }
+                  replaceText('#', editorRef?.selectionStart, editorRef?.selectionStart, 0)
+                }
+                }
+              >
+                <Icon.Hash size={20} />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                title='插入图片，最大9张，单张最大5MB'
+                onClick={() => {
+                  if (!editorRef) {
+                    return
+                  }
+                  uploadFile()
+                }
+                }
+              >
+                <Icon.Paperclip size={20} />
+              </Button>
+              <div className="flex items-center ml-auto">
+                {onCancel && <Button
+                  disabled={loading}
+                  variant="ghost"
+                  size='icon'
+                  onClick={onCancel}
+                  className="w-16 h-8"
+                >
+                  取消
+                </Button>
+                }
+                <Button
+                  disabled={loading}
+                  variant="outline"
+                  size="icon"
+                  type='submit'
+                  onClick={onSave}
+                  className="ml-4 w-16 h-8"
+                >
+                  {
+                    loading ? <Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20} />
+                  }
+                </Button>
+              </div>
 
-          </Box>
+            </Box>
+          </div>
         }
       />
       <TagSuggestions editorRef={editorRef} replaceText={replaceText} />
