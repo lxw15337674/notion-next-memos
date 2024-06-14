@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { ModeToggle } from './ModeToggle';
 import { Setting } from './Setting';
@@ -5,6 +6,7 @@ import { Setting } from './Setting';
 const LeftSide = () => {
   return (
     <div
+      suppressHydrationWarning 
       className="
         hidden 
         md:flex
