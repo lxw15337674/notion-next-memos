@@ -94,7 +94,18 @@ export function splitMode(content: string, fileUrls?: string[]): Properties {
     }
     return text
   })
-  // text = text.slice(0, -1)
+  let imagesContent: { type: string; text: { content: string; link: { url: string; }; }; }[] = []
+  if (fileUrls){
+    imagesContent = fileUrls.map((url) => ({
+      type:'text',
+      text:{
+        "content": url,
+        "link": {
+          url
+        }
+      }
+    }))
+  }
   return {
     content: {
       rich_text: richTexts.map((text) => ({
@@ -110,15 +121,7 @@ export function splitMode(content: string, fileUrls?: string[]): Properties {
       })),
     },
     images:{
-      rich_text: fileUrls?.map((url) => ({
-        type:'text',
-        text:{
-          "content": url,
-          "link": {
-            url
-          }
-        }
-      }))
+      rich_text: imagesContent
     }
   };
 } 
