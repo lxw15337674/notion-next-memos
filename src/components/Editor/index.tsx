@@ -16,16 +16,17 @@ interface Props {
   onSubmit: (text: string, fileUrls?: string[]) => Promise<any>;
   onCancel?: () => void;
   defaultValue?: string;
+  defaultUrls?: string[];
 }
 export interface ReplaceTextFunction {
   (text: string, start: number, end: number, cursorOffset?: number): void
 }
 
-const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
+const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
   const { fetchTags } = useTagStore();
   const [loading, setLoading] = React.useState(false);
   const [editorRef, setEditorRef] = useState<HTMLTextAreaElement | null>(null);
-  const [files, uploadFile, removeFile, isUploading, reset] = useFileUpload()
+  const [files, uploadFile, removeFile, isUploading, reset] = useFileUpload(defaultUrls)
   const { run: replaceText } = useDebounceFn<ReplaceTextFunction>((text, start, end, offset = 0) => {
     const editor = editorRef;
     if (editor) {
@@ -82,7 +83,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
                 {
                   files?.map((file, index) => {
                     return <Image
-                        key={file.name}
+                        key={file.source}
                         success={file.success}
                         src={file.source} alt='file' className='h-[100px] w-[100px]' onDelete={() => {
                           removeFile(index)

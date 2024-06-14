@@ -67,14 +67,15 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
   if (isEdited) {
     return (
       <div className='mb-2'>
-        <Editor onSubmit={(text) => updateRecord(id, text)} defaultValue={memoContentText.join('\n')}
+        <Editor onSubmit={(text, fileUrls) => updateRecord(id, text, fileUrls)} defaultValue={memoContentText.join('\n')}
+          defaultUrls={memoImages}
           onCancel={() => setIsEdited(false)}
         />
       </div>
     );
   }
   return (
-    <Card className="mb-2 px-2 py-2 rounded overflow-hidden  w-full">
+    <Card className="mb-2 px-2 py-2 rounded overflow-hidden  w-full space-y-2">
       <div className="flex justify-between items-center text-sm text-gray-500">
         <div>
           {time}
@@ -86,7 +87,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
         </div>
         <MemoActionMenu parsedContent={parsedContent} memoId={id} onEdit={() => setIsEdited(true)} />
       </div>
-      <div className="font-medium">
+      <div className="font-medium ">
         {parsedContent.map((item, index) => (
           <p key={index} className="whitespace-pre-wrap break-words w-full leading-6 text-sm">
             {
@@ -109,7 +110,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
           </p>
         ))}
       </div>
-      <div className="flex flex-wrap gap-2 pb-2  ">
+      <div className="flex flex-wrap gap-2  ">
         <PhotoProvider>
         {
           memoImages.length === 1 ? <Image src={memoImages[0]} alt={memoImages[0]} 
@@ -124,7 +125,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
         }
         </PhotoProvider>
       </div>
-      <div className='mt-4 pt-2'>
+      <div >
         {memoTags?.map((label) => (
           <Tag
             className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "

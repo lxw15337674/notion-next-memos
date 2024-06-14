@@ -67,12 +67,12 @@ export async function archivePage(pageId: string, archived: boolean) {
     console.error(error);
   }
 }
-
-export async function updatePageProperties(pageId: string, content: string) {
+ 
+export async function updatePageProperties(pageId: string, content: string, fileUrls?: string[]) {
   try {
     return (await ClientNotion.pages.update({
       page_id: pageId,
-      properties: splitMode(content) as Record<string, any>
+      properties: splitMode(content, fileUrls) as Record<string, any>
     })) as unknown as DatabaseObjectResponse;
   } catch (error) {
     console.error(error);

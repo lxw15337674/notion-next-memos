@@ -3,7 +3,6 @@ import { useToast } from '../ui/use-toast';
 
 interface ParsedFile {
     source: string;
-    name: string;
     size: number;
     file: File;
     url?: string;
@@ -11,8 +10,19 @@ interface ParsedFile {
 }
 
 
-export const useFileUpload = () => {
-    const [files, setFiles] = useState<ParsedFile[] | null>(null);
+export const useFileUpload = (defaultUrls?: string[]) => {
+    const [files, setFiles] = useState<ParsedFile[] | null>(() => {
+        if (defaultUrls) {
+            return defaultUrls.map(url => ({
+                source: url,
+                size: 0,
+                file: new File([], url),
+                url: url,
+                success: true
+            }))
+        }
+        return null
+    })
     const { toast } = useToast();
     // 上传到图床
     const uploadToGallery = (file: File, index: number) => {
@@ -70,7 +80,6 @@ export const useFileUpload = () => {
                 .map(
                     (file): ParsedFile => ({
                         source: URL.createObjectURL(file),
-                        name: file.name,
                         size: file.size,
                         file,
                     })
@@ -104,7 +113,7 @@ export const useFileUpload = () => {
         setFiles([...files!]);
     }
     const isUploading = files?.some((file) => !file.success) && files?.length > 0;
-    const reset=()=>{
+    const reset = () => {
         setFiles(null)
     }
     return [files, uploadFile, removeFile, isUploading, reset] as const
