@@ -75,7 +75,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
     );
   }
   return (
-    <Card className="mb-2 px-2 py-2 rounded overflow-hidden  w-full space-y-2">
+    <Card className="mb-2 px-2 py-2 rounded overflow-hidden  w-full ">
       <div className="flex justify-between items-center text-sm text-gray-500">
         <div>
           {time}
@@ -87,7 +87,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
         </div>
         <MemoActionMenu parsedContent={parsedContent} memoId={id} onEdit={() => setIsEdited(true)} />
       </div>
-      <div className="font-medium ">
+      <div className="font-medium mb-2">
         {parsedContent.map((item, index) => (
           <p key={index} className="whitespace-pre-wrap break-words w-full leading-6 text-sm">
             {
@@ -110,32 +110,37 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
           </p>
         ))}
       </div>
-      <div className="flex flex-wrap gap-2  ">
-        <PhotoProvider>
-        {
-          memoImages.length === 1 ? <Image src={memoImages[0]} alt={memoImages[0]} 
-            className="max-h-[40vh]" /> : memoImages?.map((url) => (
-            <Image
-              key={url}
-              src={url}
-              alt={url}
-              className="h-[164px] w-[164px]"
-            />
-          ))
-        }
-        </PhotoProvider>
-      </div>
-      <div >
-        {memoTags?.map((label) => (
-          <Tag
-            className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
-            text={label}
-            key={label}
-          >
-            #{label}
-          </Tag>
-        ))}
-      </div>
+      {memoImages.length > 0 &&
+        <div className="flex flex-wrap gap-2  mb-2">
+          <PhotoProvider>
+            {
+              memoImages.length === 1 ? <Image src={memoImages[0]} alt={memoImages[0]}
+                className="max-h-[40vh]" /> : memoImages?.map((url) => (
+                  <Image
+                    key={url}
+                    src={url}
+                    alt={url}
+                    className="h-[164px] w-[164px]"
+                  />
+                ))
+            }
+          </PhotoProvider>
+        </div>
+      }
+      {
+        memoTags.length > 0 && <div className='mb-2'>
+          {memoTags?.map((label) => (
+            <Tag
+              className="bg-blue-100 text-blue-800 font-medium me-0.5 px-1 py-0.5  rounded dark:bg-blue-900 dark:text-blue-300 "
+              text={label}
+              key={label}
+            >
+              #{label}
+            </Tag>
+          ))}
+        </div>
+      }
+     
     </Card>
   );
 };
