@@ -15,8 +15,8 @@ interface ImageProps {
 const Image: React.FC<ImageProps> = ({ src, alt, onDelete, className, success }) => {
     return (
         <PhotoView src={src}>
-            <div className={`relative  ${className} rounded-lg overflow-hidden  ${success === false ? 'opacity-50' : ''}`}>
-                <img src={src} alt={alt} className="object-cover w-full h-full rounded-lg" />
+            <div className={`relative   rounded-lg overflow-hidden h-full  ${success === false ? 'opacity-50' : ''}`}>
+                <img src={src} alt={alt} className={`object-cover rounded-lg  ${className}`} />
                 {
                     onDelete && <Button
                         variant="ghost"

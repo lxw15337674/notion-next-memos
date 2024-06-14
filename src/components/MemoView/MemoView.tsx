@@ -109,11 +109,11 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
           </p>
         ))}
       </div>
-      <div className="flex flex-wrap gap-2 pb-2 ">
+      <div className="flex flex-wrap gap-2 pb-2  ">
         <PhotoProvider>
         {
           memoImages.length === 1 ? <Image src={memoImages[0]} alt={memoImages[0]} 
-            className="max-h-[80%] max-w-[80%]" /> : memoImages?.map((url) => (
+            className="max-h-[40vh]" /> : memoImages?.map((url) => (
             <Image
               key={url}
               src={url}
