@@ -15,6 +15,8 @@ import useMemoStore from '@/store/memo';
 import { useRequest } from 'ahooks';
 import { updatePageProperties } from '@/api/actions';
 import useConfigStore from '@/store/config';
+import Image from '../Image';
+import { PhotoProvider } from 'react-photo-view';
 
 const MemoView: React.FC<DatabaseObjectResponse> = ({
   properties,
@@ -27,7 +29,9 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
     const tags = properties?.tags as unknown as MultiSelectPropertyItemObjectResponse;
     return tags?.multi_select?.map((item) => item.name);
   }, [properties.tags]);
-
+  const memoImages = useMemo(() => {
+    return (properties.images as any)?.rich_text?.map((item: { href: any; }) => item.href) as string[]
+  }, [properties.images]);
   const time = useMemo(() => {
     return convertGMTDateToLocal(last_edited_time);
   }, [last_edited_time]);
@@ -104,6 +108,21 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
             }
           </p>
         ))}
+      </div>
+      <div className="flex flex-wrap gap-2 pb-2 ">
+        <PhotoProvider>
+        {
+          memoImages.length === 1 ? <Image src={memoImages[0]} alt={memoImages[0]} 
+            className="max-h-[80%] max-w-[80%]" /> : memoImages?.map((url) => (
+            <Image
+              key={url}
+              src={url}
+              alt={url}
+              className="h-[164px] w-[164px]"
+            />
+          ))
+        }
+        </PhotoProvider>
       </div>
       <div className='mt-4 pt-2'>
         {memoTags?.map((label) => (

@@ -3,10 +3,10 @@ const nextConfig = {
     reactStrictMode: true,
     async rewrites() {
         return [
-            // {
-            //     source: '*',
-            //     destination: 'https://api.notion.com'
-            // }
+            {
+                source: '/upload',
+                destination: 'https://telegraph-image-bww.pages.dev/upload'
+            }
         ]
     },
     async headers() {

@@ -12,13 +12,17 @@ export interface Properties {
       name: string;
     }[];
   };
-  files: {
-    files: {
-      name: string;
+  images?:{
+    rich_text?: {
       type: string;
-      size: number;
+      text: {
+        content: string;
+        link:{
+          url:string
+        }
+      };
     }[];
-  };
+  }
 }
 
 export interface TagType {

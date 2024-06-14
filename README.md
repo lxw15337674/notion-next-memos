@@ -18,6 +18,12 @@ Live Demo：https://noiton-next-memos-demo.vercel.app
 
 
 
+##  Limit
+
+1. [The Notion API does not yet support uploading files to Notion](https://developers.notion.com/reference/file-object)
+
+   
+
 ## Primary tech stack
 
 - Next.js

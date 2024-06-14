@@ -79,7 +79,7 @@ export function convertGMTDateToLocal(gmtDateString: string) {
 
 
 // 拆分模式：标签和文本分开。
-export function splitMode(content: string): Properties {
+export function splitMode(content: string, fileUrls?: string[]): Properties {
   // 将字符串按换行符分割成数组
   const lines = content.split('\n');
   const tags: string[] = []
@@ -109,13 +109,16 @@ export function splitMode(content: string): Properties {
         name: tag,
       })),
     },
+    images:{
+      rich_text: fileUrls?.map((url) => ({
+        type:'text',
+        text:{
+          "content": url,
+          "link": {
+            url
+          }
+        }
+      }))
+    }
   };
 } 
-
-export function parseFiles(files: File[]): Properties {
-  return  {
-    files:{
-      
-    }
-  }
-}

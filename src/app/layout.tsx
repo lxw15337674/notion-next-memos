@@ -1,9 +1,8 @@
 import './globals.css';
-import LeftSide from '@/components/LeftSide';
 import { CssVarsProvider } from '@mui/joy';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
-import MobileHeader from '@/components/MobileHeader';
+import 'react-photo-view/dist/react-photo-view.css';
 
 export default function RootLayout({
   children,

@@ -10,9 +10,10 @@ import { Loader2 } from 'lucide-react';
 import { useDebounceFn, useKeyPress } from 'ahooks';
 import { useFileUpload } from './useFileUpload';
 import Image from '../Image';
+import { PhotoProvider, PhotoView } from 'react-photo-view';
 
 interface Props {
-  onSubmit: (text: string, files?: File[]) => Promise<any>;
+  onSubmit: (text: string, fileUrls?: string[]) => Promise<any>;
   onCancel?: () => void;
   defaultValue?: string;
 }
@@ -24,7 +25,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
   const { fetchTags } = useTagStore();
   const [loading, setLoading] = React.useState(false);
   const [editorRef, setEditorRef] = useState<HTMLTextAreaElement | null>(null);
-  const [files, uploadFile, removeFile] = useFileUpload()
+  const [files, uploadFile, removeFile, isUploading, reset] = useFileUpload()
   const { run: replaceText } = useDebounceFn<ReplaceTextFunction>((text, start, end, offset = 0) => {
     const editor = editorRef;
     if (editor) {
@@ -49,11 +50,12 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
     const content = editor.value ?? '';
     if (content.trim().length === 0) return;
     setLoading(true);
-    await onSubmit?.(content).finally(() => {
+    await onSubmit?.(content, files?.map(item => item.url!)).finally(() => {
       setLoading(false);
     })
     fetchTags()
     editor!.value = '';
+    reset()
   };
   useKeyPress('ctrl.enter', (e) => {
     // 判断是否focus
@@ -63,6 +65,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
       onSave();
     }
   });
+  const isLoading = loading || isUploading
   return (
     <div className="relative">
       <Textarea
@@ -74,17 +77,20 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
         slotProps={{ textarea: { ref: setEditorRef } }}
         endDecorator={
           <div className='w-full max-w-full'>
-            <div className='flex space-x-1 pb-2'>
-              {
-                files?.map((file, index) => {
-                  return <Image
-                    key={file.name}
-                    src={file.source} alt='file' className='h-[100px] w-[100px]' onDelete={() => {
-                      removeFile(index)
-                    }} />
-                })
-              }
-            </div>
+            <PhotoProvider>
+              <div className='flex space-x-1 pb-2'>
+                {
+                  files?.map((file, index) => {
+                    return <Image
+                        key={file.name}
+                        success={file.success}
+                        src={file.source} alt='file' className='h-[100px] w-[100px]' onDelete={() => {
+                          removeFile(index)
+                        }} />
+                  })
+                }
+              </div>
+            </PhotoProvider>
             <Box
               className="py-1 border-t  flex items-center flex-auto "
             >
@@ -128,7 +134,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
                 </Button>
                 }
                 <Button
-                  disabled={loading}
+                  disabled={isLoading}
                   variant="outline"
                   size="icon"
                   type='submit'
@@ -136,7 +142,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel }: Props) => {
                   className="ml-4 w-16 h-8"
                 >
                   {
-                    loading ? <Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20} />
+                    isLoading ? <Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20} />
                   }
                 </Button>
               </div>

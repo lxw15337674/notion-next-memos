@@ -6,12 +6,43 @@ interface ParsedFile {
     name: string;
     size: number;
     file: File;
+    url?: string;
+    success?: boolean;
 }
 
 
 export const useFileUpload = () => {
     const [files, setFiles] = useState<ParsedFile[] | null>(null);
     const { toast } = useToast();
+    // 上传到图床
+    const uploadToGallery = (file: File, index: number) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setFiles((files) => {
+                    return files!.map((item, i) => {
+                        if (i === index) {
+                            return {
+                                ...item,
+                                url: `https://telegraph-image-bww.pages.dev${data[0]?.src}`,
+                                success: true
+                            }
+                        }
+                        return item
+                    }
+                    )
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
     const uploadFile = () => {
         // 创建 input 元素
         const inputEl = document.createElement('input');
@@ -24,7 +55,7 @@ export const useFileUpload = () => {
             const files = Array.from(target.files || [])
             const selectedFiles = files
                 .filter((file) => {
-                    // 限制大小5MB
+                    // // 限制大小5MB
                     if (file.size >= 5 * 1024 * 1024) {
                         return false
                     }
@@ -47,12 +78,16 @@ export const useFileUpload = () => {
             if (selectedFiles.length !== files.length) {
                 toast({
                     title: '已过滤部分文件',
-                    description: '文件大小不能超过5MB，且仅支持图片文件, 最多上传9张图片',
+                    description: '文件大小不能超过5MB，仅支持图片文件, 最多上传9张图片',
+                    variant: 'destructive',
                 });
             }
             // 更新文件状态
             setFiles(selectedFiles);
             console.log(selectedFiles)
+            for (let i = 0; i < selectedFiles.length; i++) {
+                uploadToGallery(selectedFiles[i].file, i)
+            }
             // 移除事件监听和 input 元素
             inputEl.removeEventListener('change', handleChange);
             inputEl.remove();
@@ -68,6 +103,9 @@ export const useFileUpload = () => {
         files?.splice(index, 1);
         setFiles([...files!]);
     }
-
-    return [files, uploadFile, removeFile] as const
+    const isUploading = files?.some((file) => !file.success) && files?.length > 0;
+    const reset=()=>{
+        setFiles(null)
+    }
+    return [files, uploadFile, removeFile, isUploading, reset] as const
 };
