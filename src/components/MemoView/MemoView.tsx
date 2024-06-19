@@ -15,8 +15,9 @@ import useMemoStore from '@/store/memo';
 import { useRequest } from 'ahooks';
 import { updatePageProperties } from '@/api/actions';
 import useConfigStore from '@/store/config';
-import Image from '../Image';
+import Image from '../ImageViewer';
 import { PhotoProvider } from 'react-photo-view';
+import ImageViewer from '../ImageViewer';
 
 const MemoView: React.FC<DatabaseObjectResponse> = ({
   properties,
@@ -114,9 +115,9 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
         <div className="flex flex-wrap gap-2  mb-2">
           <PhotoProvider>
             {
-              memoImages.length === 1 ? <Image src={memoImages[0]} alt={memoImages[0]}
+              memoImages.length === 1 ? <ImageViewer src={memoImages[0]} alt={memoImages[0]}
                 className="max-h-[40vh]" /> : memoImages?.map((url) => (
-                  <Image
+                  <ImageViewer
                     key={url}
                     src={url}
                     alt={url}

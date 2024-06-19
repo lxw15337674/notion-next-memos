@@ -6,11 +6,10 @@ import TagSuggestions from './TagSuggestions';
 import Box from '@mui/joy/Box';
 import { Button } from '../ui/button';
 import useTagStore from '@/store/tag';
-import { Loader2 } from 'lucide-react';
-import { useDebounceFn, useKeyPress } from 'ahooks';
+import { useDebounceFn, useEventListener, useKeyPress } from 'ahooks';
 import { useFileUpload } from './useFileUpload';
-import Image from '../Image';
-import { PhotoProvider, PhotoView } from 'react-photo-view';
+import ImageViewer from '../ImageViewer';
+import { PhotoProvider } from 'react-photo-view';
 
 interface Props {
   onSubmit: (text: string, fileUrls?: string[]) => Promise<any>;
@@ -26,7 +25,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
   const { fetchTags } = useTagStore();
   const [loading, setLoading] = React.useState(false);
   const [editorRef, setEditorRef] = useState<HTMLTextAreaElement | null>(null);
-  const [files, uploadFile, removeFile, isUploading, reset] = useFileUpload(defaultUrls)
+  const { files, uploadFile, removeFile, isUploading, reset, pushFile } = useFileUpload(defaultUrls)
   const { run: replaceText } = useDebounceFn<ReplaceTextFunction>((text, start, end, offset = 0) => {
     const editor = editorRef;
     if (editor) {
@@ -58,6 +57,30 @@ const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
     editor!.value = '';
     reset()
   };
+  // function processImage(blob: Blob) {
+  //   // 使用 FileReader 读取图片数据
+  //   const reader = new FileReader();
+  //   reader.onload = function (event) {
+  //     const img = new Image();
+  //     img.onload = function () {
+  //       // 在这里你可以访问图片的尺寸等信息
+  //       console.log('图片宽度:', img.width);
+  //       console.log('图片高度:', img.height);
+
+  //       // 将图片显示在页面上
+  //       document.body.appendChild(img);
+  //     };
+  //     img.src = event?.target?.result ?? ''
+  //   };
+  //   reader.readAsDataURL(blob);
+  //   addFile({
+  //     source: URL.createObjectURL(blob),
+  //     size: blob.size,
+  //     file: new File([blob], 'file'),
+  //     success: false
+  //   })
+  //   }
+  // }
   useKeyPress('ctrl.enter', (e) => {
     // 判断是否focus
     if (editorRef === document.activeElement) {
@@ -66,6 +89,19 @@ const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
       onSave();
     }
   });
+
+  useEventListener('paste', (e) => {
+    if (editorRef === document.activeElement) {
+      if (e?.clipboardData?.items?.length === 0) return
+      const items = e?.clipboardData?.items as DataTransferItemList;
+
+      for (let i = 0; i < items?.length; i++) {
+        if (items[i].type.indexOf('image') === 0) {
+          pushFile(items[i].getAsFile()!);
+        }
+      }
+    }
+  })
   const isLoading = loading || isUploading
   return (
     <div className="relative">
@@ -82,12 +118,12 @@ const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
               <div className='flex space-x-1 pb-2'>
                 {
                   files?.map((file, index) => {
-                    return <Image
-                        key={file.source}
-                        success={file.success}
-                        src={file.source} alt='file' className='h-[100px] w-[100px]' onDelete={() => {
-                          removeFile(index)
-                        }} />
+                    return <ImageViewer
+                      key={file.source}
+                      loading={file.loading}
+                      src={file.source} alt='file' className='h-[100px] w-[100px]' onDelete={() => {
+                        removeFile(index)
+                      }} />
                   })
                 }
               </div>
@@ -143,7 +179,7 @@ const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
                   className="ml-4 w-16 h-8"
                 >
                   {
-                    isLoading ? <Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20} />
+                    isLoading ? <Icon.Loader2 size={20} className="animate-spin" /> : <Icon.Send size={20} />
                   }
                 </Button>
               </div>
