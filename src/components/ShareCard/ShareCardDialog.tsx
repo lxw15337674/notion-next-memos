@@ -130,9 +130,9 @@ const ShareCardDialog = () => {
                     </div>
                     <Button variant="outline" onClick={() => run()} disabled={loading}>
                         {
-                            loading && <Icon.Loader2 size={20}  className="animate-spin mr-1" /> 
+                            loading && <Icon.Loader2 size={20} className="animate-spin mr-1" />
                         }
-                         更换背景图
+                        更换背景图
                     </Button>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
