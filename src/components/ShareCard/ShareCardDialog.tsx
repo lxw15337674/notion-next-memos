@@ -1,6 +1,5 @@
 "use client";
-
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { Button } from "../ui/button";
 import { format } from "date-fns";
 import {
@@ -25,12 +24,9 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-const getImageUrl = async () => {
-    const ImageUrl = "https://source.unsplash.com/random/1080x1920?wallpapers";
-    const res = await fetch(ImageUrl);
-    return res.url;
-}
+// import { getRandomImage } from "@/api/actions";
+import Icon from "../Icon";
+import { getRandomImage } from "@/api/actions";
 
 const ShardCards = [
     {
@@ -46,7 +42,7 @@ const ShardCards = [
         component: SpotifyCard
     }
 ]
-const userName = process.env.USERNAME??'Bhwa233'
+const userName = process.env.USERNAME ?? 'Bhwa233'
 const imageDownload = async (card: HTMLDivElement) => {
     if (!card) return;
     try {
@@ -75,7 +71,7 @@ const ShareCardDialog = () => {
     const { text, open, setOpen } = useShareCardStore();
     const { config } = useConfigStore()
     const [isShowTags, { toggle: toggleShowTags }] = useBoolean(config.generalConfig.isShowTagsInShareCard)
-    const { data: url, run } = useRequest(getImageUrl, {
+    const { data: url, run, loading } = useRequest(getRandomImage, {
         manual: false
     })
     const content = useMemo(() => {
@@ -86,7 +82,7 @@ const ShareCardDialog = () => {
         });
     }, [text, isShowTags])
     const refs = useRef<HTMLDivElement[]>([]);
-    
+
     return <>
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="md:max-w-[100vw] w-auto overflow-auto">
@@ -132,14 +128,21 @@ const ShareCardDialog = () => {
                             </label>
                         </div>
                     </div>
-                    <Button variant="outline" onClick={run}>更换背景图</Button>
+                    <Button variant="outline" onClick={() => run()} disabled={loading}>
+                        {
+                            loading && <Icon.Loader2 size={20}  className="animate-spin mr-1" /> 
+                        }
+                         更换背景图
+                    </Button>
                     <DropdownMenu>
                         <DropdownMenuTrigger>
                             <Button
-                                variant="outline" 
+                                variant="outline"
                                 className="w-full md:w-auto"
+                                disabled={loading}
                             >
-                               下载
+
+                                下载
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>

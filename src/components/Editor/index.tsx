@@ -57,30 +57,6 @@ const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
     editor!.value = '';
     reset()
   };
-  // function processImage(blob: Blob) {
-  //   // 使用 FileReader 读取图片数据
-  //   const reader = new FileReader();
-  //   reader.onload = function (event) {
-  //     const img = new Image();
-  //     img.onload = function () {
-  //       // 在这里你可以访问图片的尺寸等信息
-  //       console.log('图片宽度:', img.width);
-  //       console.log('图片高度:', img.height);
-
-  //       // 将图片显示在页面上
-  //       document.body.appendChild(img);
-  //     };
-  //     img.src = event?.target?.result ?? ''
-  //   };
-  //   reader.readAsDataURL(blob);
-  //   addFile({
-  //     source: URL.createObjectURL(blob),
-  //     size: blob.size,
-  //     file: new File([blob], 'file'),
-  //     success: false
-  //   })
-  //   }
-  // }
   useKeyPress('ctrl.enter', (e) => {
     // 判断是否focus
     if (editorRef === document.activeElement) {

@@ -26,7 +26,7 @@ const ImageViewer: React.FC<ImageProps> = ({ src, alt, onDelete, className, load
                     !loading && onDelete && <Button
                         variant="ghost"
                         size="icon"
-                        className="absolute top-1 right-2  text-white   focus:outline-none rounded-lg opacity-70 h-[16px] w-[16px] flex justify-center items-center hover:opacity-100"
+                        className="absolute top-1 right-2  text-gray-600   focus:outline-none rounded-lg opacity-70 h-[16px] w-[16px] flex justify-center items-center hover:opacity-100"
                         onClick={(e) => {
                             e.stopPropagation()
                             onDelete()

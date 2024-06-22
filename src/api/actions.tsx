@@ -6,6 +6,8 @@ import {
 } from '@notionhq/client/build/src/api-endpoints';
 import { splitMode } from '@/utils/parser';
 import { TagType } from '@/type';
+import { createApi } from 'unsplash-js';
+import { Random } from 'unsplash-js/dist/methods/photos/types';
 
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID!;
 const ClientNotion = new Client({
@@ -67,7 +69,7 @@ export async function archivePage(pageId: string, archived: boolean) {
     console.error(error);
   }
 }
- 
+
 export async function updatePageProperties(pageId: string, content: string, fileUrls?: string[]) {
   try {
     return (await ClientNotion.pages.update({
@@ -103,4 +105,20 @@ export async function validateEditCode(password?: string) {
   return password === process.env.EDIT_CODE;
 }
 
- 
+
+
+
+
+
+export const getRandomImage = async () => {
+  const unsplash = createApi({
+    accessKey: process.env.UNSPLASH_ACCESS_CODE!,
+  });
+  const res = await unsplash.photos.getRandom({
+    query: 'wallpapers',
+    orientation: 'landscape',
+  }).catch((e) => {
+    console.error(e);
+  });
+  return (res?.response as Random).urls?.regular;
+}
