@@ -7,6 +7,9 @@ interface MemoStore {
   tagFilter: string[];
   timeFilter?: Date;
   textFilter?: string;
+  // 筛选是否有图片
+  hasImageFilter?: boolean;
+  setHasImageFilter: (hasImageFilter: boolean) => void;
   setTextFilter: (text?: string) => void;
   setTimeFilter: (time?: Date) => void;
   setFilter: (tags: string[]) => void;
@@ -26,6 +29,10 @@ const useFilterStore = create(
     computed<MemoStore, ComputedState>(
       (set, get) => ({
         tagFilter: [],
+        hasImageFilter: false,
+        setHasImageFilter: () => {
+          set({ hasImageFilter: !get().hasImageFilter });
+        },
         setFilter: (tagFilter) => {
           set({ tagFilter });
         },
@@ -45,6 +52,7 @@ const useFilterStore = create(
             tagFilter: [],
             timeFilter: undefined,
             textFilter: undefined,
+            hasImageFilter: false,
           });
         },
       }),
@@ -87,6 +95,14 @@ const useFilterStore = create(
               property: 'content',
               rich_text: {
                 contains: state.textFilter,
+              },
+            });
+          }
+          if (state.hasImageFilter) {
+            filter.push({
+              property: 'images',
+              files: {
+                is_not_empty: true,
               },
             });
           }

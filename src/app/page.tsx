@@ -1,4 +1,3 @@
-import MemoFilter from '@/components/MemoFilter';
 import { NotionAPI } from 'notion-client';
 import Main from './Main';
 import SideBar from './SideBar';
@@ -6,6 +5,7 @@ import NewMemoEditor from './NewMemoEditor';
 import ShareCardDialog from '@/components/ShareCard/ShareCardDialog';
 import MobileHeader from '@/components/MobileHeader';
 import LeftSide from '@/components/LeftSide';
+import MemoFilter from '@/components/MemoFilter';
 
 export default async function Home() {
   // 这个地方不知道为什么，放到service action里面会build报错：
