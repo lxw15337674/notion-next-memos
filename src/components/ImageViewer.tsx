@@ -15,8 +15,12 @@ interface ImageProps {
 const ImageViewer: React.FC<ImageProps> = ({ src, alt, onDelete, className, loading  }) => {
     return (
         <PhotoView src={src}>
-            <div className={`relative   rounded-lg overflow-hidden h-full `}>
-                <img src={src} alt={alt} className={`object-cover rounded-lg   ${loading === true ? 'opacity-50' : ''} ${className}`} />
+            <div className={`relative  rounded-lg overflow-hidden h-full `}>
+                <img src={src} alt={alt} className={`object-cover rounded-lg   ${loading === true ? 'opacity-50' : ''} ${className}`}
+                onError={(e) => {
+                    e.currentTarget.src = 'https://placehold.co/600x400?text=error'
+                }}
+                />
                 {
                     loading && <div className='absolute inset-0 flex justify-center items-center'>
                         <Icon.Loader2 size={40} className="  animate-spin text-white" />

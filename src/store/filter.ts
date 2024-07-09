@@ -3,13 +3,19 @@ import { create } from 'zustand';
 import computed from 'zustand-middleware-computed';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+
+export enum ImageFilter {
+  HAS_IMAGE = 'HAS_IMAGE',
+  NO_IMAGE = 'NO_IMAGE',
+  NO_FilTER = 'NO_FilTER',
+}
 interface MemoStore {
   tagFilter: string[];
   timeFilter?: Date;
   textFilter?: string;
   // 筛选是否有图片
-  hasImageFilter?: boolean;
-  setHasImageFilter: (hasImageFilter: boolean) => void;
+  imageFilter: ImageFilter;
+  setHasImageFilter: (imageFilter: ImageFilter) => void;
   setTextFilter: (text?: string) => void;
   setTimeFilter: (time?: Date) => void;
   setFilter: (tags: string[]) => void;
@@ -29,9 +35,9 @@ const useFilterStore = create(
     computed<MemoStore, ComputedState>(
       (set, get) => ({
         tagFilter: [],
-        hasImageFilter: false,
-        setHasImageFilter: () => {
-          set({ hasImageFilter: !get().hasImageFilter });
+        imageFilter: ImageFilter.NO_FilTER,
+        setHasImageFilter: (imageFilter: ImageFilter) => {
+          set({ imageFilter });
         },
         setFilter: (tagFilter) => {
           set({ tagFilter });
@@ -52,7 +58,7 @@ const useFilterStore = create(
             tagFilter: [],
             timeFilter: undefined,
             textFilter: undefined,
-            hasImageFilter: false,
+            imageFilter: undefined
           });
         },
       }),
@@ -67,49 +73,43 @@ const useFilterStore = create(
           return !!(
             state.tagFilter.length > 0 ||
             state.timeFilter ||
-            state.textFilter
+            state.textFilter ||
+            state.imageFilter !== ImageFilter.NO_FilTER
           );
         },
         filterParams: (state) => {
           if (!state.hasFilter) {
             return undefined;
           }
-          const filter: any[] = state.tagFilter.map((item) => {
-            return {
+
+          const filter = [
+            ...state.tagFilter.map((item) => ({
               property: 'tags',
               multi_select: {
                 contains: item,
               },
-            };
-          });
-          if (state.timeFilterText) {
-            filter.push({
+            })),
+            state.timeFilterText && {
               timestamp: 'created_time',
               created_time: {
                 equals: state.timeFilterText,
               },
-            });
-          }
-          if (state.textFilter) {
-            filter.push({
+            },
+            state.textFilter && {
               property: 'content',
               rich_text: {
                 contains: state.textFilter,
               },
-            });
-          }
-          if (state.hasImageFilter) {
-            filter.push({
+            },
+            state.imageFilter !== ImageFilter.NO_FilTER && {
               property: 'images',
-              files: {
-                is_not_empty: true,
+              rich_text: {
+                [state.imageFilter === ImageFilter.HAS_IMAGE ? 'is_not_empty' : 'is_empty']: true,
               },
-            });
-          }
-          return {
-            and: filter,
-          };
-        },
+            },
+          ].filter(Boolean); // Remove falsy values from the array
+          return filter.length > 0 ? { and: filter } : undefined;
+        }
       },
     ),
     {

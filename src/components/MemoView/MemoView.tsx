@@ -113,7 +113,9 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
       </div>
       {memoImages.length > 0 &&
         <div className="flex flex-wrap gap-2  mb-2">
-          <PhotoProvider>
+          <PhotoProvider
+            brokenElement={<div className="w-[164px] h-[164px] bg-gray-200 text-gray-400 flex justify-center items-center">图片加载失败</div>}
+          >
             {
               memoImages.length === 1 ? <ImageViewer src={memoImages[0]} alt={memoImages[0]}
                 className="max-h-[40vh]" /> : memoImages?.map((url) => (
@@ -122,6 +124,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
                     src={url}
                     alt={url}
                     className="h-[164px] w-[164px]"
+                    
                   />
                 ))
             }
@@ -141,7 +144,7 @@ const MemoView: React.FC<DatabaseObjectResponse> = ({
           ))}
         </div>
       }
-     
+
     </Card>
   );
 };

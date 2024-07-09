@@ -73,7 +73,6 @@ export function Setting() {
                             config.generalConfig.isShowTags
                         } onCheckedChange={(checked) => {
                             setConfig(config => {
-                                debugger
                                 config.generalConfig.isShowTags = checked
                                 return config
                             })

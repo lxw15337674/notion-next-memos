@@ -9,7 +9,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Icon from '../Icon';
-import useFilterStore from '@/store/filter';
+import useFilterStore, { ImageFilter } from '@/store/filter';
 
 export function FilterDropMenu() {
     const {
@@ -24,8 +24,11 @@ export function FilterDropMenu() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent suppressHydrationWarning>
-                <DropdownMenuItem onClick={() => setHasImageFilter(true)}>
+                <DropdownMenuItem onClick={() => setHasImageFilter(ImageFilter.HAS_IMAGE)}>
                     只显示有图片
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setHasImageFilter(ImageFilter.NO_IMAGE)}>
+                    只显示没有图片
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

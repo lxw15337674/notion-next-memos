@@ -90,7 +90,9 @@ const Editor = ({ onSubmit, defaultValue, onCancel, defaultUrls }: Props) => {
         slotProps={{ textarea: { ref: setEditorRef } }}
         endDecorator={
           <div className='w-full max-w-full'>
-            <PhotoProvider>
+            <PhotoProvider
+              brokenElement={<div className="w-[164px] h-[164px] bg-gray-200 text-gray-400 flex justify-center items-center">图片加载失败</div>}
+            >
               <div className='flex space-x-1 pb-2'>
                 {
                   files?.map((file, index) => {

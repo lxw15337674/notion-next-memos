@@ -1,7 +1,7 @@
 'use client';
 import classNames from 'classnames';
 import Icon from '../Icon';
-import useFilterStore from '@/store/filter';
+import useFilterStore, { ImageFilter } from '@/store/filter';
 import { useDebounceFn, useUpdateEffect } from 'ahooks';
 import useMemoStore from '@/store/memo';
 import { Button } from '../ui/button';
@@ -20,9 +20,10 @@ const MemoFilter = (props: Props) => {
     removeTagFilter,
     clearFilter,
     setHasImageFilter,
-    hasImageFilter,
+    imageFilter,
     textFilter,
     setTextFilter,
+    hasFilter
   } = useFilterStore();
   const { fetchInitData } = useMemoStore();
   const { run: debounceFetchData } = useDebounceFn(fetchInitData, {
@@ -30,7 +31,7 @@ const MemoFilter = (props: Props) => {
   });
   useUpdateEffect(() => {
     debounceFetchData();
-  }, [tagFilter, timeFilterText, textFilter, hasImageFilter]);
+  }, [tagFilter, timeFilterText, textFilter, imageFilter]);
   return (
     <div
       className={classNames(
@@ -39,10 +40,13 @@ const MemoFilter = (props: Props) => {
       )}
     >
       <FilterDropMenu />
-      <div className="flex justify-start items-center px-2 mr-2   text-gray-400">
-        <Icon.Filter className="w-4 h-auto mr-1" />
-        <div className='h-auto align-middle'>已有筛选</div>
-      </div>
+      {
+        hasFilter && (<div className="flex justify-start items-center px-2 mr-2   text-gray-400">
+          <Icon.Filter className="w-4 h-auto mr-1" />
+          <div className='h-auto align-middle'>已有筛选</div>
+        </div>
+        )
+      }
       {textFilter && (
         <FilterTag onClear={() => setTextFilter('')} >
           关键字 : {textFilter}
@@ -54,9 +58,11 @@ const MemoFilter = (props: Props) => {
         </FilterTag>
       )}
       {
-        hasImageFilter && (
-          <FilterTag onClear={() => setHasImageFilter(false)}>
-            只显示有图片
+        imageFilter !== ImageFilter.NO_FilTER && (
+          <FilterTag onClear={() => setHasImageFilter(ImageFilter.NO_FilTER)}>
+            {
+              imageFilter === ImageFilter.HAS_IMAGE ? '只显示有图片' : '只显示没有图片'
+            }
           </FilterTag>
         )
       }
