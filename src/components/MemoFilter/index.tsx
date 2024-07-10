@@ -72,7 +72,9 @@ const MemoFilter = (props: Props) => {
         </FilterTag>
       ))}
       <div className="ml-auto">
-        <Button variant="outline" size="sm" className='px-6 mr-2 ' onClick={clearFilter}>重置</Button>
+        <Button variant="outline" size="sm" className='px-6 mr-2 '
+          disabled={!hasFilter}
+          onClick={clearFilter}>重置</Button>
       </div>
     </div>
   );

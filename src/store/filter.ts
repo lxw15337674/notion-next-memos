@@ -58,7 +58,7 @@ const useFilterStore = create(
             tagFilter: [],
             timeFilter: undefined,
             textFilter: undefined,
-            imageFilter: undefined
+            imageFilter: ImageFilter.NO_FilTER
           });
         },
       }),
