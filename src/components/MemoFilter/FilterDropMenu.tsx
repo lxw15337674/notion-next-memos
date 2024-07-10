@@ -25,10 +25,10 @@ export function FilterDropMenu() {
             </DropdownMenuTrigger>
             <DropdownMenuContent suppressHydrationWarning>
                 <DropdownMenuItem onClick={() => setHasImageFilter(ImageFilter.HAS_IMAGE)}>
-                    只显示有图片
+                    仅显示有图片
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setHasImageFilter(ImageFilter.NO_IMAGE)}>
-                    只显示没有图片
+                    仅显示没有图片
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

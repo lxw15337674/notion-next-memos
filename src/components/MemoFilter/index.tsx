@@ -61,7 +61,7 @@ const MemoFilter = (props: Props) => {
         imageFilter !== ImageFilter.NO_FilTER && (
           <FilterTag onClear={() => setHasImageFilter(ImageFilter.NO_FilTER)}>
             {
-              imageFilter === ImageFilter.HAS_IMAGE ? '只显示有图片' : '只显示没有图片'
+              imageFilter === ImageFilter.HAS_IMAGE ? '仅显示有图片' : '仅显示没有图片'
             }
           </FilterTag>
         )
