@@ -11,7 +11,7 @@ interface ParsedFile {
 
 
 export const useFileUpload = (defaultUrls?: string[]) => {
-    const [files, setFiles] = useState<ParsedFile[] | null>(() => {
+    const [files, setFiles] = useState<ParsedFile[]>(() => {
         if (defaultUrls) {
             return defaultUrls.map(url => ({
                 source: url,
@@ -21,7 +21,7 @@ export const useFileUpload = (defaultUrls?: string[]) => {
                 loading: false
             }))
         }
-        return null
+        return []
     })
     const { toast } = useToast();
     // 上传到图床
@@ -39,8 +39,7 @@ export const useFileUpload = (defaultUrls?: string[]) => {
             });
     }
     const pushFile = (file: File) => {
-        const index = files?.length ?? 0;
-        if (index >= 9) {
+        if (files.length >= 9) {
             toast({
                 title: '最多上传9张图片',
                 description: '请删除部分图片后再上传',
@@ -65,31 +64,36 @@ export const useFileUpload = (defaultUrls?: string[]) => {
             });
             return
         }
-        // 更新文件状态
-        setFiles((files) => {
-            return [...(files ?? []), {
-                source: URL.createObjectURL(file),
-                size: file.size,
-                file,
-                url: '',
-                loading: true
-            }]
-        });
-        uploadToGallery(file).then((src) => {
-            setFiles((files) => {
-                return files!.map((item, i) => {
-                    if (i === index) {
-                        return {
-                            ...item,
-                            url: `https://telegraph-image-bww.pages.dev${src}`,
-                            loading: false
+        const newFile: ParsedFile = {
+            source: URL.createObjectURL(file),
+            size: file.size,
+            file,
+            url: '',
+            loading: true
+        };
+
+        setFiles(prevFiles => {
+            const updatedFiles = [...prevFiles, newFile];
+            const index = updatedFiles.length - 1;
+
+            uploadToGallery(file).then((src) => {
+                setFiles(currentFiles => {
+                    return currentFiles.map((item, i) => {
+                        if (i === index) {
+                            console.log(i, '上传到图床', src);
+                            return {
+                                ...item,
+                                url: `https://telegraph-image-bww.pages.dev${src}`,
+                                loading: false
+                            };
                         }
-                    }
-                    return item
-                }
-                )
+                        return item;
+                    });
+                });
             });
-        })
+
+            return updatedFiles;
+        });
     }
     const uploadFile = () => {
         // 创建 input 元素
@@ -122,7 +126,7 @@ export const useFileUpload = (defaultUrls?: string[]) => {
     }
     const isUploading = files?.some((file) => file.loading) && files?.length > 0;
     const reset = () => {
-        setFiles(null)
+        setFiles([])
     }
 
     return { files, uploadFile, removeFile, isUploading, reset, setFiles, pushFile } as const
