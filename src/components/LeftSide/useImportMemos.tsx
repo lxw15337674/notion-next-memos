@@ -21,37 +21,23 @@ const useImportMemos = () => {
                     try {
                         const memos = JSON.parse(event.target?.result as string);
                         setMemos(memos.length);
-
-                        const queue = new PromiseQueue();
-                        queue.setOnError((error) => {
-                            toast({
-                                variant: "destructive",
-                                title: "导入失败",
-                                description: error.message,
-                                duration: 1000
-                            });
-                        });
-                        queue.setOnAllComplete(() => {
-                            toast({
-                                title: "导入成功",
-                                description: `成功导入${memos.length}条数据`,
-                                duration: 1000
-                            });
-                            setLoading(false); // Set loading to false after the queue completes
-                        });
-
                         for (let i = 0; i < memos.length; i++) {
                             await createPageInDatabase(memos[i]);
                             setImportedMemos((prev) => prev + 1);
                         }
-                    } catch (error) {
                         toast({
-                            variant: "destructive",
-                            title: "解析失败",
-                            description: "请检查文件是否正确",
+                            title: "导入成功",
+                            description: `成功导入${memos.length}条数据`,
                             duration: 1000
                         });
-                        console.error("Error parsing Mastodon data:", error);
+                        setLoading(false); // Set loading to false after the queue completes
+                    } catch (error: any) {
+                        toast({
+                            variant: "destructive",
+                            title: "导入失败",
+                            description: error?.message,
+                            duration: 1000
+                        });
                         setLoading(false); // Set loading to false in case of parsing errors
                     }
                 };
