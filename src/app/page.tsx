@@ -18,17 +18,17 @@ export default async function Home() {
   });
   const recordMap = await api.getPage(process.env.NOTION_DATABASE_ID!, {});
   return (
-    <div className="md:flex">
+    <div className="flex flex-col md:flex-row max-w-[100vw] min-h-screen">
       <MobileHeader />
       <LeftSide />
-      <div className="flex-1 md:ml-40 md:pl-6 px-4">
-        <main className="  flex-grow shrink flex flex-col justify-start items-center overflow-hidden h-full  md:mr-60">
-          <div className="w-full mt-4 ">
+      <div className="flex-1 md:ml-40 md:pl-6 px-4 overflow-hidden">
+        <main className="flex flex-col h-full md:mr-60">
+          <div className="w-full mt-4 flex flex-col flex-grow overflow-hidden">
             <div className="mb-4" id='edit'>
               <NewMemoEditor />
             </div>
             <MemoFilter />
-            <section className="overflow-y-auto ">
+            <section className="overflow-y-auto overflow-x-hidden flex-grow">
               <Main recordMap={recordMap} />
             </section>
           </div>
