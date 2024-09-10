@@ -9,7 +9,6 @@ interface ParsedFile {
     loading: boolean;
 }
 
-
 export const useFileUpload = (defaultUrls?: string[]) => {
     const [files, setFiles] = useState<ParsedFile[]>(() => {
         if (defaultUrls) {

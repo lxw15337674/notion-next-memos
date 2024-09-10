@@ -48,6 +48,7 @@ export const getDBData = async (config: {
 //     return listUsersResponse.results as DatabaseObjectResponse[]
 // }
 
+// 
 export async function createPageInDatabase(content: string, fileUrls?: string[]) {
   const newPageData: CreatePageParameters = {
     parent: { database_id: NOTION_DATABASE_ID },
@@ -104,11 +105,6 @@ export async function validateEditCode(password?: string) {
   }
   return password === process.env.EDIT_CODE;
 }
-
-
-
-
-
 
 export const getRandomImage = async () => {
   const unsplash = createApi({

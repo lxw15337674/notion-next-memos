@@ -6,7 +6,6 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
@@ -14,16 +13,20 @@ import {
 import { Label } from "@/components/ui/label"
 import { Switch } from '../ui/switch';
 import useConfigStore from '@/store/config';
-import PasswordInput  from '../PasswordInput';
+import PasswordInput from '../PasswordInput';
 import { Separator } from '../ui/separator';
 import { useRouter } from 'next/navigation';
 import { useThrottleFn } from 'ahooks';
 import { useToast } from '../ui/use-toast';
-
+import { useState } from 'react';
+import { downloadFile, uploadFile } from '../../utils/file';
+import {  parseMastodonData } from '../../utils/importData';
+import useImportMemos from './useImportMemos';
+import Icon from '../Icon';
 export function Setting() {
     const { config, setConfig, resetGeneralConfig, setEditCodePermission } = useConfigStore()
     const { toast } = useToast()
-    const [editCode, setEditCode] = React.useState(config.codeConfig.editCode)
+    const [editCode, setEditCode] = useState(config.codeConfig.editCode)
     const { run: debounceSetEditCodePermission } = useThrottleFn(async () => {
         const hasEditCodePermission = await setEditCodePermission(editCode)
         if (hasEditCodePermission) {
@@ -44,6 +47,53 @@ export function Setting() {
         }
     }, { wait: 500 })
     const router = useRouter()
+    const { importData, memos, importedMemos, loading } = useImportMemos()
+
+    const formatMastodonData = () => {
+        uploadFile({
+            accept: '.json',
+            multiple: false,
+            onSuccess: (files) => {
+                const file: File = files[0];
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const jsonData = JSON.parse(event.target?.result as string);
+                        const memosJsonData = parseMastodonData(jsonData)
+                        downloadFile({
+                            data: JSON.stringify(memosJsonData, null, 2),
+                            filename: "formatted-mastodon-data.json"
+                        })
+                        toast({
+                            title: "解析成功",
+                            description: `已生成可导入的JSON文件，共${memosJsonData.length}条有效数据`,
+                            duration: 1000
+                        })
+                    } catch (error) {
+                        toast({
+                            variant: "destructive",
+                            title: "解析失败",
+                            description: "请检查文件内容是否正确",
+                            duration: 1000
+                        });
+                        console.error("Error parsing JSON file:", error);
+                    }
+                };
+                reader.readAsText(file);
+            },
+            onError: (error) => {
+                toast({
+                    variant: "destructive",
+                    title: "上传失败",
+                    description: "请检查文件是否正确",
+                    duration: 1000
+                })
+                console.error("Error during file upload:", error);
+                // Your code to handle the error here 
+            },
+        })
+    }
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -52,7 +102,7 @@ export function Setting() {
                     <span className="sr-only">Settings</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-68">
+            <DialogContent className="sm:max-w-68 max-h-[80vh] overflow-auto no-scrollbar" >
                 <DialogHeader>
                     <DialogTitle>设置</DialogTitle>
                     <DialogDescription>
@@ -133,6 +183,36 @@ export function Setting() {
                     }}>
                         重置密码
                     </Button>
+                    <Separator className="my-4" />
+
+                    <div className="space-y-2">
+                        <Label className="flex flex-col space-y-1 ">
+                            <span>
+                                格式化Mastodon数据
+                            </span>
+                            <span className="text-xs font-normal leading-snug text-muted-foreground">
+                                上传从Mastodon导出的JSON文件，将其格式化为支持导入的JSON文件
+                            </span>
+                        </Label>
+                    </div>
+                    <Button type="submit" className="w-full" onClick={formatMastodonData} >
+                        上传Mastodon数据文件
+                    </Button>
+                    <div className="space-y-2">
+                        <Label className="flex flex-col space-y-1 ">
+                            <span>
+                                导入数据
+                            </span>
+                            <span className="text-xs font-normal leading-snug text-muted-foreground">
+                                导入格式化后的JSON数据
+                            </span>
+                        </Label>
+                        <Button type="submit" className="w-full" onClick={importData} disabled={loading}>
+                            {
+                                loading ? (<><Icon.Loader2 size={20} className="animate-spin mr-1" />{`已上传${importedMemos}/${memos}条数据`}</>) : '导入数据文件'
+                            }
+                        </Button>
+                    </div>
                 </div>
             </DialogContent>
         </Dialog>
